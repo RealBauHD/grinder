@@ -1,0 +1,112 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Thu, 30 May 2024 23:44:30 +0200
+Subject: [PATCH] deactivate commands.yml
+
+
+diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
+index 244a19ecd0234fa1d7a6ecfea20751595688605d..0bc825b16f768b7700df9cbf219c7c1bdc97becd 100644
+--- a/src/main/java/net/minecraft/server/Main.java
++++ b/src/main/java/net/minecraft/server/Main.java
+@@ -143,11 +143,11 @@ public class Main {
+                 configuration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(Main.class.getClassLoader().getResourceAsStream("configurations/bukkit.yml"), Charsets.UTF_8)));
+                 configuration.save(configFile);
+ 
+-                File commandFile = (File) optionset.valueOf("commands-settings");
++                /*File commandFile = (File) optionset.valueOf("commands-settings");
+                 YamlConfiguration commandsConfiguration = YamlConfiguration.loadConfiguration(commandFile);
+                 commandsConfiguration.options().copyDefaults(true);
+                 commandsConfiguration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(Main.class.getClassLoader().getResourceAsStream("configurations/commands.yml"), Charsets.UTF_8)));
+-                commandsConfiguration.save(commandFile);
++                commandsConfiguration.save(commandFile);*/ // Grinder - deactivate commands.yml
+                 // CraftBukkit end
+                 Main.LOGGER.info("Initialized '{}' and '{}'", path1.toAbsolutePath(), path2.toAbsolutePath());
+                 return;
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3ad64b7fe 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -421,7 +421,7 @@ public final class CraftServer implements Server {
+             this.configuration.set("aliases", "now-in-commands.yml");
+         }
+         this.saveConfig();
+-        if (this.getCommandsConfigFile().isFile()) {
++        /*if (this.getCommandsConfigFile().isFile()) {
+             legacyAlias = null;
+         }
+         this.commandsConfiguration = YamlConfiguration.loadConfiguration(this.getCommandsConfigFile());
+@@ -453,7 +453,7 @@ public final class CraftServer implements Server {
+ 
+         this.saveCommandsConfig();
+         this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
+-        this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
++        this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");*/ // Grinder - deactivate commands.yml
+         //this.pluginManager.useTimings(this.configuration.getBoolean("settings.plugin-profiling")); // Paper - we already moved this
+         this.overrideSpawnLimits();
+         console.autosavePeriod = this.configuration.getInt("ticks-per.autosave");
+@@ -471,7 +471,7 @@ public final class CraftServer implements Server {
+     }
+ 
+     public boolean getCommandBlockOverride(String command) {
+-        return this.overrideAllCommandBlockCommands || this.commandsConfiguration.getStringList("command-block-overrides").contains(command);
++        return this.overrideAllCommandBlockCommands /*|| this.commandsConfiguration.getStringList("command-block-overrides").contains(command) // Grinder - deactivate commands.yml*/;
+     }
+ 
+     private File getConfigFile() {
+@@ -1004,7 +1004,7 @@ public final class CraftServer implements Server {
+         org.spigotmc.WatchdogThread.hasStarted = false; // Paper - Disable watchdog early timeout on reload
+         this.reloadCount++;
+         this.configuration = YamlConfiguration.loadConfiguration(this.getConfigFile());
+-        this.commandsConfiguration = YamlConfiguration.loadConfiguration(this.getCommandsConfigFile());
++        // this.commandsConfiguration = YamlConfiguration.loadConfiguration(this.getCommandsConfigFile()); // Grinder - deactivate commands.yml
+ 
+         this.console.settings = new DedicatedServerSettings(this.console.options);
+         DedicatedServerProperties config = this.console.settings.getProperties();
+@@ -1064,8 +1064,8 @@ public final class CraftServer implements Server {
+         this.reloadData();
+         org.spigotmc.SpigotConfig.registerCommands(); // Spigot
+         io.papermc.paper.command.PaperCommands.registerCommands(this.console); // Paper
+-        this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
+-        this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
++        /*this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
++        this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");*/ // Grinder - deactivate commands.yml
+ 
+         int pollCount = 0;
+ 
+@@ -1766,7 +1766,7 @@ public final class CraftServer implements Server {
+ 
+     @Override
+     public Map<String, String[]> getCommandAliases() {
+-        ConfigurationSection section = this.commandsConfiguration.getConfigurationSection("aliases");
++        /*ConfigurationSection section = this.commandsConfiguration.getConfigurationSection("aliases");
+         Map<String, String[]> result = new LinkedHashMap<String, String[]>();
+ 
+         if (section != null) {
+@@ -1783,7 +1783,8 @@ public final class CraftServer implements Server {
+             }
+         }
+ 
+-        return result;
++        return result;*/ // Grinder - deactivate commands.yml
++        return new LinkedHashMap<>();
+     }
+ 
+     public void removeBukkitSpawnRadius() {
+@@ -3169,7 +3170,7 @@ public final class CraftServer implements Server {
+                 .map(key -> key.toLowerCase(java.util.Locale.ENGLISH))
+                 .collect(java.util.stream.Collectors.toSet());
+         getCommandMap().getKnownCommands().keySet().removeIf(removals::contains);
+-        File file = getCommandsConfigFile();
++        /*File file = getCommandsConfigFile();
+         try {
+             commandsConfiguration.load(file);
+         } catch (FileNotFoundException ex) {
+@@ -3177,7 +3178,7 @@ public final class CraftServer implements Server {
+         } catch (IOException | org.bukkit.configuration.InvalidConfigurationException ex) {
+             Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
+             return false;
+-        }
++        }*/ // Grinder - deactivate commands.yml
+         commandMap.registerServerAliases();
+         return true;
+     }
