@@ -11,11 +11,6 @@ repositories {
     maven(paperMavenPublicUrl) {
         content { onlyForConfigurations(configurations.paperclip.name) }
     }
-    maven {
-        name = "gommeRepo"
-        url = uri("https://repo.gomme.dev/repository/public/")
-        // credentials(PasswordCredentials::class)
-    }
 }
 
 dependencies {
