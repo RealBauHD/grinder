@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Fri, 31 May 2024 00:32:13 +0200
+Subject: [PATCH] only init keypair when online mode is true
+
+
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index a0182f72cfecd07c085f9244ba8eae94dcee2687..b06a483ec648da7aa3dd429ee2cee54a45c87d43 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -268,7 +268,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         }
+         // Paper end - Unix domain socket support
+ 
+-        this.initializeKeyPair();
++        if (this.usesAuthentication()) this.initializeKeyPair(); // Grinder - only init when online mode is true
+         DedicatedServer.LOGGER.info("Starting Minecraft server on {}:{}", this.getLocalIp().isEmpty() ? "*" : this.getLocalIp(), this.getPort());
+ 
+         try {
