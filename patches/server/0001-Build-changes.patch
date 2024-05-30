@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MiniDigger <admin@minidigger.me>
+Date: Sat, 12 Jun 2021 16:40:34 +0200
+Subject: [PATCH] Build changes
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 4998aff0b7cb084dcda15c6a18bbe45e99b6000a..25a6e321e4e337e3dc77628aaceefee51ec9c847 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -13,7 +13,7 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
+ val alsoShade: Configuration by configurations.creating
+ 
+ dependencies {
+-    implementation(project(":paper-api"))
++    implementation(project(":grinder-api")) // Grinder - Build changes
+     // Paper start
+     implementation("org.jline:jline-terminal-jansi:3.21.0")
+     implementation("net.minecrell:terminalconsoleappender:1.3.0")
+@@ -80,14 +80,14 @@ tasks.jar {
+         val gitBranch = git("rev-parse", "--abbrev-ref", "HEAD").getText().trim() // Paper
+         attributes(
+             "Main-Class" to "org.bukkit.craftbukkit.Main",
+-            "Implementation-Title" to "Paper",
++            "Implementation-Title" to "Grinder", // Grinder - Build changes
+             "Implementation-Version" to implementationVersion,
+             "Implementation-Vendor" to date, // Paper
+-            "Specification-Title" to "Paper",
++            "Specification-Title" to "Grinder", // Grinder - Build changes
+             "Specification-Version" to project.version,
+-            "Specification-Vendor" to "Paper Team",
+-            "Brand-Id" to "papermc:paper",
+-            "Brand-Name" to "Paper",
++            "Specification-Vendor" to "Grinder Team", // Grinder - Build changes
++            "Brand-Id" to "grinder:grinder", // Grinder - Build changes
++            "Brand-Name" to "Grinder", // Grinder - Build changes
+             "Build-Number" to (build ?: ""),
+             "Build-Time" to Instant.now().toString(),
+             "Git-Branch" to gitBranch, // Paper
+@@ -144,7 +144,7 @@ fun TaskContainer.registerRunTask(
+     name: String,
+     block: JavaExec.() -> Unit
+ ): TaskProvider<JavaExec> = register<JavaExec>(name) {
+-    group = "paper"
++    group = "paperweight"
+     mainClass.set("org.bukkit.craftbukkit.Main")
+     standardInput = System.`in`
+     workingDir = rootProject.layout.projectDirectory
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index 774556a62eb240da42e84db4502e2ed43495be17..353ca9fc8f699d03bd01945fd6cd6407f8127c5e 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -11,7 +11,7 @@ public final class Versioning {
+     public static String getBukkitVersion() {
+         String result = "Unknown-Version";
+ 
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/io.papermc.paper/paper-api/pom.properties");
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/grinder.grinder/grinder-api/pom.properties"); // Grinder6 - Build changes
+         Properties properties = new Properties();
+ 
+         if (stream != null) {
