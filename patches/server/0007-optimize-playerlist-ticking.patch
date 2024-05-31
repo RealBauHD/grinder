@@ -1,0 +1,56 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Fri, 31 May 2024 11:39:58 +0200
+Subject: [PATCH] optimize playerlist ticking
+
+
+diff --git a/src/main/java/net/minecraft/network/protocol/game/ClientboundPlayerInfoUpdatePacket.java b/src/main/java/net/minecraft/network/protocol/game/ClientboundPlayerInfoUpdatePacket.java
+index 9ccca41bf23efadba5329cc584bbcdcacbe09a92..bc67d60e0567e9c5a0a42569692801afbb1a1212 100644
+--- a/src/main/java/net/minecraft/network/protocol/game/ClientboundPlayerInfoUpdatePacket.java
++++ b/src/main/java/net/minecraft/network/protocol/game/ClientboundPlayerInfoUpdatePacket.java
+@@ -190,7 +190,7 @@ public class ClientboundPlayerInfoUpdatePacket implements Packet<ClientGamePacke
+         @Nullable Component displayName,
+         @Nullable RemoteChatSession.Data chatSession
+     ) {
+-        Entry(ServerPlayer player) {
++        public Entry(ServerPlayer player) { // Grinder - public
+             // Paper start - Add Listing API for Player
+             this(player, true);
+         }
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index a2142930b4d4b05987c90496fb9d733d99040aa0..acb5c93b75cfdac118934f00f4465fdd7530e128 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -13,6 +13,7 @@ import java.net.SocketAddress;
+ import java.nio.file.Path;
+ import java.text.SimpleDateFormat;
+ import java.time.Instant;
++import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.EnumSet;
+ import java.util.Iterator;
+@@ -1020,12 +1021,22 @@ public abstract class PlayerList {
+             for (int i = 0; i < this.players.size(); ++i) {
+                 final ServerPlayer target = (ServerPlayer) this.players.get(i);
+ 
+-                target.connection.send(new ClientboundPlayerInfoUpdatePacket(EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.UPDATE_LATENCY), this.players.stream().filter(new Predicate<ServerPlayer>() {
++                // Grinder - Start
++                final List<ClientboundPlayerInfoUpdatePacket.Entry> entries = new ArrayList<>();
++                for (int y = 0; y < this.players.size(); y++) {
++                    final ServerPlayer player = this.players.get(y);
++                    if (target.getBukkitEntity().canSee(player.getBukkitEntity())) {
++                        entries.add(new ClientboundPlayerInfoUpdatePacket.Entry(player));
++                    }
++                }
++                target.connection.send(new ClientboundPlayerInfoUpdatePacket(EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.UPDATE_LATENCY), entries));
++                // Grinder - Stop
++                /*target.connection.send(new ClientboundPlayerInfoUpdatePacket(EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.UPDATE_LATENCY), this.players.stream().filter(new Predicate<ServerPlayer>() {
+                     @Override
+                     public boolean test(ServerPlayer input) {
+                         return target.getBukkitEntity().canSee(input.getBukkitEntity());
+                     }
+-                }).collect(Collectors.toList())));
++                }).collect(Collectors.toList())));*/ // Grinder - optimizing
+             }
+             // CraftBukkit end
+             this.sendAllPlayerInfoIn = 0;

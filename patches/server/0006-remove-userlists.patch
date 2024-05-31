@@ -1,0 +1,164 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Fri, 31 May 2024 11:22:45 +0200
+Subject: [PATCH] remove userlists
+
+
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index 0126906e2afc8dd525f27a0c5e82116075c9d352..dd9fae707de24262d9219c7663b3de936c535b98 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -237,13 +237,13 @@ public class Commands {
+         }
+ 
+         if (environment.includeDedicated) {
+-            BanIpCommands.register(this.dispatcher);
++            /*BanIpCommands.register(this.dispatcher);
+             BanListCommands.register(this.dispatcher);
+             BanPlayerCommands.register(this.dispatcher);
+             DeOpCommands.register(this.dispatcher);
+             OpCommand.register(this.dispatcher);
+             PardonCommand.register(this.dispatcher);
+-            PardonIpCommand.register(this.dispatcher);
++            PardonIpCommand.register(this.dispatcher)*/ // Grinder
+             PerfCommand.register(this.dispatcher);
+             SaveAllCommand.register(this.dispatcher);
+             SaveOffCommand.register(this.dispatcher);
+@@ -251,7 +251,7 @@ public class Commands {
+             SetPlayerIdleTimeoutCommand.register(this.dispatcher);
+             StopCommand.register(this.dispatcher);
+             TransferCommand.register(this.dispatcher);
+-            WhitelistCommand.register(this.dispatcher);
++            //WhitelistCommand.register(this.dispatcher); // Grinder
+         }
+ 
+         if (environment.includeIntegrated) {
+diff --git a/src/main/java/net/minecraft/server/players/StoredUserList.java b/src/main/java/net/minecraft/server/players/StoredUserList.java
+index c038da20b76c0b7b1c18471b20be01e849d29f3a..53cab295a705e72fc2801fea49389ee36ab5d846 100644
+--- a/src/main/java/net/minecraft/server/players/StoredUserList.java
++++ b/src/main/java/net/minecraft/server/players/StoredUserList.java
+@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
+ import java.io.File;
+ import java.io.IOException;
+ import java.nio.charset.StandardCharsets;
++import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.Iterator;
+ import java.util.List;
+@@ -30,7 +31,7 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+     private static final Logger LOGGER = LogUtils.getLogger();
+     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
+     private final File file;
+-    private final Map<String, V> map = Maps.newConcurrentMap(); // Paper - Use ConcurrentHashMap in JsonList
++    //private final Map<String, V> map = Maps.newConcurrentMap(); // Paper - Use ConcurrentHashMap in JsonList // Grinder
+ 
+     public StoredUserList(File file) {
+         this.file = file;
+@@ -41,33 +42,34 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+     }
+ 
+     public void add(V entry) {
+-        this.map.put(this.getKeyForUser(entry.getUser()), entry);
++        /*this.map.put(this.getKeyForUser(entry.getUser()), entry);
+ 
+         try {
+             this.save();
+         } catch (IOException ioexception) {
+             StoredUserList.LOGGER.warn("Could not save the list after adding a user.", ioexception);
+-        }
++        }*/ // Grinder
+ 
+     }
+ 
+     @Nullable
+     public V get(K key) {
+-        // Paper start - Use ConcurrentHashMap in JsonList
++        /*// Paper start - Use ConcurrentHashMap in JsonList
+         return (V) this.map.computeIfPresent(this.getKeyForUser(key), (k, v) -> {
+             return v.hasExpired() ? null : v;
+         });
+-        // Paper end - Use ConcurrentHashMap in JsonList
++        // Paper end - Use ConcurrentHashMap in JsonList*/ // Grinder
++        return null;
+     }
+ 
+     public void remove(K key) {
+-        this.map.remove(this.getKeyForUser(key));
++        /*this.map.remove(this.getKeyForUser(key));
+ 
+         try {
+             this.save();
+         } catch (IOException ioexception) {
+             StoredUserList.LOGGER.warn("Could not save the list after removing a user.", ioexception);
+-        }
++        }*/ // Grinder
+ 
+     }
+ 
+@@ -76,11 +78,13 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+     }
+ 
+     public String[] getUserList() {
+-        return (String[]) this.map.keySet().toArray(new String[0]);
++        //return (String[]) this.map.keySet().toArray(new String[0]);
++        return new String[0]; // Grinder
+     }
+ 
+     public boolean isEmpty() {
+-        return this.map.isEmpty(); // Paper - Use ConcurrentHashMap in JsonList
++        //return this.map.isEmpty(); // Paper - Use ConcurrentHashMap in JsonList
++        return true; // Grinder
+     }
+ 
+     protected String getKeyForUser(K profile) {
+@@ -89,21 +93,23 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+ 
+     protected boolean contains(K k0) {
+         this.removeExpired(); // CraftBukkit - SPIGOT-7589: Consistently remove expired entries to mirror .get(...)
+-        return this.map.containsKey(this.getKeyForUser(k0));
++        //return this.map.containsKey(this.getKeyForUser(k0));
++        return false;
+     }
+ 
+     private void removeExpired() {
+-        this.map.values().removeIf(StoredUserEntry::hasExpired); // Paper - Use ConcurrentHashMap in JsonList
++        //this.map.values().removeIf(StoredUserEntry::hasExpired); // Paper - Use ConcurrentHashMap in JsonList // Grinder
+     }
+ 
+     protected abstract StoredUserEntry<K> createEntry(JsonObject json);
+ 
+     public Collection<V> getEntries() {
+-        return this.map.values();
++        //return this.map.values();
++        return List.of(); // Grinder
+     }
+ 
+     public void save() throws IOException {
+-        this.removeExpired(); // Paper - remove expired values before saving
++        /*this.removeExpired(); // Paper - remove expired values before saving
+         JsonArray jsonarray = new JsonArray();
+         Stream<JsonObject> stream = this.map.values().stream().map((jsonlistentry) -> { // CraftBukkit - decompile error
+             JsonObject jsonobject = new JsonObject();
+@@ -132,12 +138,12 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+ 
+         if (bufferedwriter != null) {
+             bufferedwriter.close();
+-        }
++        }*/ // Grinder
+ 
+     }
+ 
+     public void load() throws IOException {
+-        if (this.file.exists()) {
++        /*if (this.file.exists()) {
+             BufferedReader bufferedreader = Files.newReader(this.file, StandardCharsets.UTF_8);
+ 
+             label54:
+@@ -192,6 +198,6 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+                 bufferedreader.close();
+             }
+ 
+-        }
++        }*/ // Grinder
+     }
+ }
