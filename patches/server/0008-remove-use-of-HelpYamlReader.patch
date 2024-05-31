@@ -1,0 +1,88 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Fri, 31 May 2024 15:02:39 +0200
+Subject: [PATCH] remove use of HelpYamlReader
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/help/SimpleHelpMap.java b/src/main/java/org/bukkit/craftbukkit/help/SimpleHelpMap.java
+index 97141968f36b3ef88bd6e520c2ccc37c97e4adb1..55ef9d081ff87c6e94f2a3b493fc3261110371c3 100644
+--- a/src/main/java/org/bukkit/craftbukkit/help/SimpleHelpMap.java
++++ b/src/main/java/org/bukkit/craftbukkit/help/SimpleHelpMap.java
+@@ -36,19 +36,19 @@ public class SimpleHelpMap implements HelpMap {
+     private final Map<String, HelpTopic> helpTopics;
+     private final Map<Class, HelpTopicFactory<Command>> topicFactoryMap;
+     private final CraftServer server;
+-    private HelpYamlReader yaml;
++    // private HelpYamlReader yaml; // Grinder
+ 
+     @SuppressWarnings("unchecked")
+     public SimpleHelpMap(CraftServer server) {
+         this.helpTopics = new TreeMap<String, HelpTopic>(HelpTopicComparator.topicNameComparatorInstance()); // Using a TreeMap for its explicit sorting on key
+         this.topicFactoryMap = new HashMap<Class, HelpTopicFactory<Command>>();
+         this.server = server;
+-        this.yaml = new HelpYamlReader(server);
++        //this.yaml = new HelpYamlReader(server); // Grinder
+ 
+         Predicate indexFilter = Predicates.not(Predicates.instanceOf(CommandAliasHelpTopic.class));
+-        if (!this.yaml.commandTopicsInMasterIndex()) {
++        /*if (!this.yaml.commandTopicsInMasterIndex()) {
+             indexFilter = Predicates.and(indexFilter, Predicates.not(new IsCommandTopicPredicate()));
+-        }
++        }*/ // Grinder
+ 
+         this.defaultTopic = new IndexHelpTopic("Index", null, null, Collections2.filter(this.helpTopics.values(), indexFilter), "Use /help [n] to get page n of help.");
+ 
+@@ -88,14 +88,15 @@ public class SimpleHelpMap implements HelpMap {
+ 
+     @Override
+     public List<String> getIgnoredPlugins() {
+-        return this.yaml.getIgnoredPlugins();
++        // return this.yaml.getIgnoredPlugins();
++        return List.of(); // Grinder
+     }
+ 
+     /**
+      * Reads the general topics from help.yml and adds them to the help index.
+      */
+     public synchronized void initializeGeneralTopics() {
+-        this.yaml = new HelpYamlReader(this.server);
++        /*this.yaml = new HelpYamlReader(this.server);
+ 
+         // Initialize general help topics from the help.yml file
+         for (HelpTopic topic : this.yaml.getGeneralTopics()) {
+@@ -109,7 +110,7 @@ public class SimpleHelpMap implements HelpMap {
+             } else {
+                 this.addTopic(topic);
+             }
+-        }
++        }*/ // Grinder
+     }
+ 
+     /**
+@@ -117,7 +118,8 @@ public class SimpleHelpMap implements HelpMap {
+      */
+     public synchronized void initializeCommands() {
+         // ** Load topics from highest to lowest priority order **
+-        Set<String> ignoredPlugins = new HashSet<String>(this.yaml.getIgnoredPlugins());
++        //Set<String> ignoredPlugins = new HashSet<String>(this.yaml.getIgnoredPlugins());
++        final Set<String> ignoredPlugins = Set.of(); // Grinder
+ 
+         // Don't load any automatic help topics if All is ignored
+         if (ignoredPlugins.contains("All")) {
+@@ -174,14 +176,14 @@ public class SimpleHelpMap implements HelpMap {
+         }
+ 
+         // Amend help topics from the help.yml file
+-        for (HelpTopicAmendment amendment : this.yaml.getTopicAmendments()) {
++        /*for (HelpTopicAmendment amendment : this.yaml.getTopicAmendments()) {
+             if (this.helpTopics.containsKey(amendment.getTopicName())) {
+                 this.helpTopics.get(amendment.getTopicName()).amendTopic(amendment.getShortText(), amendment.getFullText());
+                 if (amendment.getPermission() != null) {
+                     this.helpTopics.get(amendment.getTopicName()).amendCanSee(amendment.getPermission());
+                 }
+             }
+-        }
++        }*/ // Grinder
+     }
+ 
+     private void fillPluginIndexes(Map<String, Set<HelpTopic>> pluginIndexes, Collection<? extends Command> commands) {

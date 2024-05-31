@@ -5,6 +5,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "grinder-1.20.6"
+rootProject.name = "grinder"
 
 include("grinder-api", "grinder-server")

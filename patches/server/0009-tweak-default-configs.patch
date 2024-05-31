@@ -1,0 +1,130 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Fri, 31 May 2024 15:11:24 +0200
+Subject: [PATCH] tweak default configs
+
+
+diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
+index 2874bc3001c4e7d9191e47ba512c5a68369c21f1..cd7167c70d7f0f7c6ccc3d21d2e43d599950f4d2 100644
+--- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
+@@ -96,7 +96,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+ 
+     @Deprecated(forRemoval = true)
+     public class Timings extends ConfigurationPart {
+-        public boolean enabled = true;
++        public boolean enabled = false; // Grinder
+         public boolean verbose = true;
+         public String url = "https://timings.aikar.co/";
+         public boolean serverNamePrivacy = false;
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
+index 9d10cdacb3aed2c00dc60aeb6f2cbeb48905e21f..871a8c0a1c265bf5825cea272ab20365390f2ae9 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
+@@ -126,7 +126,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+         this.rconPort = this.get("rcon.port", 25575);
+         this.rconPassword = this.get("rcon.password", "");
+         this.hardcore = this.get("hardcore", false);
+-        this.allowNether = this.get("allow-nether", true);
++        this.allowNether = this.get("allow-nether", false);
+         this.spawnMonsters = this.get("spawn-monsters", true);
+         this.useNativeTransport = this.get("use-native-transport", true);
+         this.enableCommandBlock = this.get("enable-command-block", false);
+diff --git a/src/main/resources/configurations/bukkit.yml b/src/main/resources/configurations/bukkit.yml
+index eef7c125b2689f29cae5464659eacdf33f5695b2..ce35af2aa19c05f18622f199fd9e863ea5f489d0 100644
+--- a/src/main/resources/configurations/bukkit.yml
++++ b/src/main/resources/configurations/bukkit.yml
+@@ -12,9 +12,8 @@
+ 
+ 
+ settings:
+-    allow-end: true
++    allow-end: false
+     warn-on-overload: true
+-    permissions-file: permissions.yml
+     update-folder: update
+     plugin-profiling: false
+     connection-throttle: 4000
+diff --git a/src/main/resources/configurations/commands.yml b/src/main/resources/configurations/commands.yml
+deleted file mode 100644
+index 18f54571200e2eca09a39b88f170fe7b99d8618f..0000000000000000000000000000000000000000
+--- a/src/main/resources/configurations/commands.yml
++++ /dev/null
+@@ -1,16 +0,0 @@
+-# This is the commands configuration file for Bukkit.
+-# For documentation on how to make use of this file, check out the Bukkit Wiki at
+-# https://www.spigotmc.org/go/commands-yml
+-# 
+-# If you need help on this file, feel free to join us on Discord or leave a message
+-# on the forums asking for advice.
+-# 
+-# Discord: https://www.spigotmc.org/go/discord
+-# Forums: https://www.spigotmc.org/
+-# Bug tracker: https://www.spigotmc.org/go/bugs
+-
+-command-block-overrides: []
+-ignore-vanilla-permissions: false
+-aliases:
+-    icanhasbukkit:
+-      - "version $1-"
+diff --git a/src/main/resources/configurations/help.yml b/src/main/resources/configurations/help.yml
+deleted file mode 100644
+index 15c3d07070624ad453032a02d8d4d3f26bd6cb8d..0000000000000000000000000000000000000000
+--- a/src/main/resources/configurations/help.yml
++++ /dev/null
+@@ -1,55 +0,0 @@
+-# This is the help configuration file for Bukkit.
+-# 
+-# By default you do not need to modify this file. Help topics for all plugin commands are automatically provided by
+-# or extracted from your installed plugins. You only need to modify this file if you wish to add new help pages to
+-# your server or override the help pages of existing plugin commands.
+-# 
+-# This file is divided up into the following parts:
+-# -- general-topics: lists admin defined help topics
+-# -- index-topics:   lists admin defined index topics
+-# -- amend-topics:   lists topic amendments to apply to existing help topics
+-# -- ignore-plugins: lists any plugins that should be excluded from help
+-# 
+-# Examples are given below. When amending command topic, the string <text> will be replaced with the existing value
+-# in the help topic. Color codes can be used in topic text. The color code character is & followed by 0-F.
+-# ================================================================
+-# 
+-# Set this to true to list the individual command help topics in the master help.
+-# command-topics-in-master-index: true
+-# 
+-# Each general topic will show up as a separate topic in the help index along with all the plugin command topics.
+-# general-topics:
+-#     Rules:
+-#         shortText: Rules of the server
+-#         fullText: |
+-#             &61. Be kind to your fellow players.
+-#             &B2. No griefing.
+-#             &D3. No swearing.
+-#         permission: topics.rules
+-# 
+-# Each index topic will show up as a separate sub-index in the help index along with all the plugin command topics.
+-# To override the default help index (displayed when the user executes /help), name the index topic "Default".
+-# index-topics:
+-#     Ban Commands:
+-#         shortText: Player banning commands
+-#         preamble: Moderator - do not abuse these commands
+-#         permission: op
+-#         commands:
+-#             - /ban
+-#             - /ban-ip
+-#             - /banlist
+-# 
+-# Topic amendments are used to change the content of automatically generated plugin command topics.
+-# amended-topics:
+-#     /stop:
+-#         shortText: Stops the server cold....in its tracks!
+-#         fullText: <text> - This kills the server.
+-#         permission: you.dont.have
+-# 
+-# Any plugin in the ignored plugins list will be excluded from help. The name must match the name displayed by
+-# the /plugins command. Ignore "Bukkit" to remove the standard bukkit commands from the index. Ignore "All"
+-# to completely disable automatic help topic generation.
+-# ignore-plugins:
+-#    - PluginNameOne
+-#    - PluginNameTwo
+-#    - PluginNameThree
