@@ -1,0 +1,60 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Sat, 1 Jun 2024 15:41:48 +0200
+Subject: [PATCH] configuration
+
+
+diff --git a/src/main/java/grinder/GrinderConfiguration.java b/src/main/java/grinder/GrinderConfiguration.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..e70456fee4f6b4eace453555c6d9b35bc07c4bc4
+--- /dev/null
++++ b/src/main/java/grinder/GrinderConfiguration.java
+@@ -0,0 +1,26 @@
++package grinder;
++
++import io.papermc.paper.configuration.ConfigurationLoaders;
++import java.nio.file.Path;
++import org.spongepowered.configurate.CommentedConfigurationNode;
++import org.spongepowered.configurate.ConfigurateException;
++import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
++
++public final class GrinderConfiguration {
++    public static final boolean SERVER_SIDE_FROZEN;
++    public static final boolean BLOCK_ENTITY_TICKING;
++
++    static {
++        try {
++            final YamlConfigurationLoader loader = ConfigurationLoaders.naturallySorted()
++                .path(Path.of("config", "grinder.yml"))
++                .build();
++            final CommentedConfigurationNode node = loader.load();
++            SERVER_SIDE_FROZEN = node.node("server-side-frozen").getBoolean(false);
++            BLOCK_ENTITY_TICKING = node.node("block-entity-ticking").getBoolean(true);
++            loader.save(node);
++        } catch (ConfigurateException e) {
++            throw new RuntimeException(e);
++        }
++    }
++}
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..5f106ee29d8fabd870d7822816c20337eb8b2196 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -813,7 +813,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+ 
+         this.handlingTick = true;
+         TickRateManager tickratemanager = this.tickRateManager();
+-        boolean flag = tickratemanager.runsNormally();
++        boolean flag = !grinder.GrinderConfiguration.SERVER_SIDE_FROZEN && tickratemanager.runsNormally(); // Grinder
+ 
+         if (flag) {
+             gameprofilerfiller.push("world border");
+@@ -928,7 +928,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+             this.timings.entityTick.stopTiming(); // Spigot
+             this.timings.tickEntities.stopTiming(); // Spigot
+             gameprofilerfiller.pop();
+-            this.tickBlockEntities();
++            if (grinder.GrinderConfiguration.BLOCK_ENTITY_TICKING) this.tickBlockEntities();
+         }
+ 
+         gameprofilerfiller.push("entityManagement");
