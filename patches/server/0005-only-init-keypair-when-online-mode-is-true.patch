@@ -5,10 +5,10 @@ Subject: [PATCH] only init keypair when online mode is true
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index a0182f72cfecd07c085f9244ba8eae94dcee2687..b06a483ec648da7aa3dd429ee2cee54a45c87d43 100644
+index 78c2fcceced6f4f156ec9dc8b8046a9ac0c7ab4a..4ddc97f132245951b8d5f2d6dba98e3dac1baf7a 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -268,7 +268,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -272,7 +272,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          }
          // Paper end - Unix domain socket support
  

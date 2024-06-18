@@ -1,23 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Aaron <bauhd@gmx.net>
-Date: Sat, 8 Jun 2024 01:40:03 +0200
+Date: Tue, 18 Jun 2024 23:11:53 +0200
 Subject: [PATCH] remove sleep status
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 5f106ee29d8fabd870d7822816c20337eb8b2196..b5794c0bba11eab756d1495aa0567396f3a07da2 100644
+index 52d10c3362564e52cac2a8aa1edc51b743412688..1b67882f5efeeff5f33642c99e34341d2b34036a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -201,7 +201,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
-     //public final PersistentEntitySectionManager<Entity> entityManager; // Paper - rewrite chunk system
-     private final GameEventDispatcher gameEventDispatcher;
-     public boolean noSave;
--    private final SleepStatus sleepStatus;
-+    //private final SleepStatus sleepStatus; // Grinder
-     private int emptyTime;
-     private final PortalForcer portalForcer;
-     private final LevelTicks<Block> blockTicks;
-@@ -766,7 +766,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -570,7 +570,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              this.dragonFight = null;
          }
  
@@ -26,7 +17,7 @@ index 5f106ee29d8fabd870d7822816c20337eb8b2196..b5794c0bba11eab756d1495aa0567396
          this.gameEventDispatcher = new GameEventDispatcher(this);
          this.randomSequences = (RandomSequences) Objects.requireNonNullElseGet(randomsequences, () -> {
              return (RandomSequences) this.getDataStorage().computeIfAbsent(RandomSequences.factory(l), "random_sequences");
-@@ -822,7 +822,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -636,7 +636,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              this.advanceWeatherCycle();
          }
  
@@ -35,7 +26,7 @@ index 5f106ee29d8fabd870d7822816c20337eb8b2196..b5794c0bba11eab756d1495aa0567396
          long j;
  
          if (this.sleepStatus.areEnoughSleeping(i) && this.sleepStatus.areEnoughDeepSleeping(i, this.players)) {
-@@ -843,7 +843,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -657,7 +657,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE) && this.isRaining()) {
                  this.resetWeatherCycle();
              }
@@ -44,7 +35,7 @@ index 5f106ee29d8fabd870d7822816c20337eb8b2196..b5794c0bba11eab756d1495aa0567396
  
          this.updateSkyBrightness();
          if (flag) {
-@@ -853,7 +853,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -667,7 +667,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          gameprofilerfiller.popPush("tickPending");
          this.timings.scheduledBlocks.startTiming(); // Paper
          if (!this.isDebug() && flag) {
@@ -53,7 +44,7 @@ index 5f106ee29d8fabd870d7822816c20337eb8b2196..b5794c0bba11eab756d1495aa0567396
              gameprofilerfiller.push("blockTicks");
              this.blockTicks.tick(j, paperConfig().environment.maxBlockTicks, this::tickBlock); // Paper - configurable max block ticks
              gameprofilerfiller.popPush("fluidTicks");
-@@ -976,12 +976,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -790,12 +790,13 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          return !this.server.isSpawningAnimals() && (entity instanceof Animal || entity instanceof WaterAnimal) ? true : !this.server.areNpcsEnabled() && entity instanceof Npc;
      }
  
@@ -63,12 +54,12 @@ index 5f106ee29d8fabd870d7822816c20337eb8b2196..b5794c0bba11eab756d1495aa0567396
          (this.players.stream().filter(LivingEntity::isSleeping).collect(Collectors.toList())).forEach((entityplayer) -> { // CraftBukkit - decompile error
              entityplayer.stopSleepInBed(false, false);
          });
--    }
+     }
 +    }*/ // Grinder
-     // Paper start - optimise random block ticking
-     private final BlockPos.MutableBlockPos chunkTickMutablePosition = new BlockPos.MutableBlockPos();
-     private final io.papermc.paper.util.math.ThreadUnsafeRandom randomTickRandom = new io.papermc.paper.util.math.ThreadUnsafeRandom(this.random.nextLong());
-@@ -1177,7 +1177,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+ 
+     public void tickChunk(LevelChunk chunk, int randomTickSpeed) {
+         ChunkPos chunkcoordintpair = chunk.getPos();
+@@ -972,7 +973,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          return this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE) <= 100;
      }
  
@@ -77,7 +68,7 @@ index 5f106ee29d8fabd870d7822816c20337eb8b2196..b5794c0bba11eab756d1495aa0567396
          if (this.canSleepThroughNights()) {
              if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
                  int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
-@@ -1199,12 +1199,12 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -994,12 +995,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
  
              }
          }

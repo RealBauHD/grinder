@@ -5,7 +5,7 @@ Subject: [PATCH] tweak default configs
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 2874bc3001c4e7d9191e47ba512c5a68369c21f1..cd7167c70d7f0f7c6ccc3d21d2e43d599950f4d2 100644
+index b8499c1cea97a1a88a53053bc7da132f2fd3928d..40bbc0d339d9da8d210fe9efd3752614ec5fcd25 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 @@ -96,7 +96,7 @@ public class GlobalConfiguration extends ConfigurationPart {
@@ -18,10 +18,10 @@ index 2874bc3001c4e7d9191e47ba512c5a68369c21f1..cd7167c70d7f0f7c6ccc3d21d2e43d59
          public String url = "https://timings.aikar.co/";
          public boolean serverNamePrivacy = false;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
-index 9d10cdacb3aed2c00dc60aeb6f2cbeb48905e21f..871a8c0a1c265bf5825cea272ab20365390f2ae9 100644
+index d6431376184e5650b370cbab204e28bc31f4dac6..ec1320941e8a4004f33182c0a2af1f13a0abe8f8 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
-@@ -126,7 +126,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+@@ -127,7 +127,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
          this.rconPort = this.get("rcon.port", 25575);
          this.rconPassword = this.get("rcon.password", "");
          this.hardcore = this.get("hardcore", false);

@@ -5,10 +5,10 @@ Subject: [PATCH] remove userlists
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 0126906e2afc8dd525f27a0c5e82116075c9d352..dd9fae707de24262d9219c7663b3de936c535b98 100644
+index 3e454515360c22a26c9329e4032d525579110d7e..885cebe23bc2158b24126d754669c60c98bb9867 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -237,13 +237,13 @@ public class Commands {
+@@ -235,13 +235,13 @@ public class Commands {
          }
  
          if (environment.includeDedicated) {
@@ -24,7 +24,7 @@ index 0126906e2afc8dd525f27a0c5e82116075c9d352..dd9fae707de24262d9219c7663b3de93
              PerfCommand.register(this.dispatcher);
              SaveAllCommand.register(this.dispatcher);
              SaveOffCommand.register(this.dispatcher);
-@@ -251,7 +251,7 @@ public class Commands {
+@@ -249,7 +249,7 @@ public class Commands {
              SetPlayerIdleTimeoutCommand.register(this.dispatcher);
              StopCommand.register(this.dispatcher);
              TransferCommand.register(this.dispatcher);

@@ -18,10 +18,10 @@ index 9ccca41bf23efadba5329cc584bbcdcacbe09a92..bc67d60e0567e9c5a0a42569692801af
              this(player, true);
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a2142930b4d4b05987c90496fb9d733d99040aa0..ff62af6c22c6fe1640f458293150691e46ff8291 100644
+index ef177f21d654d69c128f3f39ea58f2d8ee598628..f30ca51e6ab33c04d44fd3db47ed2feaf1eac632 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1014,18 +1014,29 @@ public abstract class PlayerList {
+@@ -966,18 +966,29 @@ public abstract class PlayerList {
          this.sendPlayerPermissionLevel(player, i, recalculatePermissions); // Paper - avoid recalculating permissions if possible
      }
  

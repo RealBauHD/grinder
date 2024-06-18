@@ -5,7 +5,7 @@ Subject: [PATCH] deactivate commands.yml
 
 
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index 244a19ecd0234fa1d7a6ecfea20751595688605d..0bc825b16f768b7700df9cbf219c7c1bdc97becd 100644
+index c33f85b570f159ab465b5a10a8044a81f2797f43..9b2637e912bc4f038f68b4be520c73eef889f598 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
 @@ -143,11 +143,11 @@ public class Main {
@@ -23,10 +23,10 @@ index 244a19ecd0234fa1d7a6ecfea20751595688605d..0bc825b16f768b7700df9cbf219c7c1b
                  Main.LOGGER.info("Initialized '{}' and '{}'", path1.toAbsolutePath(), path2.toAbsolutePath());
                  return;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3ad64b7fe 100644
+index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..1bce7cf6020760dfac6fcd119bc3155bc3a99caa 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -421,7 +421,7 @@ public final class CraftServer implements Server {
+@@ -426,7 +426,7 @@ public final class CraftServer implements Server {
              this.configuration.set("aliases", "now-in-commands.yml");
          }
          this.saveConfig();
@@ -35,7 +35,7 @@ index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3
              legacyAlias = null;
          }
          this.commandsConfiguration = YamlConfiguration.loadConfiguration(this.getCommandsConfigFile());
-@@ -453,7 +453,7 @@ public final class CraftServer implements Server {
+@@ -458,7 +458,7 @@ public final class CraftServer implements Server {
  
          this.saveCommandsConfig();
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
@@ -44,7 +44,7 @@ index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3
          //this.pluginManager.useTimings(this.configuration.getBoolean("settings.plugin-profiling")); // Paper - we already moved this
          this.overrideSpawnLimits();
          console.autosavePeriod = this.configuration.getInt("ticks-per.autosave");
-@@ -471,7 +471,7 @@ public final class CraftServer implements Server {
+@@ -477,7 +477,7 @@ public final class CraftServer implements Server {
      }
  
      public boolean getCommandBlockOverride(String command) {
@@ -53,7 +53,7 @@ index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3
      }
  
      private File getConfigFile() {
-@@ -1004,7 +1004,7 @@ public final class CraftServer implements Server {
+@@ -1029,7 +1029,7 @@ public final class CraftServer implements Server {
          org.spigotmc.WatchdogThread.hasStarted = false; // Paper - Disable watchdog early timeout on reload
          this.reloadCount++;
          this.configuration = YamlConfiguration.loadConfiguration(this.getConfigFile());
@@ -62,7 +62,7 @@ index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3
  
          this.console.settings = new DedicatedServerSettings(this.console.options);
          DedicatedServerProperties config = this.console.settings.getProperties();
-@@ -1064,8 +1064,8 @@ public final class CraftServer implements Server {
+@@ -1090,8 +1090,8 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          io.papermc.paper.command.PaperCommands.registerCommands(this.console); // Paper
@@ -73,7 +73,7 @@ index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3
  
          int pollCount = 0;
  
-@@ -1766,7 +1766,7 @@ public final class CraftServer implements Server {
+@@ -1793,7 +1793,7 @@ public final class CraftServer implements Server {
  
      @Override
      public Map<String, String[]> getCommandAliases() {
@@ -82,7 +82,7 @@ index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3
          Map<String, String[]> result = new LinkedHashMap<String, String[]>();
  
          if (section != null) {
-@@ -1783,7 +1783,8 @@ public final class CraftServer implements Server {
+@@ -1810,7 +1810,8 @@ public final class CraftServer implements Server {
              }
          }
  
@@ -92,7 +92,7 @@ index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3
      }
  
      public void removeBukkitSpawnRadius() {
-@@ -3169,7 +3170,7 @@ public final class CraftServer implements Server {
+@@ -3117,7 +3118,7 @@ public final class CraftServer implements Server {
                  .map(key -> key.toLowerCase(java.util.Locale.ENGLISH))
                  .collect(java.util.stream.Collectors.toSet());
          getCommandMap().getKnownCommands().keySet().removeIf(removals::contains);
@@ -101,7 +101,7 @@ index 923d4d57084b55931225e5bc4a20becc0ad55860..96360102e35957562e9a0334d9c02fb3
          try {
              commandsConfiguration.load(file);
          } catch (FileNotFoundException ex) {
-@@ -3177,7 +3178,7 @@ public final class CraftServer implements Server {
+@@ -3125,7 +3126,7 @@ public final class CraftServer implements Server {
          } catch (IOException | org.bukkit.configuration.InvalidConfigurationException ex) {
              Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
              return false;

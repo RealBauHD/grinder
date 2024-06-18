@@ -5,10 +5,10 @@ Subject: [PATCH] deactivate-permissions-yml
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 94a31c8f903eb61eb6d203e8e6fe8fb0beca28b1..923d4d57084b55931225e5bc4a20becc0ad55860 100644
+index caf6ff33b42472d30f28629470e12889f50490cc..3c07954a0a88ab61974b2e45c15ea56e6e86c748 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1160,7 +1160,7 @@ public final class CraftServer implements Server {
+@@ -1186,7 +1186,7 @@ public final class CraftServer implements Server {
  
      @SuppressWarnings({ "unchecked", "finally" })
      private void loadCustomPermissions() {
@@ -17,7 +17,7 @@ index 94a31c8f903eb61eb6d203e8e6fe8fb0beca28b1..923d4d57084b55931225e5bc4a20becc
          FileInputStream stream;
  
          try {
-@@ -1202,7 +1202,7 @@ public final class CraftServer implements Server {
+@@ -1228,7 +1228,7 @@ public final class CraftServer implements Server {
              } catch (IllegalArgumentException ex) {
                  this.getLogger().log(Level.SEVERE, "Permission in " + file + " was already defined", ex);
              }
