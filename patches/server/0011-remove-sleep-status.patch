@@ -5,9 +5,18 @@ Subject: [PATCH] remove sleep status
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 52d10c3362564e52cac2a8aa1edc51b743412688..1b67882f5efeeff5f33642c99e34341d2b34036a 100644
+index 52d10c3362564e52cac2a8aa1edc51b743412688..9c684a450383d46dbe2908819ea56606d41a9f7f 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -202,7 +202,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+     // Paper - rewrite chunk system
+     private final GameEventDispatcher gameEventDispatcher;
+     public boolean noSave;
+-    private final SleepStatus sleepStatus;
++    // private final SleepStatus sleepStatus; // Grinder
+     private int emptyTime;
+     private final PortalForcer portalForcer;
+     private final LevelTicks<Block> blockTicks;
 @@ -570,7 +570,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              this.dragonFight = null;
          }
