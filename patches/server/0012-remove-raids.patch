@@ -1,0 +1,123 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Thu, 20 Jun 2024 13:04:11 +0200
+Subject: [PATCH] remove raids
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 7b246c53becea17af5583eb40797359c0b8e2619..5f41baf106d37bb971bfea1ed2f47d72cca16d34 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -210,7 +210,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+     private final PathTypeCache pathTypesByPosCache;
+     final Set<Mob> navigatingMobs;
+     volatile boolean isUpdatingNavigations;
+-    protected final Raids raids;
++    //protected final Raids raids; // Grinder - remove raids
+     private final ObjectLinkedOpenHashSet<BlockEventData> blockEvents;
+     private final List<BlockEventData> blockEventsToReschedule;
+     private boolean handlingTick;
+@@ -555,7 +555,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+         this.updateSkyBrightness();
+         this.prepareWeather();
+         this.getWorldBorder().setAbsoluteMaxSize(minecraftserver.getAbsoluteMaxWorldSize());
+-        this.raids = (Raids) this.getDataStorage().computeIfAbsent(Raids.factory(this), Raids.getFileId(this.dimensionTypeRegistration()));
++        //this.raids = (Raids) this.getDataStorage().computeIfAbsent(Raids.factory(this), Raids.getFileId(this.dimensionTypeRegistration())); // Grinder - remove raids
+         if (!minecraftserver.isSingleplayer()) {
+             iworlddataserver.setGameType(minecraftserver.getDefaultGameType());
+         }
+@@ -676,12 +676,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+         }
+         this.timings.scheduledBlocks.stopTiming(); // Paper
+ 
+-        gameprofilerfiller.popPush("raid");
++        /*gameprofilerfiller.popPush("raid");
+         if (flag) {
+             this.timings.raids.startTiming(); // Paper - timings
+             this.raids.tick();
+             this.timings.raids.stopTiming(); // Paper - timings
+-        }
++        }*/ // Grinder - remove raids
+ 
+         gameprofilerfiller.popPush("chunkSource");
+         this.timings.chunkProviderTick.startTiming(); // Paper - timings
+@@ -2012,13 +2012,13 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+         return this.getPoiManager().sectionsToVillage(pos);
+     }
+ 
+-    public Raids getRaids() {
++    /*public Raids getRaids() {
+         return this.raids;
+-    }
++    }*/ // Grinder - remove raids
+ 
+     @Nullable
+     public Raid getRaidAt(BlockPos pos) {
+-        return this.raids.getNearbyRaid(pos, 9216);
++        /*return this.raids.getNearbyRaid(pos, 9216);*/ return null; // Grinder - remove raids
+     }
+ 
+     public boolean isRaided(BlockPos pos) {
+diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+index dcbef04bbaab988096bf416163264833e84d1967..7b2c829db8a8ff121bf3a4d4e071ffa8a8fb72cd 100644
+--- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
++++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+@@ -709,7 +709,7 @@ public class Raid {
+     }
+ 
+     private void setDirty() {
+-        this.level.getRaids().setDirty();
++        //this.level.getRaids().setDirty(); // Grinder - remove raids
+     }
+ 
+     public static ItemStack getLeaderBannerInstance(HolderGetter<BannerPattern> bannerPatternLookup) {
+diff --git a/src/main/java/net/minecraft/world/entity/raid/Raider.java b/src/main/java/net/minecraft/world/entity/raid/Raider.java
+index bbf21ea433f9e3963aac0ede597ed8d3c8e50ed8..1f9cf77896a64e2b3d31e2a8038fc566c7d950e0 100644
+--- a/src/main/java/net/minecraft/world/entity/raid/Raider.java
++++ b/src/main/java/net/minecraft/world/entity/raid/Raider.java
+@@ -205,9 +205,9 @@ public abstract class Raider extends PatrollingMonster {
+         this.wave = nbt.getInt("Wave");
+         this.canJoinRaid = nbt.getBoolean("CanJoinRaid");
+         if (nbt.contains("RaidId", 3)) {
+-            if (this.level() instanceof ServerLevel) {
++            /*if (this.level() instanceof ServerLevel) {
+                 this.raid = ((ServerLevel) this.level()).getRaids().get(nbt.getInt("RaidId"));
+-            }
++            }*/ // Grinder - remove raids
+ 
+             if (this.raid != null) {
+                 this.raid.addWaveMob(this.wave, this, false);
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 8045d6c9398d1c88595da6e41aa1ed27fb6fbad0..3d8d240436780399bf24cbfab50b053df2a9a82e 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -2314,23 +2314,23 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+         Preconditions.checkArgument(location != null, "Location cannot be null");
+         Preconditions.checkArgument(radius >= 0, "Radius value (%s) cannot be negative", radius);
+ 
+-        Raids persistentRaid = this.world.getRaids();
++        /*Raids persistentRaid = this.world.getRaids();
+         net.minecraft.world.entity.raid.Raid raid = persistentRaid.getNearbyRaid(CraftLocation.toBlockPosition(location), radius * radius);
+-        return (raid == null) ? null : new CraftRaid(raid);
++        return (raid == null) ? null : new CraftRaid(raid);*/ return null; // Grinder - remove raids
+     }
+ 
+     // Paper start - more Raid API
+     @Override
+     public @Nullable Raid getRaid(final int id) {
+-        final net.minecraft.world.entity.raid.@Nullable Raid nmsRaid = this.world.getRaids().raidMap.get(id);
+-        return nmsRaid != null ? new CraftRaid(nmsRaid) : null;
++        /*final net.minecraft.world.entity.raid.@Nullable Raid nmsRaid = this.world.getRaids().raidMap.get(id);
++        return nmsRaid != null ? new CraftRaid(nmsRaid) : null;*/ return null; // Grinder - remove raids
+     }
+     // Paper end - more Raid API
+ 
+     @Override
+     public List<Raid> getRaids() {
+-        Raids persistentRaid = this.world.getRaids();
+-        return persistentRaid.raidMap.values().stream().map(CraftRaid::new).collect(Collectors.toList());
++        /*Raids persistentRaid = this.world.getRaids();
++        return persistentRaid.raidMap.values().stream().map(CraftRaid::new).collect(Collectors.toList());*/ return List.of(); // Grinder - remove raids
+     }
+ 
+     @Override
