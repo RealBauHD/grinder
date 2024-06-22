@@ -1,0 +1,139 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Sat, 22 Jun 2024 23:38:22 +0200
+Subject: [PATCH] deactivate commands
+
+
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index 885cebe23bc2158b24126d754669c60c98bb9867..52aecca3c7f5ec39945694d707e0f6713ca4e0a2 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -169,7 +169,7 @@ public class Commands {
+         DefaultGameModeCommands.register(this.dispatcher);
+         DifficultyCommand.register(this.dispatcher);
+         EffectCommands.register(this.dispatcher, commandRegistryAccess);
+-        EmoteCommands.register(this.dispatcher);
++        //EmoteCommands.register(this.dispatcher); // Grinder
+         EnchantCommand.register(this.dispatcher, commandRegistryAccess);
+         ExperienceCommand.register(this.dispatcher);
+         FillCommand.register(this.dispatcher, commandRegistryAccess);
+@@ -186,7 +186,7 @@ public class Commands {
+         ListPlayersCommand.register(this.dispatcher);
+         LocateCommand.register(this.dispatcher, commandRegistryAccess);
+         LootCommand.register(this.dispatcher, commandRegistryAccess);
+-        MsgCommand.register(this.dispatcher);
++        //MsgCommand.register(this.dispatcher); // Grinder
+         ParticleCommand.register(this.dispatcher, commandRegistryAccess);
+         PlaceCommand.register(this.dispatcher);
+         PlaySoundCommand.register(this.dispatcher);
+@@ -195,7 +195,7 @@ public class Commands {
+         RecipeCommand.register(this.dispatcher);
+         ReturnCommand.register(this.dispatcher);
+         RideCommand.register(this.dispatcher);
+-        SayCommand.register(this.dispatcher);
++        //SayCommand.register(this.dispatcher); // Grinder
+         ScheduleCommand.register(this.dispatcher);
+         ScoreboardCommand.register(this.dispatcher, commandRegistryAccess);
+         SeedCommand.register(this.dispatcher, environment != Commands.CommandSelection.INTEGRATED);
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 1bce7cf6020760dfac6fcd119bc3155bc3a99caa..5a23fd597245e72d46f508890e340ec43b8510e8 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -581,11 +581,11 @@ public final class CraftServer implements Server {
+ 
+         if (type == PluginLoadOrder.POSTWORLD) {
+             // Spigot start - Allow vanilla commands to be forced to be the main command
+-            this.setVanillaCommands(true);
++            /*this.setVanillaCommands(true);
+             this.commandMap.setFallbackCommands();
+             this.setVanillaCommands(false);
+             // Spigot end
+-            this.commandMap.registerServerAliases();
++            this.commandMap.registerServerAliases();*/ // Grinder
+             DefaultPermissions.registerCorePermissions();
+             CraftDefaultPermissions.registerCorePermissions();
+             if (!io.papermc.paper.configuration.GlobalConfiguration.get().misc.loadPermissionsYmlBeforePlugins) this.loadCustomPermissions(); // Paper
+diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
+index db9c812cf7267adf0bfd8be7368140e91245d640..25a46e552537465d00ba19bb3ba884fe781d3c93 100644
+--- a/src/main/java/org/spigotmc/SpigotConfig.java
++++ b/src/main/java/org/spigotmc/SpigotConfig.java
+@@ -69,7 +69,7 @@ public class SpigotConfig
+         SpigotConfig.config.options().copyDefaults( true );
+ 
+         SpigotConfig.commands = new HashMap<String, Command>();
+-        SpigotConfig.commands.put( "spigot", new SpigotCommand( "spigot" ) );
++        //SpigotConfig.commands.put( "spigot", new SpigotCommand( "spigot" ) ); // Grinder
+ 
+         SpigotConfig.version = SpigotConfig.getInt( "config-version", 12 );
+         SpigotConfig.set( "config-version", 12 );
+@@ -78,10 +78,10 @@ public class SpigotConfig
+ 
+     public static void registerCommands()
+     {
+-        for ( Map.Entry<String, Command> entry : SpigotConfig.commands.entrySet() )
++        /*for ( Map.Entry<String, Command> entry : SpigotConfig.commands.entrySet() )
+         {
+             MinecraftServer.getServer().server.getCommandMap().register( entry.getKey(), "Spigot", entry.getValue() );
+-        }
++        }*/ // Grinder
+ 
+         /* // Paper - Replace with our own
+         if ( SpigotConfig.metrics == null )
+@@ -191,7 +191,7 @@ public class SpigotConfig
+             }
+         }
+         SpigotConfig.tabComplete = SpigotConfig.getInt( "commands.tab-complete", 0 );
+-        SpigotConfig.sendNamespaced = SpigotConfig.getBoolean( "commands.send-namespaced", true );
++        SpigotConfig.sendNamespaced = SpigotConfig.getBoolean( "commands.send-namespaced", false );
+     }
+ 
+     public static String whitelistMessage;
+@@ -219,7 +219,7 @@ public class SpigotConfig
+     }
+ 
+     public static int timeoutTime = 60;
+-    public static boolean restartOnCrash = true;
++    public static boolean restartOnCrash = false;
+     public static String restartScript = "./start.sh";
+     public static String restartMessage;
+     private static void watchdog()
+@@ -228,7 +228,7 @@ public class SpigotConfig
+         SpigotConfig.restartOnCrash = SpigotConfig.getBoolean( "settings.restart-on-crash", SpigotConfig.restartOnCrash );
+         SpigotConfig.restartScript = SpigotConfig.getString( "settings.restart-script", SpigotConfig.restartScript );
+         SpigotConfig.restartMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.restart", "Server is restarting" ) );
+-        SpigotConfig.commands.put( "restart", new RestartCommand( "restart" ) );
++        //SpigotConfig.commands.put( "restart", new RestartCommand( "restart" ) ); // Grinder
+         // WatchdogThread.doStart( SpigotConfig.timeoutTime, SpigotConfig.restartOnCrash ); // Paper - moved to after paper config initialization
+     }
+ 
+@@ -302,10 +302,10 @@ public class SpigotConfig
+     public static List<String> spamExclusions;
+     private static void spamExclusions()
+     {
+-        SpigotConfig.spamExclusions = SpigotConfig.getList( "commands.spam-exclusions", Arrays.asList( new String[]
++        SpigotConfig.spamExclusions = SpigotConfig.getList( "commands.spam-exclusions", /*Arrays.asList( new String[]
+         {
+                 "/skill"
+-        } ) );
++        } )*/ List.of() ); // Grinder
+     }
+ 
+     public static boolean silentCommandBlocks;
+@@ -314,7 +314,7 @@ public class SpigotConfig
+         SpigotConfig.silentCommandBlocks = SpigotConfig.getBoolean( "commands.silent-commandblock-console", false );
+     }
+ 
+-    public static Set<String> replaceCommands;
++    /*public static Set<String> replaceCommands;
+     private static void replaceCommands()
+     {
+         if ( SpigotConfig.config.contains( "replace-commands" ) )
+@@ -324,7 +324,7 @@ public class SpigotConfig
+         }
+         SpigotConfig.replaceCommands = new HashSet<String>( (List<String>) SpigotConfig.getList( "commands.replace-commands",
+                 Arrays.asList( "setblock", "summon", "testforblock", "tellraw" ) ) );
+-    }
++    }*/ // Grinder
+ 
+     public static int userCacheCap;
+     private static void userCacheCap()
