@@ -1,0 +1,184 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Sun, 23 Jun 2024 03:16:52 +0200
+Subject: [PATCH] remove statistics
+
+
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index f30ca51e6ab33c04d44fd3db47ed2feaf1eac632..4623e307faaf8d6438ce3691851edf7aa7c1a404 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -303,7 +303,7 @@ public abstract class PlayerList {
+         playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
+         playerconnection.send(new ClientboundUpdateRecipesPacket(this.server.getRecipeManager().getOrderedRecipes()));
+         this.sendPlayerPermissionLevel(player);
+-        player.getStats().markAllDirty();
++        //player.getStats().markAllDirty(); // Grinder - remove stats
+         player.getRecipeBook().sendInitialRecipeBook(player);
+         this.updateEntireScoreboard(worldserver1.getScoreboard(), player);
+         this.server.invalidateStatus();
+@@ -1420,7 +1420,7 @@ public abstract class PlayerList {
+     }
+ 
+     public ServerStatsCounter getPlayerStats(UUID uuid, String displayName) {
+-        ServerPlayer entityhuman = this.getPlayer(uuid);
++        /*ServerPlayer entityhuman = this.getPlayer(uuid);
+         ServerStatsCounter serverstatisticmanager = entityhuman == null ? null : (ServerStatsCounter) entityhuman.getStats();
+         // CraftBukkit end
+ 
+@@ -1441,7 +1441,7 @@ public abstract class PlayerList {
+             // this.stats.put(uuid, serverstatisticmanager); // CraftBukkit
+         }
+ 
+-        return serverstatisticmanager;
++        return serverstatisticmanager;*/return ServerStatsCounter.INSTANCE; // Grinder - remove stats
+     }
+ 
+     public PlayerAdvancements getPlayerAdvancements(ServerPlayer player) {
+diff --git a/src/main/java/net/minecraft/stats/ServerStatsCounter.java b/src/main/java/net/minecraft/stats/ServerStatsCounter.java
+index fb7342f7a5008a283c3400c6313c637de8210dfa..e711e7cf86234e7f611673adf183a10c6f77a464 100644
+--- a/src/main/java/net/minecraft/stats/ServerStatsCounter.java
++++ b/src/main/java/net/minecraft/stats/ServerStatsCounter.java
+@@ -40,13 +40,14 @@ import org.slf4j.Logger;
+ 
+ public class ServerStatsCounter extends StatsCounter {
+ 
+-    private static final Logger LOGGER = LogUtils.getLogger();
++    public static final ServerStatsCounter INSTANCE = new ServerStatsCounter(null, null); // Grinder - remove stats
++    /*private static final Logger LOGGER = LogUtils.getLogger();
+     private final MinecraftServer server;
+     private final File file;
+-    private final Set<Stat<?>> dirty = Sets.newHashSet();
++    private final Set<Stat<?>> dirty = Sets.newHashSet();*/ // Grinder - remove stats
+ 
+     public ServerStatsCounter(MinecraftServer server, File file) {
+-        this.server = server;
++        /*this.server = server;
+         this.file = file;
+         if (file.isFile()) {
+             try {
+@@ -67,30 +68,30 @@ public class ServerStatsCounter extends StatsCounter {
+         {
+             Stat<ResourceLocation> wrapper = Stats.CUSTOM.get(java.util.Objects.requireNonNull(BuiltInRegistries.CUSTOM_STAT.get(entry.getKey()))); // Paper - ensured by SpigotConfig#stats
+             this.stats.put( wrapper, entry.getValue().intValue() );
+-        }
++        }*/ // Grinder - remove stats
+         // Spigot end
+         // Paper end - Moved after stat fetching for player state file
+     }
+ 
+     public void save() {
+-        if ( org.spigotmc.SpigotConfig.disableStatSaving ) return; // Spigot
++        /*if ( org.spigotmc.SpigotConfig.disableStatSaving ) return; // Spigot
+         try {
+             FileUtils.writeStringToFile(this.file, this.toJson());
+         } catch (IOException ioexception) {
+             ServerStatsCounter.LOGGER.error("Couldn't save stats", ioexception);
+-        }
++        }*/ // Grinder - remove stats
+ 
+     }
+ 
+     @Override
+     public void setValue(Player player, Stat<?> stat, int value) {
+-        if ( org.spigotmc.SpigotConfig.disableStatSaving ) return; // Spigot
++        /*if ( org.spigotmc.SpigotConfig.disableStatSaving ) return; // Spigot
+         if (stat.getType() == Stats.CUSTOM && stat.getValue() instanceof final ResourceLocation resourceLocation && org.spigotmc.SpigotConfig.forcedStats.get(resourceLocation) != null) return; // Paper - disable saving forced stats
+         super.setValue(player, stat, value);
+-        this.dirty.add(stat);
++        this.dirty.add(stat);*/ // Grinder - remove stats
+     }
+ 
+-    private Set<Stat<?>> getDirty() {
++    /*private Set<Stat<?>> getDirty() {
+         Set<Stat<?>> set = Sets.newHashSet(this.dirty);
+ 
+         this.dirty.clear();
+@@ -239,17 +240,17 @@ public class ServerStatsCounter extends StatsCounter {
+ 
+     public void markAllDirty() {
+         this.dirty.addAll(this.stats.keySet());
+-    }
++    }*/ // Grinder - remove stats
+ 
+     public void sendStats(ServerPlayer player) {
+         Object2IntMap<Stat<?>> object2intmap = new Object2IntOpenHashMap();
+-        Iterator iterator = this.getDirty().iterator();
++        /*Iterator iterator = this.getDirty().iterator();
+ 
+         while (iterator.hasNext()) {
+             Stat<?> statistic = (Stat) iterator.next();
+ 
+             object2intmap.put(statistic, this.getValue(statistic));
+-        }
++        }*/ // Grinder - remove stats
+ 
+         player.connection.send(new ClientboundAwardStatsPacket(object2intmap));
+     }
+diff --git a/src/main/java/net/minecraft/stats/StatsCounter.java b/src/main/java/net/minecraft/stats/StatsCounter.java
+index 6eff3bdab7ce445b703b983ddbebac0470559a53..e1c7df3169231ed25afa6f3f73289cbab957409a 100644
+--- a/src/main/java/net/minecraft/stats/StatsCounter.java
++++ b/src/main/java/net/minecraft/stats/StatsCounter.java
+@@ -7,14 +7,14 @@ import net.minecraft.world.entity.player.Player;
+ 
+ public class StatsCounter {
+ 
+-    protected final Object2IntMap<Stat<?>> stats = Object2IntMaps.synchronize(new Object2IntOpenHashMap());
++    //protected final Object2IntMap<Stat<?>> stats = Object2IntMaps.synchronize(new Object2IntOpenHashMap()); // Grinder - remove stats
+ 
+     public StatsCounter() {
+-        this.stats.defaultReturnValue(0);
++        //this.stats.defaultReturnValue(0); // Grinder - remove stats
+     }
+ 
+     public void increment(Player player, Stat<?> stat, int value) {
+-        int j = (int) Math.min((long) this.getValue(stat) + (long) value, 2147483647L);
++        /*int j = (int) Math.min((long) this.getValue(stat) + (long) value, 2147483647L);
+ 
+         // CraftBukkit start - fire Statistic events
+         org.bukkit.event.Cancellable cancellable = org.bukkit.craftbukkit.event.CraftEventFactory.handleStatisticsIncrease(player, stat, this.getValue(stat), j);
+@@ -22,18 +22,18 @@ public class StatsCounter {
+             return;
+         }
+         // CraftBukkit end
+-        this.setValue(player, stat, j);
++        this.setValue(player, stat, j);*/ // Grinder - remove stats
+     }
+ 
+     public void setValue(Player player, Stat<?> stat, int value) {
+-        this.stats.put(stat, value);
++        //this.stats.put(stat, value); // Grinder - remove stats
+     }
+ 
+     public <T> int getValue(StatType<T> type, T stat) {
+-        return type.contains(stat) ? this.getValue(type.get(stat)) : 0;
++        /*return type.contains(stat) ? this.getValue(type.get(stat)) :*/return 0; // Grinder - remove stats
+     }
+ 
+     public int getValue(Stat<?> stat) {
+-        return this.stats.getInt(stat);
++        /*return this.stats.getInt(stat);*/ return 0; // Grinder - remove stats
+     }
+ }
+diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
+index 25a46e552537465d00ba19bb3ba884fe781d3c93..7dd17b561233c91cfd4d1f19bc180d2445254c11 100644
+--- a/src/main/java/org/spigotmc/SpigotConfig.java
++++ b/src/main/java/org/spigotmc/SpigotConfig.java
+@@ -249,7 +249,7 @@ public class SpigotConfig
+         Bukkit.getLogger().log( Level.INFO, "Using {0} threads for Netty based IO", count );
+     }
+ 
+-    public static boolean disableStatSaving;
++    /*public static boolean disableStatSaving;
+     public static Map<ResourceLocation, Integer> forcedStats = new HashMap<>();
+     private static void stats()
+     {
+@@ -279,7 +279,7 @@ public class SpigotConfig
+                 }
+             }
+         }
+-    }
++    }*/ // Grinder
+ 
+     private static void tpsCommand()
+     {
