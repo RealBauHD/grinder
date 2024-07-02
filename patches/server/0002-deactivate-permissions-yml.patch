@@ -26,3 +26,15 @@ index caf6ff33b42472d30f28629470e12889f50490cc..3c07954a0a88ab61974b2e45c15ea56e
      }
  
      @Override
+diff --git a/src/main/resources/configurations/bukkit.yml b/src/main/resources/configurations/bukkit.yml
+index eef7c125b2689f29cae5464659eacdf33f5695b2..ffa67adc26f087cc991b7f59ef1363843849f5f4 100644
+--- a/src/main/resources/configurations/bukkit.yml
++++ b/src/main/resources/configurations/bukkit.yml
+@@ -14,7 +14,6 @@
+ settings:
+     allow-end: true
+     warn-on-overload: true
+-    permissions-file: permissions.yml
+     update-folder: update
+     plugin-profiling: false
+     connection-throttle: 4000

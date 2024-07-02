@@ -31,20 +31,18 @@ index d6431376184e5650b370cbab204e28bc31f4dac6..ec1320941e8a4004f33182c0a2af1f13
          this.useNativeTransport = this.get("use-native-transport", true);
          this.enableCommandBlock = this.get("enable-command-block", false);
 diff --git a/src/main/resources/configurations/bukkit.yml b/src/main/resources/configurations/bukkit.yml
-index eef7c125b2689f29cae5464659eacdf33f5695b2..ce35af2aa19c05f18622f199fd9e863ea5f489d0 100644
+index 3c05f7c3fba89ef0572bbb7d8a0d73365b115849..25aaf35cb1728f58ddb6e79e94b53f3d4923fb9a 100644
 --- a/src/main/resources/configurations/bukkit.yml
 +++ b/src/main/resources/configurations/bukkit.yml
-@@ -12,9 +12,8 @@
+@@ -12,7 +12,7 @@
  
  
  settings:
 -    allow-end: true
 +    allow-end: false
      warn-on-overload: true
--    permissions-file: permissions.yml
      update-folder: update
      plugin-profiling: false
-     connection-throttle: 4000
 diff --git a/src/main/resources/configurations/commands.yml b/src/main/resources/configurations/commands.yml
 deleted file mode 100644
 index 18f54571200e2eca09a39b88f170fe7b99d8618f..0000000000000000000000000000000000000000

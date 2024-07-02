@@ -5,7 +5,7 @@ Subject: [PATCH] deactivate commands.yml
 
 
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index c33f85b570f159ab465b5a10a8044a81f2797f43..9b2637e912bc4f038f68b4be520c73eef889f598 100644
+index 244a19ecd0234fa1d7a6ecfea20751595688605d..0bc825b16f768b7700df9cbf219c7c1bdc97becd 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
 @@ -143,11 +143,11 @@ public class Main {
@@ -23,12 +23,20 @@ index c33f85b570f159ab465b5a10a8044a81f2797f43..9b2637e912bc4f038f68b4be520c73ee
                  Main.LOGGER.info("Initialized '{}' and '{}'", path1.toAbsolutePath(), path2.toAbsolutePath());
                  return;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..1bce7cf6020760dfac6fcd119bc3155bc3a99caa 100644
+index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3fb73cd01d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -426,7 +426,7 @@ public final class CraftServer implements Server {
+@@ -420,13 +420,13 @@ public final class CraftServer implements Server {
+         this.configuration = YamlConfiguration.loadConfiguration(this.getConfigFile());
+         this.configuration.options().copyDefaults(true);
+         this.configuration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml"), Charsets.UTF_8)));
+-        ConfigurationSection legacyAlias = null;
++        /*ConfigurationSection legacyAlias = null;
+         if (!this.configuration.isString("aliases")) {
+             legacyAlias = this.configuration.getConfigurationSection("aliases");
              this.configuration.set("aliases", "now-in-commands.yml");
-         }
+-        }
++        }*/
          this.saveConfig();
 -        if (this.getCommandsConfigFile().isFile()) {
 +        /*if (this.getCommandsConfigFile().isFile()) {
@@ -110,3 +118,12 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..1bce7cf6020760dfac6fcd119bc3155b
          commandMap.registerServerAliases();
          return true;
      }
+diff --git a/src/main/resources/configurations/bukkit.yml b/src/main/resources/configurations/bukkit.yml
+index ffa67adc26f087cc991b7f59ef1363843849f5f4..3c05f7c3fba89ef0572bbb7d8a0d73365b115849 100644
+--- a/src/main/resources/configurations/bukkit.yml
++++ b/src/main/resources/configurations/bukkit.yml
+@@ -41,4 +41,3 @@ ticks-per:
+     axolotl-spawns: 1
+     ambient-spawns: 1
+     autosave: 6000
+-aliases: now-in-commands.yml
