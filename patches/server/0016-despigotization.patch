@@ -1,0 +1,451 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Tue, 9 Jul 2024 00:47:59 +0200
+Subject: [PATCH] despigotization
+
+
+diff --git a/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java b/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java
+index 367ef7e0769537e8c13c7fd818a1249e15a28a65..76a4de436ebad526411ea95aa066a1e5dddcafc9 100644
+--- a/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java
++++ b/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java
+@@ -3,7 +3,7 @@ package io.papermc.paper.brigadier;
+ import java.util.Set;
+ import java.util.UUID;
+ import net.kyori.adventure.text.Component;
+-import net.md_5.bungee.api.chat.BaseComponent;
++//import net.md_5.bungee.api.chat.BaseComponent; // Grinder - despigotization
+ import org.bukkit.Bukkit;
+ import org.bukkit.Server;
+ import org.bukkit.command.CommandSender;
+@@ -56,7 +56,7 @@ public final class NullCommandSender implements CommandSender {
+         return "";
+     }
+ 
+-    private final Spigot spigot = new Spigot();
++    /*private final Spigot spigot = new Spigot();
+     @Override
+     public Spigot spigot() {
+         return this.spigot;
+@@ -79,7 +79,7 @@ public final class NullCommandSender implements CommandSender {
+         @Override
+         public void sendMessage(@Nullable final UUID sender, @NonNull final @NotNull BaseComponent... components) {
+         }
+-    }
++    }*/ // Grinder - despigotization
+ 
+     @Override
+     public Component name() {
+diff --git a/src/main/java/net/minecraft/network/protocol/game/ClientboundSystemChatPacket.java b/src/main/java/net/minecraft/network/protocol/game/ClientboundSystemChatPacket.java
+index fdb75db02603ef97b624219211a0db22cd447dea..42f3dfa1be1e8408bc71dbaa830e37f94b08541e 100644
+--- a/src/main/java/net/minecraft/network/protocol/game/ClientboundSystemChatPacket.java
++++ b/src/main/java/net/minecraft/network/protocol/game/ClientboundSystemChatPacket.java
+@@ -14,9 +14,9 @@ public record ClientboundSystemChatPacket(Component content, boolean overlay) im
+     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSystemChatPacket> STREAM_CODEC = StreamCodec.composite(ComponentSerialization.TRUSTED_STREAM_CODEC, ClientboundSystemChatPacket::content, ByteBufCodecs.BOOL, ClientboundSystemChatPacket::overlay, ClientboundSystemChatPacket::new);
+ 
+     // Spigot start
+-    public ClientboundSystemChatPacket(net.md_5.bungee.api.chat.BaseComponent[] content, boolean overlay) {
++    /*public ClientboundSystemChatPacket(net.md_5.bungee.api.chat.BaseComponent[] content, boolean overlay) {
+         this(org.bukkit.craftbukkit.util.CraftChatMessage.fromJSON(net.md_5.bungee.chat.ComponentSerializer.toString(content)), overlay);
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+     // Paper start
+     public ClientboundSystemChatPacket(net.kyori.adventure.text.Component content, boolean overlay) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 1812ada7582923cecce5db0b1786247743a9f1b2..5820c7f718f459a7e2d6bfccbc727322eb7b322c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -260,7 +260,7 @@ import org.yaml.snakeyaml.Yaml;
+ import org.yaml.snakeyaml.constructor.SafeConstructor;
+ import org.yaml.snakeyaml.error.MarkedYAMLException;
+ 
+-import net.md_5.bungee.api.chat.BaseComponent; // Spigot
++//import net.md_5.bungee.api.chat.BaseComponent; // Spigot // Grinder - despigotization
+ 
+ import javax.annotation.Nullable; // Paper
+ import javax.annotation.Nonnull; // Paper
+@@ -2984,7 +2984,7 @@ public final class CraftServer implements Server {
+             org.spigotmc.RestartCommand.restart();
+         }
+ 
+-        @Override
++        /*@Override
+         public void broadcast(BaseComponent component) {
+             for (Player player : CraftServer.this.getOnlinePlayers()) {
+                 player.spigot().sendMessage(component);
+@@ -2996,7 +2996,7 @@ public final class CraftServer implements Server {
+             for (Player player : CraftServer.this.getOnlinePlayers()) {
+                 player.spigot().sendMessage(components);
+             }
+-        }
++        }*/ // Grinder - despigotization
+     };
+ 
+     public org.bukkit.Server.Spigot spigot()
+diff --git a/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java b/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java
+index 3e7d14564f11a3ed0b0766444e9d681804597e9a..db2e91d6f6245b17d5061e57b8b902fcc1bedfc4 100644
+--- a/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java
++++ b/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java
+@@ -140,10 +140,10 @@ public class ProxiedNativeCommandSender implements ProxiedCommandSender {
+     }
+ 
+     // Spigot start
+-    @Override
++    /*@Override
+     public org.bukkit.command.CommandSender.Spigot spigot()
+     {
+        return this.getCaller().spigot();
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java b/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java
+index 1e3091687735b461d3b6a313ab8761127981d3e8..a1104b725d0bfbe4202072abe0c18153799864da 100644
+--- a/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java
++++ b/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java
+@@ -98,7 +98,7 @@ public abstract class ServerCommandSender implements CommandSender {
+     }
+ 
+     // Spigot start
+-    private final org.bukkit.command.CommandSender.Spigot spigot = new org.bukkit.command.CommandSender.Spigot()
++    /*private final org.bukkit.command.CommandSender.Spigot spigot = new org.bukkit.command.CommandSender.Spigot()
+     {
+         @Override
+         public void sendMessage(net.md_5.bungee.api.chat.BaseComponent component)
+@@ -129,7 +129,7 @@ public abstract class ServerCommandSender implements CommandSender {
+     public org.bukkit.command.CommandSender.Spigot spigot()
+     {
+         return this.spigot;
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+ 
+     // Paper start - implement pointers
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+index 2cde808bfa797256409879505ba205a71f381981..304a82e99aef8de2c12bdff6465c6e339dc2f27a 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+@@ -58,7 +58,7 @@ import org.bukkit.util.BoundingBox;
+ import org.bukkit.util.NumberConversions;
+ import org.bukkit.util.Vector;
+ 
+-import net.md_5.bungee.api.chat.BaseComponent; // Spigot
++//import net.md_5.bungee.api.chat.BaseComponent; // Spigot // Grinder - despigotization
+ 
+ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     private static PermissibleBase perm;
+@@ -1086,7 +1086,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     // Paper end - more teleport API / async chunk API
+ 
+     // Spigot start
+-    private final org.bukkit.entity.Entity.Spigot spigot = new org.bukkit.entity.Entity.Spigot()
++    /*private final org.bukkit.entity.Entity.Spigot spigot = new org.bukkit.entity.Entity.Spigot()
+     {
+ 
+         @Override
+@@ -1113,7 +1113,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     public org.bukkit.entity.Entity.Spigot spigot()
+     {
+         return this.spigot;
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+ 
+     // Paper start - entity origin API
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLightningStrike.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLightningStrike.java
+index e9f471e60af0725ec34e2985d63ae9ea9f88590a..9fe94bfa08aaf3399d2f4e7981ed10c3dfb68299 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLightningStrike.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLightningStrike.java
+@@ -52,7 +52,7 @@ public class CraftLightningStrike extends CraftEntity implements LightningStrike
+     }
+ 
+     // Spigot start
+-    private final LightningStrike.Spigot spigot = new LightningStrike.Spigot() {
++    /*private final LightningStrike.Spigot spigot = new LightningStrike.Spigot() {
+ 
+         @Override
+         public boolean isSilent()
+@@ -64,7 +64,7 @@ public class CraftLightningStrike extends CraftEntity implements LightningStrike
+     @Override
+     public LightningStrike.Spigot spigot() {
+         return this.spigot;
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+ 
+     // Paper start
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index d01b45a48d412e3cb591acee101730704574448a..571b31d5d205d2ca5d898cd5fc3af35e61acda08 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -191,7 +191,7 @@ import org.bukkit.profile.PlayerProfile;
+ import org.bukkit.scoreboard.Scoreboard;
+ import org.jetbrains.annotations.NotNull;
+ 
+-import net.md_5.bungee.api.chat.BaseComponent; // Spigot
++//import net.md_5.bungee.api.chat.BaseComponent; // Spigot // Grinder - despigotization
+ 
+ @DelegateDeserialization(CraftOfflinePlayer.class)
+ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -420,13 +420,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+     }
+ 
+     // Paper start
+-    @Override
++    /*@Override
+     @Deprecated
+     public void sendActionBar(BaseComponent[] message) {
+         if (getHandle().connection == null) return;
+         net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket packet = new net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket(org.bukkit.craftbukkit.util.CraftChatMessage.fromJSON(net.md_5.bungee.chat.ComponentSerializer.toString(message)));
+         getHandle().connection.send(packet);
+-    }
++    }*/ // Grinder - despigotization
+ 
+     @Override
+     @Deprecated
+@@ -442,7 +442,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         sendActionBar(org.bukkit.ChatColor.translateAlternateColorCodes(alternateChar, message));
+     }
+ 
+-    @Override
++    /*@Override
+     public void setPlayerListHeaderFooter(BaseComponent[] header, BaseComponent[] footer) {
+          if (header != null) {
+              String headerJson = net.md_5.bungee.chat.ComponentSerializer.toString(header);
+@@ -465,7 +465,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+     public void setPlayerListHeaderFooter(BaseComponent header, BaseComponent footer) {
+         this.setPlayerListHeaderFooter(header == null ? null : new BaseComponent[]{header},
+                 footer == null ? null : new BaseComponent[]{footer});
+-    }
++    }*/ // Grinder - despigotization
+ 
+ 
+     @Override
+@@ -473,7 +473,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         getHandle().connection.send(new ClientboundSetTitlesAnimationPacket(fadeInTicks, stayTicks, fadeOutTicks));
+     }
+ 
+-    @Override
++    /*@Override
+     public void setSubtitle(BaseComponent[] subtitle) {
+         final ClientboundSetSubtitleTextPacket packet = new ClientboundSetSubtitleTextPacket(org.bukkit.craftbukkit.util.CraftChatMessage.fromJSON(net.md_5.bungee.chat.ComponentSerializer.toString(subtitle)));
+         getHandle().connection.send(packet);
+@@ -525,7 +525,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+             setSubtitle(title.getSubtitle());
+         }
+         showTitle(title.getTitle());
+-    }
++    }*/ // Grinder - despigotization
+ 
+     @Override
+     public void hideTitle() {
+@@ -3372,7 +3372,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+             return java.util.Collections.unmodifiableSet( ret );
+         }
+ 
+-        @Override
++        /*@Override
+         public void sendMessage(BaseComponent component) {
+           this.sendMessage( new BaseComponent[] { component } );
+         }
+@@ -3412,7 +3412,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+             if ( CraftPlayer.this.getHandle().connection == null ) return;
+ 
+             CraftPlayer.this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundSystemChatPacket(components, position == net.md_5.bungee.api.ChatMessageType.ACTION_BAR));
+-        }
++        }*/ // Grinder - despigotization
+ 
+         // Paper start
+         @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
+index 317af98f8bd166a5a534f74e6ba177be9afb6a8f..d3acdb149c67909aeff2fba2dfcb92ec9cf2b543 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
+@@ -249,7 +249,7 @@ public final class CraftItemFactory implements ItemFactory {
+     // Paper end - add getI18NDisplayName
+ 
+     // Paper start - bungee hover events
+-    @Override
++    /*@Override
+     public net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(ItemStack itemStack) {
+         throw new UnsupportedOperationException("BungeeCord Chat API does not support data components");
+         /*
+@@ -259,7 +259,7 @@ public final class CraftItemFactory implements ItemFactory {
+             itemStack.getAmount(),
+             itemTag);
+          */
+-    }
++    /*}
+ 
+     @Override
+     public net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity entity) {
+@@ -285,7 +285,7 @@ public final class CraftItemFactory implements ItemFactory {
+             entity.getType().getKey().toString(),
+             entity.getUniqueId().toString(),
+             new net.md_5.bungee.api.chat.TextComponent(customName));
+-    }
++    }*/ // Grinder - despigotization
+     // Paper end - bungee hover events
+ 
+     // Paper start - old getSpawnEgg API
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
+index 27a275f324891e395bf3fd3038c0b9a724bbbf66..39ec2342716270fdde74ed0b3497e0cd062b03be 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
+@@ -23,10 +23,10 @@ import org.bukkit.inventory.meta.BookMeta;
+ import org.bukkit.inventory.meta.WritableBookMeta;
+ 
+ // Spigot start
+-import java.util.AbstractList;
++/*import java.util.AbstractList;
+ import net.md_5.bungee.api.chat.BaseComponent;
+ import net.md_5.bungee.chat.ComponentSerializer;
+-import org.bukkit.craftbukkit.util.CraftChatMessage;
++import org.bukkit.craftbukkit.util.CraftChatMessage;*/ // Grinder - despigotization
+ // Spigot end
+ 
+ @DelegateDeserialization(SerializableMeta.class)
+@@ -379,7 +379,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
+         if (this.pages != null) {
+             meta.pages = new ArrayList<String>(this.pages);
+         }
+-        meta.spigot = meta.new SpigotMeta(); // Spigot
++        //meta.spigot = meta.new SpigotMeta(); // Spigot // Grinder - despigotization
+         return meta;
+     }
+ 
+@@ -422,7 +422,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
+     }
+ 
+     // Spigot start
+-    private BookMeta.Spigot spigot = new SpigotMeta();
++    /*private BookMeta.Spigot spigot = new SpigotMeta();
+     private class SpigotMeta extends BookMeta.Spigot {
+ 
+         private String pageToJSON(String page) {
+@@ -507,6 +507,6 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
+     @Override
+     public BookMeta.Spigot spigot() {
+         return this.spigot;
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
+index 806c1cbee7c4e23eee38c8f400ec2d924c9a360c..002a303a001e21a2ae515366c2db2443e81b8ef4 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
+@@ -22,9 +22,9 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
+ import org.bukkit.inventory.meta.BookMeta;
+ 
+ // Spigot start
+-import java.util.AbstractList;
++/*import java.util.AbstractList;
+ import net.md_5.bungee.api.chat.BaseComponent;
+-import net.md_5.bungee.chat.ComponentSerializer;
++import net.md_5.bungee.chat.ComponentSerializer;*/ // Grinder - despigotization
+ // Spigot end
+ 
+ @DelegateDeserialization(SerializableMeta.class)
+@@ -298,7 +298,7 @@ public class CraftMetaBookSigned extends CraftMetaItem implements BookMeta {
+         if (this.pages != null) {
+             meta.pages = new ArrayList<Component>(this.pages);
+         }
+-        meta.spigot = meta.new SpigotMeta(); // Spigot
++        //meta.spigot = meta.new SpigotMeta(); // Spigot // Grinder - despigotization
+         return meta;
+     }
+ 
+@@ -373,7 +373,7 @@ public class CraftMetaBookSigned extends CraftMetaItem implements BookMeta {
+     }
+ 
+     // Spigot start
+-    private BookMeta.Spigot spigot = new SpigotMeta();
++    /*private BookMeta.Spigot spigot = new SpigotMeta();
+     private class SpigotMeta extends BookMeta.Spigot {
+ 
+         private String pageToJSON(Component page) {
+@@ -457,7 +457,7 @@ public class CraftMetaBookSigned extends CraftMetaItem implements BookMeta {
+     @Override
+     public BookMeta.Spigot spigot() {
+         return this.spigot;
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+ 
+     // Paper start - adventure
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
+index 9aef0223cd790d9f4a74dfe22e7926027c08dca5..63f7fdaa53696390b1b2016e486dd819962ce07a 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
+@@ -1035,10 +1035,10 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+     }
+ 
+     // Paper start
+-    @Override
++    /*@Override
+     public net.md_5.bungee.api.chat.BaseComponent[] getDisplayNameComponent() {
+         return displayName == null ? new net.md_5.bungee.api.chat.BaseComponent[0] : net.md_5.bungee.chat.ComponentSerializer.parse(CraftChatMessage.toJSON(displayName));
+-    }
++    }*/ // Grinder - despigotization
+     // Paper end
+     @Override
+     public final void setDisplayName(String name) {
+@@ -1046,10 +1046,10 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+     }
+ 
+     // Paper start
+-    @Override
++    /*@Override
+     public void setDisplayNameComponent(net.md_5.bungee.api.chat.BaseComponent[] component) {
+         this.displayName = CraftChatMessage.fromJSON(net.md_5.bungee.chat.ComponentSerializer.toString(component));
+-    }
++    }*/ // Grinder - despigotization
+     // Paper end
+     @Override
+     public boolean hasDisplayName() {
+@@ -1226,12 +1226,12 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+     }
+ 
+     // Paper start
+-    @Override
++    /*@Override
+     public List<net.md_5.bungee.api.chat.BaseComponent[]> getLoreComponents() {
+         return this.lore == null ? null : new ArrayList<>(this.lore.stream().map(entry ->
+             net.md_5.bungee.chat.ComponentSerializer.parse(CraftChatMessage.toJSON(entry))
+         ).collect(java.util.stream.Collectors.toList()));
+-    }
++    }*/ // Grinder - despigotization
+     // Paper end
+     @Override
+     public void setLore(List<String> lore) {
+@@ -1249,7 +1249,7 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+     }
+ 
+     // Paper start
+-    @Override
++    /*@Override
+     public void setLoreComponents(List<net.md_5.bungee.api.chat.BaseComponent[]> lore) {
+         Preconditions.checkArgument(lore == null || lore.size() <= ItemLore.MAX_LINES, "lore cannot have more than %s lines", ItemLore.MAX_LINES); // Paper - limit lore lines
+         if (lore == null) {
+@@ -1262,7 +1262,7 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+                 safelyAdd(lore, this.lore, false);
+             }
+         }
+-    }
++    }*/ // Grinder - despigotization
+     // Paper end
+     @Override
+     public boolean hasCustomModelData() {
+@@ -2028,9 +2028,9 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+ 
+         for (Object object : addFrom) {
+             // Paper start - support components
+-            if(object instanceof net.md_5.bungee.api.chat.BaseComponent[] baseComponentArr) {
++            /*if(object instanceof net.md_5.bungee.api.chat.BaseComponent[] baseComponentArr) {
+                 addTo.add(CraftChatMessage.fromJSON(net.md_5.bungee.chat.ComponentSerializer.toString(baseComponentArr)));
+-            } else
++            } else*/ // Grinder - despigotization
+             // Paper end
+             if (!(object instanceof String)) {
+                 if (object != null) {

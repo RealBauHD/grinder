@@ -1,0 +1,1464 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Tue, 9 Jul 2024 00:47:46 +0200
+Subject: [PATCH] despigotization
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 540fe7e2c110e79c3742f229b3ed8c54b101d260..6b75d7337c201789c1539e58cc70f395c6a48d03 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -32,9 +32,9 @@ dependencies {
+     api("com.google.guava:guava:32.1.2-jre")
+     api("com.google.code.gson:gson:2.10.1")
+     // Paper start - adventure
+-    api("net.md-5:bungeecord-chat:$bungeeCordChatVersion-deprecated+build.18") {
++    /*api("net.md-5:bungeecord-chat:$bungeeCordChatVersion-deprecated+build.18") {
+         exclude("com.google.guava", "guava")
+-    }
++    }*/ // Grinder - despigotization
+     // Paper - adventure
+     api("org.yaml:snakeyaml:2.2")
+     api("org.joml:joml:1.10.5")
+diff --git a/src/main/java/com/destroystokyo/paper/Title.java b/src/main/java/com/destroystokyo/paper/Title.java
+deleted file mode 100644
+index 20a028450667edf102b59b6b50ac6e890f2c34ab..0000000000000000000000000000000000000000
+--- a/src/main/java/com/destroystokyo/paper/Title.java
++++ /dev/null
+@@ -1,420 +0,0 @@
+-package com.destroystokyo.paper;
+-
+-import net.md_5.bungee.api.chat.BaseComponent;
+-import net.md_5.bungee.api.chat.TextComponent;
+-
+-import org.bukkit.Bukkit;
+-import org.bukkit.entity.Player;
+-import org.jetbrains.annotations.NotNull;
+-import org.jetbrains.annotations.Nullable;
+-
+-import java.util.ArrayList;
+-import java.util.Arrays;
+-import java.util.Collection;
+-import java.util.List;
+-
+-import static com.google.common.base.Preconditions.checkArgument;
+-import static com.google.common.base.Preconditions.checkNotNull;
+-import static com.google.common.base.Preconditions.checkState;
+-
+-/**
+- * Represents a title to may be sent to a {@link Player}.
+- *
+- * <p>A title can be sent without subtitle text.</p>
+- *
+- * @deprecated use {@link net.kyori.adventure.title.Title}
+- */
+-@Deprecated(since = "1.16.5")
+-public final class Title {
+-
+-    /**
+-     * The default number of ticks for the title to fade in.
+-     */
+-    public static final int DEFAULT_FADE_IN = 20;
+-    /**
+-     * The default number of ticks for the title to stay.
+-     */
+-    public static final int DEFAULT_STAY = 200;
+-    /**
+-     * The default number of ticks for the title to fade out.
+-     */
+-    public static final int DEFAULT_FADE_OUT = 20;
+-
+-    private final BaseComponent[] title;
+-    private final BaseComponent[] subtitle;
+-    private final int fadeIn;
+-    private final int stay;
+-    private final int fadeOut;
+-
+-    /**
+-     * Create a title with the default time values and no subtitle.
+-     *
+-     * <p>Times use default values.</p>
+-     *
+-     * @param title the main text of the title
+-     * @throws NullPointerException if the title is null
+-     */
+-    public Title(@NotNull BaseComponent title) {
+-        this(title, null);
+-    }
+-
+-    /**
+-     * Create a title with the default time values and no subtitle.
+-     *
+-     * <p>Times use default values.</p>
+-     *
+-     * @param title the main text of the title
+-     * @throws NullPointerException if the title is null
+-     */
+-    public Title(@NotNull BaseComponent[] title) {
+-        this(title, null);
+-    }
+-
+-    /**
+-     * Create a title with the default time values and no subtitle.
+-     *
+-     * <p>Times use default values.</p>
+-     *
+-     * @param title the main text of the title
+-     * @throws NullPointerException if the title is null
+-     */
+-    public Title(@NotNull String title) {
+-        this(title, null);
+-    }
+-
+-    /**
+-     * Create a title with the default time values.
+-     *
+-     * <p>Times use default values.</p>
+-     *
+-     * @param title    the main text of the title
+-     * @param subtitle the secondary text of the title
+-     */
+-    public Title(@NotNull BaseComponent title, @Nullable BaseComponent subtitle) {
+-        this(title, subtitle, DEFAULT_FADE_IN, DEFAULT_STAY, DEFAULT_FADE_OUT);
+-    }
+-
+-    /**
+-     * Create a title with the default time values.
+-     *
+-     * <p>Times use default values.</p>
+-     *
+-     * @param title    the main text of the title
+-     * @param subtitle the secondary text of the title
+-     */
+-    public Title(@NotNull BaseComponent[] title, @Nullable BaseComponent[] subtitle) {
+-        this(title, subtitle, DEFAULT_FADE_IN, DEFAULT_STAY, DEFAULT_FADE_OUT);
+-    }
+-
+-    /**
+-     * Create a title with the default time values.
+-     *
+-     * <p>Times use default values.</p>
+-     *
+-     * @param title    the main text of the title
+-     * @param subtitle the secondary text of the title
+-     */
+-    public Title(@NotNull String title, @Nullable String subtitle) {
+-        this(title, subtitle, DEFAULT_FADE_IN, DEFAULT_STAY, DEFAULT_FADE_OUT);
+-    }
+-
+-    /**
+-     * Creates a new title.
+-     *
+-     * @param title    the main text of the title
+-     * @param subtitle the secondary text of the title
+-     * @param fadeIn   the number of ticks for the title to fade in
+-     * @param stay     the number of ticks for the title to stay on screen
+-     * @param fadeOut  the number of ticks for the title to fade out
+-     * @throws IllegalArgumentException if any of the times are negative
+-     */
+-    public Title(@NotNull BaseComponent title, @Nullable BaseComponent subtitle, int fadeIn, int stay, int fadeOut) {
+-        this(
+-                new BaseComponent[]{checkNotNull(title, "title")},
+-                subtitle == null ? null : new BaseComponent[]{subtitle},
+-                fadeIn,
+-                stay,
+-                fadeOut
+-        );
+-    }
+-
+-    /**
+-     * Creates a new title.
+-     *
+-     * @param title    the main text of the title
+-     * @param subtitle the secondary text of the title
+-     * @param fadeIn   the number of ticks for the title to fade in
+-     * @param stay     the number of ticks for the title to stay on screen
+-     * @param fadeOut  the number of ticks for the title to fade out
+-     * @throws IllegalArgumentException if any of the times are negative
+-     */
+-    public Title(@Nullable BaseComponent[] title, @NotNull BaseComponent[] subtitle, int fadeIn, int stay, int fadeOut) {
+-        checkArgument(fadeIn >= 0, "Negative fadeIn: %s", fadeIn);
+-        checkArgument(stay >= 0, "Negative stay: %s", stay);
+-        checkArgument(fadeOut >= 0, "Negative fadeOut: %s", fadeOut);
+-        this.title = checkNotNull(title, "title");
+-        this.subtitle = subtitle;
+-        this.fadeIn = fadeIn;
+-        this.stay = stay;
+-        this.fadeOut = fadeOut;
+-    }
+-
+-    /**
+-     * Creates a new title.
+-     *
+-     * <p>It is recommended to the {@link BaseComponent} constrctors.</p>
+-     *
+-     * @param title    the main text of the title
+-     * @param subtitle the secondary text of the title
+-     * @param fadeIn   the number of ticks for the title to fade in
+-     * @param stay     the number of ticks for the title to stay on screen
+-     * @param fadeOut  the number of ticks for the title to fade out
+-     */
+-    public Title(@NotNull String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut) {
+-        this(
+-                TextComponent.fromLegacyText(checkNotNull(title, "title")),
+-                subtitle == null ? null : TextComponent.fromLegacyText(subtitle),
+-                fadeIn,
+-                stay,
+-                fadeOut
+-        );
+-    }
+-
+-    /**
+-     * Gets the text of this title
+-     *
+-     * @return the text
+-     */
+-    @NotNull
+-    public BaseComponent[] getTitle() {
+-        return this.title;
+-    }
+-
+-    /**
+-     * Gets the text of this title's subtitle
+-     *
+-     * @return the text
+-     */
+-    @Nullable
+-    public BaseComponent[] getSubtitle() {
+-        return this.subtitle;
+-    }
+-
+-    /**
+-     * Gets the number of ticks to fade in.
+-     *
+-     * <p>The returned value is never negative.</p>
+-     *
+-     * @return the number of ticks to fade in
+-     */
+-    public int getFadeIn() {
+-        return this.fadeIn;
+-    }
+-
+-    /**
+-     * Gets the number of ticks to stay.
+-     *
+-     * <p>The returned value is never negative.</p>
+-     *
+-     * @return the number of ticks to stay
+-     */
+-    public int getStay() {
+-        return this.stay;
+-    }
+-
+-    /**
+-     * Gets the number of ticks to fade out.
+-     *
+-     * <p>The returned value is never negative.</p>
+-     *
+-     * @return the number of ticks to fade out
+-     */
+-    public int getFadeOut() {
+-        return this.fadeOut;
+-    }
+-
+-    /**
+-     * Sends the title directly to an player
+-     *
+-     * @param player the receiver of the title
+-     */
+-    public void send(@NotNull Player player) {
+-        player.sendTitle(this);
+-    }
+-
+-    /**
+-     * Sends the title directly to the defined players
+-     *
+-     * @param players the receivers of the title
+-     */
+-    public void send(@NotNull Collection<? extends Player> players) {
+-        for (Player player : players) {
+-            player.sendTitle(this);
+-        }
+-    }
+-
+-    /**
+-     * Sends the title directly to the defined players
+-     *
+-     * @param players the receivers of the title
+-     */
+-    public void send(@NotNull Player[] players) {
+-        for (Player player : players) {
+-            player.sendTitle(this);
+-        }
+-    }
+-
+-    /**
+-     * Sends the title directly to all online players
+-     */
+-    public void broadcast() {
+-        send(Bukkit.getOnlinePlayers());
+-    }
+-
+-    @NotNull
+-    public static Builder builder() {
+-        return new Builder();
+-    }
+-
+-    /**
+-     * A builder for creating titles
+-     */
+-    public static final class Builder {
+-
+-        private BaseComponent[] title;
+-        private BaseComponent[] subtitle;
+-        private int fadeIn = DEFAULT_FADE_IN;
+-        private int stay = DEFAULT_STAY;
+-        private int fadeOut = DEFAULT_FADE_OUT;
+-
+-        /**
+-         * Sets the title to the given text.
+-         *
+-         * @param title the title text
+-         * @return this builder instance
+-         * @throws NullPointerException if the title is null
+-         */
+-        @NotNull
+-        public Builder title(@NotNull BaseComponent title) {
+-            return this.title(new BaseComponent[]{checkNotNull(title, "title")});
+-        }
+-
+-        /**
+-         * Sets the title to the given text.
+-         *
+-         * @param title the title text
+-         * @return this builder instance
+-         * @throws NullPointerException if the title is null
+-         */
+-        @NotNull
+-        public Builder title(@NotNull BaseComponent[] title) {
+-            this.title = checkNotNull(title, "title");
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the title to the given text.
+-         *
+-         * <p>It is recommended to the {@link BaseComponent} methods.</p>
+-         *
+-         * @param title the title text
+-         * @return this builder instance
+-         * @throws NullPointerException if the title is null
+-         */
+-        @NotNull
+-        public Builder title(@NotNull String title) {
+-            return this.title(TextComponent.fromLegacyText(checkNotNull(title, "title")));
+-        }
+-
+-        /**
+-         * Sets the subtitle to the given text.
+-         *
+-         * @param subtitle the title text
+-         * @return this builder instance
+-         */
+-        @NotNull
+-        public Builder subtitle(@Nullable BaseComponent subtitle) {
+-            return this.subtitle(subtitle == null ? null : new BaseComponent[]{subtitle});
+-        }
+-
+-        /**
+-         * Sets the subtitle to the given text.
+-         *
+-         * @param subtitle the title text
+-         * @return this builder instance
+-         */
+-        @NotNull
+-        public Builder subtitle(@Nullable BaseComponent[] subtitle) {
+-            this.subtitle = subtitle;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the subtitle to the given text.
+-         *
+-         * <p>It is recommended to the {@link BaseComponent} methods.</p>
+-         *
+-         * @param subtitle the title text
+-         * @return this builder instance
+-         */
+-        @NotNull
+-        public Builder subtitle(@Nullable String subtitle) {
+-            return this.subtitle(subtitle == null ? null : TextComponent.fromLegacyText(subtitle));
+-        }
+-
+-        /**
+-         * Sets the number of ticks for the title to fade in
+-         *
+-         * @param fadeIn the number of ticks to fade in
+-         * @return this builder instance
+-         * @throws IllegalArgumentException if it is negative
+-         */
+-        @NotNull
+-        public Builder fadeIn(int fadeIn) {
+-            checkArgument(fadeIn >= 0, "Negative fadeIn: %s", fadeIn);
+-            this.fadeIn = fadeIn;
+-            return this;
+-        }
+-
+-
+-        /**
+-         * Sets the number of ticks for the title to stay.
+-         *
+-         * @param stay the number of ticks to stay
+-         * @return this builder instance
+-         * @throws IllegalArgumentException if it is negative
+-         */
+-        @NotNull
+-        public Builder stay(int stay) {
+-            checkArgument(stay >= 0, "Negative stay: %s", stay);
+-            this.stay = stay;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the number of ticks for the title to fade out.
+-         *
+-         * @param fadeOut the number of ticks to fade out
+-         * @return this builder instance
+-         * @throws IllegalArgumentException if it is negative
+-         */
+-        @NotNull
+-        public Builder fadeOut(int fadeOut) {
+-            checkArgument(fadeOut >= 0, "Negative fadeOut: %s", fadeOut);
+-            this.fadeOut = fadeOut;
+-            return this;
+-        }
+-
+-        /**
+-         * Create a title based on the values in the builder.
+-         *
+-         * @return a title from the values in this builder
+-         * @throws IllegalStateException if title isn't specified
+-         */
+-        @NotNull
+-        public Title build() {
+-            checkState(title != null, "Title not specified");
+-            return new Title(this.title, this.subtitle, this.fadeIn, this.stay, this.fadeOut);
+-        }
+-    }
+-}
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..156b0a1a09f95394bd1d52c98c4875e0a6523ae3 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -481,10 +481,10 @@ public final class Bukkit {
+      * @param component the component to send
+      * @deprecated use {@code sendMessage} methods on {@link #getServer()} that accept {@link net.kyori.adventure.text.Component}
+      */
+-    @Deprecated
++    /*@Deprecated
+     public static void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+         server.broadcast(component);
+-    }
++    }*/ // Grinder - despigotization
+ 
+     /**
+      * Sends an array of components as a single message to all online players.
+@@ -492,10 +492,10 @@ public final class Bukkit {
+      * @param components the components to send
+      * @deprecated use {@code sendMessage} methods on {@link #getServer()} that accept {@link net.kyori.adventure.text.Component}
+      */
+-    @Deprecated
++    /*@Deprecated
+     public static void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+         server.broadcast(components);
+-    }
++    }*/ // Grinder - despigotization
+     // Paper end
+ 
+     /**
+diff --git a/src/main/java/org/bukkit/ChatColor.java b/src/main/java/org/bukkit/ChatColor.java
+index 918a045165cdcde264bc24082b7afebb407271de..bfbc7ec642e2e0065ecfa087d31092dd1f21caee 100644
+--- a/src/main/java/org/bukkit/ChatColor.java
++++ b/src/main/java/org/bukkit/ChatColor.java
+@@ -18,221 +18,221 @@ public enum ChatColor {
+      * Represents black
+      */
+     BLACK('0', 0x00) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.BLACK;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents dark blue
+      */
+     DARK_BLUE('1', 0x1) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.DARK_BLUE;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents dark green
+      */
+     DARK_GREEN('2', 0x2) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.DARK_GREEN;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents dark blue (aqua)
+      */
+     DARK_AQUA('3', 0x3) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.DARK_AQUA;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents dark red
+      */
+     DARK_RED('4', 0x4) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.DARK_RED;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents dark purple
+      */
+     DARK_PURPLE('5', 0x5) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.DARK_PURPLE;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents gold
+      */
+     GOLD('6', 0x6) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.GOLD;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents gray
+      */
+     GRAY('7', 0x7) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.GRAY;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents dark gray
+      */
+     DARK_GRAY('8', 0x8) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.DARK_GRAY;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents blue
+      */
+     BLUE('9', 0x9) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.BLUE;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents green
+      */
+     GREEN('a', 0xA) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.GREEN;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents aqua
+      */
+     AQUA('b', 0xB) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.AQUA;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents red
+      */
+     RED('c', 0xC) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.RED;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents light purple
+      */
+     LIGHT_PURPLE('d', 0xD) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.LIGHT_PURPLE;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents yellow
+      */
+     YELLOW('e', 0xE) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.YELLOW;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents white
+      */
+     WHITE('f', 0xF) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.WHITE;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Represents magical characters that change around randomly
+      */
+     MAGIC('k', 0x10, true) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.MAGIC;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Makes the text bold.
+      */
+     BOLD('l', 0x11, true) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.BOLD;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Makes a line appear through the text.
+      */
+     STRIKETHROUGH('m', 0x12, true) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.STRIKETHROUGH;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Makes the text appear underlined.
+      */
+     UNDERLINE('n', 0x13, true) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.UNDERLINE;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Makes the text italic.
+      */
+     ITALIC('o', 0x14, true) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.ITALIC;
+-        }
++        }*/ // Grinder - despigotization
+     },
+     /**
+      * Resets all previous chat colors or formats.
+      */
+     RESET('r', 0x15) {
+-        @NotNull
++        /*@NotNull
+         @Override
+         public net.md_5.bungee.api.ChatColor asBungee() {
+             return net.md_5.bungee.api.ChatColor.RESET;
+-        }
++        }*/ // Grinder - despigotization
+     };
+ 
+     /**
+@@ -260,10 +260,10 @@ public enum ChatColor {
+         this.toString = new String(new char[] {COLOR_CHAR, code});
+     }
+ 
+-    @NotNull
++    /*@NotNull
+     public net.md_5.bungee.api.ChatColor asBungee() {
+         return net.md_5.bungee.api.ChatColor.RESET;
+-    };
++    };*/ // Grinder - despigotization
+ 
+     /**
+      * Gets the char value associated with this color
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7a3d3f1edf608510e03a89d6033d1e8a221b9272 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -392,10 +392,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      * @param component the component to send
+      * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+      */
+-    @Deprecated
++    /*@Deprecated
+     public default void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+         spigot().broadcast(component);
+-    }
++    }*/ // Grinder - despigotization
+ 
+     /**
+      * Sends an array of components as a single message to all online players.
+@@ -403,10 +403,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      * @param components the components to send
+      * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+      */
+-    @Deprecated
++    /*@Deprecated
+     public default void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+         spigot().broadcast(components);
+-    }
++    }*/ // Grinder - despigotization
+     // Paper end
+ 
+     /**
+@@ -2260,10 +2260,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+          * @param component the components to send
+          * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sends an array of components as a single message to the player
+@@ -2271,10 +2271,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+          * @param components the components to send
+          * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Restart the server. If the server administrator has not configured restarting, the server will stop.
+diff --git a/src/main/java/org/bukkit/command/CommandSender.java b/src/main/java/org/bukkit/command/CommandSender.java
+index 04e7cd0e4e2d0eb38fb2862ce6688a4470f30d6b..15849d9a38ecac1ae5a229668ae446aedb7269bb 100644
+--- a/src/main/java/org/bukkit/command/CommandSender.java
++++ b/src/main/java/org/bukkit/command/CommandSender.java
+@@ -72,7 +72,7 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+     public String getName();
+ 
+     // Spigot start
+-    public class Spigot {
++    /*public class Spigot {
+ 
+         /**
+          * Sends this sender a chat component.
+@@ -80,10 +80,10 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+          * @param component the components to send
+          * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sends an array of components as a single message to the sender.
+@@ -91,10 +91,10 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+          * @param components the components to send
+          * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sends this sender a chat component.
+@@ -103,10 +103,10 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+          * @param sender the sender of the message
+          * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void sendMessage(@Nullable UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sends an array of components as a single message to the sender.
+@@ -115,15 +115,15 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+          * @param sender the sender of the message
+          * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void sendMessage(@Nullable UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-    }
++        }*/ // Grinder - despigotization
++    /*}
+ 
+     @NotNull
+     Spigot spigot();
+-    // Spigot end
++    */// Spigot end // Grinder - despigotization
+ 
+     // Paper start
+     /**
+@@ -181,10 +181,10 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+      * @param component the component to send
+      * @deprecated use {@link #sendMessage(Identity, Component, MessageType)} instead
+      */
+-    @Deprecated
++    /*@Deprecated
+     default void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+         this.sendMessage(component.toLegacyText());
+-    }
++    }*/ // Grinder - despigotization
+ 
+     /**
+      * Sends an array of components as a single message to the sender
+@@ -195,9 +195,9 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+      * @param components the components to send
+      * @deprecated use {@link #sendMessage(Identity, Component, MessageType)} instead
+      */
+-    @Deprecated
++    /*@Deprecated
+     default void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+         this.sendMessage(new net.md_5.bungee.api.chat.TextComponent(components).toLegacyText());
+-    }
++    }*/ // Grinder - despigotization
+     // Paper end
+ }
+diff --git a/src/main/java/org/bukkit/command/MessageCommandSender.java b/src/main/java/org/bukkit/command/MessageCommandSender.java
+index 9d263ab3afb938c215c0b64d9171345fca6ceb2c..9e84f7ac2af103ac677b69c5b2fb8cdf46df13c1 100644
+--- a/src/main/java/org/bukkit/command/MessageCommandSender.java
++++ b/src/main/java/org/bukkit/command/MessageCommandSender.java
+@@ -126,10 +126,10 @@ public interface MessageCommandSender extends CommandSender {
+         throw new UnsupportedOperationException();
+     }
+ 
+-    @NotNull
++    /*@NotNull
+     @Override
+     default Spigot spigot() {
+         throw new UnsupportedOperationException();
+-    }
++    }*/ // Grinder - despigotization
+ 
+ }
+diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
+index 725ef320f929d5e3d141c1ed3246d73a7d741f31..f5e5e9a38f1ec8b0d9191a7ed9604d1c61abd6db 100644
+--- a/src/main/java/org/bukkit/entity/Entity.java
++++ b/src/main/java/org/bukkit/entity/Entity.java
+@@ -937,13 +937,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+     Entity copy(@NotNull Location to);
+ 
+     // Spigot start
+-    public class Spigot extends CommandSender.Spigot {
++    /*public class Spigot extends CommandSender.Spigot {
+ 
+     }
+ 
+     @NotNull
+     @Override
+-    Spigot spigot();
++    Spigot spigot();*/ // Grinder - despigotization
+     // Spigot end
+ 
+     // Paper start
+diff --git a/src/main/java/org/bukkit/entity/LightningStrike.java b/src/main/java/org/bukkit/entity/LightningStrike.java
+index 924ee7fcc3f87eb8553ef473a7d9671f0f469dd1..d0299d3d1368adf5e49f2a914c3de5b4687d2d75 100644
+--- a/src/main/java/org/bukkit/entity/LightningStrike.java
++++ b/src/main/java/org/bukkit/entity/LightningStrike.java
+@@ -91,8 +91,8 @@ public interface LightningStrike extends Entity {
+     /**
+      * @deprecated Unsupported api
+      */
+-    @Deprecated // Paper
+-    public class Spigot extends Entity.Spigot {
++    /*@Deprecated // Paper
++    public class Spigot extends Entity.Spigot {*/ // Grinder - despigotization
+ 
+         /**
+          * Returns whether the strike is silent.
+@@ -100,19 +100,19 @@ public interface LightningStrike extends Entity {
+          * @return whether the strike is silent.
+          * @deprecated sound is now client side and cannot be removed
+          */
+-        @Deprecated
++        /*@Deprecated
+         public boolean isSilent() {
+             throw new UnsupportedOperationException("Not supported yet.");
+         }
+-    }
++    }*/ // Grinder - despigotization
+ 
+     /**
+      * @deprecated Unsupported api
+      */
+-    @NotNull
++    /*@NotNull
+     @Override
+     @Deprecated // Paper
+-    Spigot spigot();
++    Spigot spigot();*/ // Grinder - despigotization
+     // Spigot end
+ 
+     // Paper start
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index 7c56182acaf827f4b1a986a61cea8e9960604c98..bfba81269e257992b5093e0f08c7ea3d0ede881c 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -1509,8 +1509,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param message The components to send
+      * @deprecated use {@link #sendActionBar(net.kyori.adventure.text.Component)}
+      */
+-    @Deprecated
+-    public void sendActionBar(@NotNull net.md_5.bungee.api.chat.BaseComponent... message);
++    /*@Deprecated
++    public void sendActionBar(@NotNull net.md_5.bungee.api.chat.BaseComponent... message);*/ // Grinder - despigotization
+ 
+     /**
+      * Sends the component to the player
+@@ -1518,11 +1518,11 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param component the components to send
+      * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+      */
+-    @Override
++    /*@Override
+     @Deprecated
+     public default void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+         spigot().sendMessage(component);
+-    }
++    } // Grinder - despigotization
+ 
+     /**
+      * Sends an array of components as a single message to the player
+@@ -1530,11 +1530,11 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param components the components to send
+      * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+      */
+-    @Override
++    /*@Override
+     @Deprecated
+     public default void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+         spigot().sendMessage(components);
+-    }
++    } // Grinder - despigotization
+ 
+     /**
+      * Sends an array of components as a single message to the specified screen position of this player
+@@ -1543,10 +1543,10 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param position the screen position
+      * @param components the components to send
+      */
+-    @Deprecated
++    /*@Deprecated
+     public default void sendMessage(net.md_5.bungee.api.ChatMessageType position, net.md_5.bungee.api.chat.BaseComponent... components) {
+         spigot().sendMessage(position, components);
+-    }
++    } // Grinder - despigotization
+ 
+     /**
+      * Set the text displayed in the player list header and footer for this player
+@@ -1555,8 +1555,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param footer content for the bottom of the player list
+      * @deprecated in favour of {@link #sendPlayerListHeaderAndFooter(net.kyori.adventure.text.Component, net.kyori.adventure.text.Component)}
+      */
+-    @Deprecated
+-    public void setPlayerListHeaderFooter(@Nullable net.md_5.bungee.api.chat.BaseComponent[] header, @Nullable net.md_5.bungee.api.chat.BaseComponent[] footer);
++    /*@Deprecated
++    public void setPlayerListHeaderFooter(@Nullable net.md_5.bungee.api.chat.BaseComponent[] header, @Nullable net.md_5.bungee.api.chat.BaseComponent[] footer); // Grinder - despigotization
+ 
+     /**
+      * Set the text displayed in the player list header and footer for this player
+@@ -1565,8 +1565,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param footer content for the bottom of the player list
+      * @deprecated in favour of {@link #sendPlayerListHeaderAndFooter(net.kyori.adventure.text.Component, net.kyori.adventure.text.Component)}
+      */
+-    @Deprecated
+-    public void setPlayerListHeaderFooter(@Nullable net.md_5.bungee.api.chat.BaseComponent header, @Nullable net.md_5.bungee.api.chat.BaseComponent footer);
++    /*@Deprecated
++    public void setPlayerListHeaderFooter(@Nullable net.md_5.bungee.api.chat.BaseComponent header, @Nullable net.md_5.bungee.api.chat.BaseComponent footer); // Grinder - despigotization
+ 
+     /**
+      * Update the times for titles displayed to the player
+@@ -1585,8 +1585,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param subtitle Subtitle to set
+      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+      */
+-    @Deprecated
+-    public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent[] subtitle);
++    /*@Deprecated
++    public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent[] subtitle); // Grinder - despigotization
+ 
+     /**
+      * Update the subtitle of titles displayed to the player
+@@ -1594,8 +1594,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param subtitle Subtitle to set
+      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+      */
+-    @Deprecated
+-    public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent subtitle);
++    /*@Deprecated
++    public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent subtitle); // Grinder - despigotization
+ 
+     /**
+      * Show the given title to the player, along with the last subtitle set, using the last set times
+@@ -1603,8 +1603,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param title Title to set
+      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+      */
+-    @Deprecated
+-    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent[] title);
++    /*@Deprecated
++    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent[] title); // Grinder - despigotization
+ 
+     /**
+      * Show the given title to the player, along with the last subtitle set, using the last set times
+@@ -1612,8 +1612,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param title Title to set
+      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+      */
+-    @Deprecated
+-    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent title);
++    /*@Deprecated
++    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent title); // Grinder - despigotization
+ 
+     /**
+      * Show the given title and subtitle to the player using the given times
+@@ -1625,8 +1625,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param fadeOutTicks ticks to fade-out
+      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+      */
+-    @Deprecated
+-    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent[] title, @Nullable net.md_5.bungee.api.chat.BaseComponent[] subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
++    /*@Deprecated
++    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent[] title, @Nullable net.md_5.bungee.api.chat.BaseComponent[] subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks); // Grinder - despigotization
+ 
+     /**
+      * Show the given title and subtitle to the player using the given times
+@@ -1638,8 +1638,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param fadeOutTicks ticks to fade-out
+      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+      */
+-    @Deprecated
+-    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent title, @Nullable net.md_5.bungee.api.chat.BaseComponent subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
++    /*@Deprecated
++    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent title, @Nullable net.md_5.bungee.api.chat.BaseComponent subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks); // Grinder - despigotization
+ 
+     /**
+      * Show the title to the player, overriding any previously displayed title.
+@@ -1650,8 +1650,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @throws NullPointerException if the title is null
+      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+      */
+-    @Deprecated
+-    void sendTitle(@NotNull com.destroystokyo.paper.Title title);
++    /*@Deprecated
++    void sendTitle(@NotNull com.destroystokyo.paper.Title title); // Grinder - despigotization
+ 
+     /**
+      * Show the title to the player, overriding any previously displayed title.
+@@ -1662,8 +1662,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @throws NullPointerException if title is null
+      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+      */
+-    @Deprecated
+-    void updateTitle(@NotNull com.destroystokyo.paper.Title title);
++    /*@Deprecated
++    void updateTitle(@NotNull com.destroystokyo.paper.Title title);*/ // Grinder - despigotization
+ 
+     /**
+      * Hide any title that is currently visible to the player
+@@ -3566,7 +3566,7 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     // Paper end - custom chat completions API
+ 
+     // Spigot start
+-    public class Spigot extends Entity.Spigot {
++    public class Spigot /*extends Entity.Spigot // Grinder - despigotization*/ {
+ 
+         /**
+          * Gets the connection address of this player, regardless of whether it
+@@ -3596,7 +3596,7 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+             throw new UnsupportedOperationException("Not supported yet.");
+         }
+ 
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         @Override
+         public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+             throw new UnsupportedOperationException("Not supported yet.");
+@@ -3606,7 +3606,7 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+         @Override
+         public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sends the component to the specified screen position of this player
+@@ -3615,10 +3615,10 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+          * @param component the components to send
+          * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sends an array of components as a single message to the specified screen position of this player
+@@ -3627,10 +3627,10 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+          * @param components the components to send
+          * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sends the component to the specified screen position of this player
+@@ -3640,10 +3640,10 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+          * @param component the components to send
+          * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @Nullable java.util.UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sends an array of components as a single message to the specified screen position of this player
+@@ -3653,11 +3653,11 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+          * @param components the components to send
+          * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @Nullable java.util.UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+             throw new UnsupportedOperationException("Not supported yet.");
+ 
+-        }
++        }*/ // Grinder - despigotization
+ 
+         // Paper start
+         /**
+@@ -3856,7 +3856,7 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     // Paper end
+ 
+     @NotNull
+-    @Override
++    //@Override // Grinder - despigotization
+     Spigot spigot();
+     // Spigot end
+ }
+diff --git a/src/main/java/org/bukkit/inventory/ItemFactory.java b/src/main/java/org/bukkit/inventory/ItemFactory.java
+index bd0e55562f1cabef3078573182e0cf9fbc844585..58a06d33f10f1c3c666d42c1b3ea2e023bffe29f 100644
+--- a/src/main/java/org/bukkit/inventory/ItemFactory.java
++++ b/src/main/java/org/bukkit/inventory/ItemFactory.java
+@@ -268,9 +268,9 @@ public interface ItemFactory {
+      * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that ItemStack
+      * @deprecated use {@link ItemStack#asHoverEvent()}
+      */
+-    @NotNull
++    /*@NotNull
+     @Deprecated // Paper
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull ItemStack itemStack);
++    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull ItemStack itemStack);*/ // Grinder - despigotization
+ 
+     /**
+      * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity} for displaying.
+@@ -280,9 +280,9 @@ public interface ItemFactory {
+      * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity}
+      * @deprecated use {@link org.bukkit.entity.Entity#asHoverEvent()}
+      */
+-    @NotNull
++    /*@NotNull
+     @Deprecated
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity);
++    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity);*/ // Grinder - despigotization
+ 
+     /**
+      * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity} for displaying.
+@@ -292,9 +292,9 @@ public interface ItemFactory {
+      * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity}
+      * @deprecated use {@link org.bukkit.entity.Entity#asHoverEvent(java.util.function.UnaryOperator)}
+      */
+-    @NotNull
++    /*@NotNull
+     @Deprecated
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @Nullable String customName);
++    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @Nullable String customName); // Grinder - despigotization
+ 
+     /**
+      * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity} for displaying.
+@@ -304,9 +304,9 @@ public interface ItemFactory {
+      * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity}
+      * @deprecated use {@link org.bukkit.entity.Entity#asHoverEvent(java.util.function.UnaryOperator)}
+      */
+-    @NotNull
++    /*@NotNull
+     @Deprecated
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @Nullable net.md_5.bungee.api.chat.BaseComponent customName);
++    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @Nullable net.md_5.bungee.api.chat.BaseComponent customName);*/ // Grinder - despigotization
+ 
+     /**
+      * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity} for displaying.
+@@ -316,9 +316,9 @@ public interface ItemFactory {
+      * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity}
+      * @deprecated use {@link org.bukkit.entity.Entity#asHoverEvent(java.util.function.UnaryOperator)}
+      */
+-    @NotNull
++    /*@NotNull
+     @Deprecated
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @NotNull net.md_5.bungee.api.chat.BaseComponent[] customName);
++    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @NotNull net.md_5.bungee.api.chat.BaseComponent[] customName);*/ // Grinder - despigotization
+     // Paper end - bungee hover events
+ 
+     // Paper start - enchantWithLevels API
+diff --git a/src/main/java/org/bukkit/inventory/meta/BookMeta.java b/src/main/java/org/bukkit/inventory/meta/BookMeta.java
+index f0c6943da3f783101ca647b75b3230fae3a310da..b9f11410b995ce73178b3b17d2f24e18d88c213f 100644
+--- a/src/main/java/org/bukkit/inventory/meta/BookMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/BookMeta.java
+@@ -1,7 +1,7 @@
+ package org.bukkit.inventory.meta;
+ 
+ import java.util.List;
+-import net.md_5.bungee.api.chat.BaseComponent;
++//import net.md_5.bungee.api.chat.BaseComponent; // Grinder - despigotization
+ import org.bukkit.Material;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+@@ -269,7 +269,7 @@ public interface BookMeta extends WritableBookMeta, net.kyori.adventure.inventor
+     // Paper end
+ 
+     // Spigot start
+-    public class Spigot {
++    /*public class Spigot {
+ 
+         /**
+          * Gets the specified page in the book. The given page must exist.
+@@ -278,11 +278,11 @@ public interface BookMeta extends WritableBookMeta, net.kyori.adventure.inventor
+          * @return the page from the book
+          * @deprecated in favour of {@link #page(int)}
+          */
+-        @NotNull
++        /*@NotNull
+         @Deprecated // Paper
+         public BaseComponent[] getPage(int page) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Sets the specified page in the book. Pages of the book must be
+@@ -295,10 +295,10 @@ public interface BookMeta extends WritableBookMeta, net.kyori.adventure.inventor
+          * @param data the data to set for that page
+          * @deprecated in favour of {@link #page(int, net.kyori.adventure.text.Component)}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void setPage(int page, @Nullable BaseComponent... data) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Gets all the pages in the book.
+@@ -306,11 +306,11 @@ public interface BookMeta extends WritableBookMeta, net.kyori.adventure.inventor
+          * @return list of all the pages in the book
+          * @deprecated in favour of {@link #pages()}
+          */
+-        @NotNull
++        /*@NotNull
+         @Deprecated // Paper
+         public List<BaseComponent[]> getPages() {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Clears the existing book pages, and sets the book to use the provided
+@@ -319,10 +319,10 @@ public interface BookMeta extends WritableBookMeta, net.kyori.adventure.inventor
+          * @param pages A list of pages to set the book to use
+          * @deprecated in favour of {@link #pages(java.util.List)}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void setPages(@NotNull List<BaseComponent[]> pages) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Clears the existing book pages, and sets the book to use the provided
+@@ -331,10 +331,10 @@ public interface BookMeta extends WritableBookMeta, net.kyori.adventure.inventor
+          * @param pages A list of component arrays, each being a page
+          * @deprecated in favour of {@link #pages(net.kyori.adventure.text.Component...)}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void setPages(@NotNull BaseComponent[]... pages) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Adds new pages to the end of the book. Up to a maximum of 50 pages
+@@ -343,13 +343,13 @@ public interface BookMeta extends WritableBookMeta, net.kyori.adventure.inventor
+          * @param pages A list of component arrays, each being a page
+          * @deprecated in favour of {@link #addPages(net.kyori.adventure.text.Component...)}
+          */
+-        @Deprecated // Paper
++        /*@Deprecated // Paper
+         public void addPage(@NotNull BaseComponent[]... pages) {
+             throw new UnsupportedOperationException("Not supported yet.");
+         }
+     }
+ 
+     @NotNull
+-    Spigot spigot();
++    Spigot spigot();*/ // Grinder - despigotization
+     // Spigot end
+ }
+diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
+index 1a4260b00b193b94ce4b1b2954644f4e41baff4c..9f35ee77318a3f06c150cbe9e8d7c4e1d209d2ee 100644
+--- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
+@@ -79,9 +79,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+      * @return the display name that is set
+      * @deprecated use {@link #displayName()}
+      */
+-    @NotNull
++    /*@NotNull
+     @Deprecated
+-    net.md_5.bungee.api.chat.BaseComponent[] getDisplayNameComponent();
++    net.md_5.bungee.api.chat.BaseComponent[] getDisplayNameComponent();*/ // Grinder - despigotization
+     // Paper end
+     /**
+      * Sets the display name.
+@@ -99,8 +99,8 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+      * @param component the name component to set
+      * @deprecated use {@link #displayName(Component)}
+      */
+-    @Deprecated
+-    void setDisplayNameComponent(@Nullable net.md_5.bungee.api.chat.BaseComponent[] component);
++    /*@Deprecated
++    void setDisplayNameComponent(@Nullable net.md_5.bungee.api.chat.BaseComponent[] component);*/ // Grinder - despigotization
+     // Paper end
+     /**
+      * Checks for existence of an item name.
+@@ -247,9 +247,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+      * @return a list of lore that is set
+      * @deprecated use {@link #lore()}
+      */
+-    @Nullable
++    /*@Nullable
+     @Deprecated
+-    List<net.md_5.bungee.api.chat.BaseComponent[]> getLoreComponents();
++    List<net.md_5.bungee.api.chat.BaseComponent[]> getLoreComponents();*/ // Grinder - despigotization
+ 
+     /**
+      * Sets the lore for this item.
+@@ -268,8 +268,8 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+      * @param lore the lore that will be set
+      * @deprecated use {@link #lore(List)}
+      */
+-    @Deprecated
+-    void setLoreComponents(@Nullable List<net.md_5.bungee.api.chat.BaseComponent[]> lore);
++    /*@Deprecated
++    void setLoreComponents(@Nullable List<net.md_5.bungee.api.chat.BaseComponent[]> lore);*/ // Grinder - despigotization
+ 
+     /**
+      * Checks for existence of custom model data.

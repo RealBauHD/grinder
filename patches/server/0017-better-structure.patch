@@ -1,0 +1,41 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Tue, 9 Jul 2024 00:59:33 +0200
+Subject: [PATCH] better structure
+
+
+diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
+index 0bc825b16f768b7700df9cbf219c7c1bdc97becd..a3ee0c66ab4885fa4751300ca9655cfc8c979f11 100644
+--- a/src/main/java/net/minecraft/server/Main.java
++++ b/src/main/java/net/minecraft/server/Main.java
+@@ -187,7 +187,7 @@ public class Main {
+                 file = (File) optionset.valueOf("universe"); // CraftBukkit
+                 userCacheFile = new File(file, Services.USERID_CACHE_FILE);
+             } else {
+-                file = new File(bukkitConfiguration.getString("settings.world-container", "."));
++                file = new File(/*bukkitConfiguration.getString("settings.world-container", ".")*/ "worlds"); // Grinder - better structure
+             }
+             // Paper end - fix SPIGOT-5824
+             Services services = Services.create(new com.destroystokyo.paper.profile.PaperAuthenticationService(Proxy.NO_PROXY), file, userCacheFile, optionset); // Paper - pass OptionSet to load paper config files; override authentication service; fix world-container
+diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
+index 2f0e9052f9041d041ca3dc0665cc49ac178703e8..f70776c5e57d2975ed7b7aad1f58594b561ec709 100644
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -124,7 +124,7 @@ public class Main {
+                 this.acceptsAll(Main.asList("b", "bukkit-settings"), "File for bukkit settings")
+                         .withRequiredArg()
+                         .ofType(File.class)
+-                        .defaultsTo(new File("bukkit.yml"))
++                        .defaultsTo(new File(io.papermc.paper.configuration.PaperConfigurations.CONFIG_DIR, "bukkit.yml")) // Grinder - better structure
+                         .describedAs("Yml file");
+ 
+                 /*this.acceptsAll(Main.asList("C", "commands-settings"), "File for command settings")
+@@ -153,7 +153,7 @@ public class Main {
+                 this.acceptsAll(Main.asList("S", "spigot-settings"), "File for spigot settings")
+                         .withRequiredArg()
+                         .ofType(File.class)
+-                        .defaultsTo(new File("spigot.yml"))
++                        .defaultsTo(new File(io.papermc.paper.configuration.PaperConfigurations.CONFIG_DIR, "spigot.yml")) // Grinder - better structure
+                         .describedAs("Yml file");
+                 // Spigot End
+ 
