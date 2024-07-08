@@ -5,7 +5,7 @@ Subject: [PATCH] remove sleep status
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 52d10c3362564e52cac2a8aa1edc51b743412688..9c684a450383d46dbe2908819ea56606d41a9f7f 100644
+index 7e0d2b3b93c4c0dd69ee9a3b29a280314e9e9349..707e3aadc91973e70ead466688e5b30403d85888 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -202,7 +202,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
@@ -13,62 +13,51 @@ index 52d10c3362564e52cac2a8aa1edc51b743412688..9c684a450383d46dbe2908819ea56606
      private final GameEventDispatcher gameEventDispatcher;
      public boolean noSave;
 -    private final SleepStatus sleepStatus;
-+    // private final SleepStatus sleepStatus; // Grinder
++    //private final SleepStatus sleepStatus; // Grinder - remove sleep status
      private int emptyTime;
      private final PortalForcer portalForcer;
      private final LevelTicks<Block> blockTicks;
-@@ -570,7 +570,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -587,7 +587,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              this.dragonFight = null;
          }
  
 -        this.sleepStatus = new SleepStatus();
-+        //this.sleepStatus = new SleepStatus(); // Grinder
++        //this.sleepStatus = new SleepStatus(); // Grinder - remove sleep status
          this.gameEventDispatcher = new GameEventDispatcher(this);
          this.randomSequences = (RandomSequences) Objects.requireNonNullElseGet(randomsequences, () -> {
              return (RandomSequences) this.getDataStorage().computeIfAbsent(RandomSequences.factory(l), "random_sequences");
-@@ -636,7 +636,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -653,10 +653,10 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              this.advanceWeatherCycle();
          }
  
 -        int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
-+        /*int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
++        //int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE); // Grinder - remove sleep status
          long j;
  
-         if (this.sleepStatus.areEnoughSleeping(i) && this.sleepStatus.areEnoughDeepSleeping(i, this.players)) {
-@@ -657,7 +657,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+-        if (this.sleepStatus.areEnoughSleeping(i) && this.sleepStatus.areEnoughDeepSleeping(i, this.players)) {
++        /*if (this.sleepStatus.areEnoughSleeping(i) && this.sleepStatus.areEnoughDeepSleeping(i, this.players)) {
+             // CraftBukkit start
+             j = this.levelData.getDayTime() + 24000L;
+             TimeSkipEvent event = new TimeSkipEvent(this.getWorld(), TimeSkipEvent.SkipReason.NIGHT_SKIP, (j - j % 24000L) - this.getDayTime());
+@@ -674,7 +674,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE) && this.isRaining()) {
                  this.resetWeatherCycle();
              }
 -        }
-+        }*/ // Grinder - no sleeping
++        }*/ // Grinder - remove sleep status
  
          this.updateSkyBrightness();
          if (flag) {
-@@ -667,7 +667,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
-         gameprofilerfiller.popPush("tickPending");
-         this.timings.scheduledBlocks.startTiming(); // Paper
-         if (!this.isDebug() && flag) {
--            j = this.getGameTime();
-+            long j = this.getGameTime(); // Grinder
-             gameprofilerfiller.push("blockTicks");
-             this.blockTicks.tick(j, paperConfig().environment.maxBlockTicks, this::tickBlock); // Paper - configurable max block ticks
-             gameprofilerfiller.popPush("fluidTicks");
-@@ -790,12 +790,13 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
-         return !this.server.isSpawningAnimals() && (entity instanceof Animal || entity instanceof WaterAnimal) ? true : !this.server.areNpcsEnabled() && entity instanceof Npc;
+@@ -808,7 +808,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
      }
  
--    private void wakeUpAllPlayers() {
-+    /*private void wakeUpAllPlayers() {
-         this.sleepStatus.removeAllSleepers();
+     private void wakeUpAllPlayers() {
+-        this.sleepStatus.removeAllSleepers();
++        //this.sleepStatus.removeAllSleepers(); // Grinder - remove sleep status
          (this.players.stream().filter(LivingEntity::isSleeping).collect(Collectors.toList())).forEach((entityplayer) -> { // CraftBukkit - decompile error
              entityplayer.stopSleepInBed(false, false);
          });
-     }
-+    }*/ // Grinder
- 
-     public void tickChunk(LevelChunk chunk, int randomTickSpeed) {
-         ChunkPos chunkcoordintpair = chunk.getPos();
-@@ -972,7 +973,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -1008,7 +1008,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          return this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE) <= 100;
      }
  
@@ -77,19 +66,19 @@ index 52d10c3362564e52cac2a8aa1edc51b743412688..9c684a450383d46dbe2908819ea56606
          if (this.canSleepThroughNights()) {
              if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
                  int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
-@@ -994,12 +995,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -1030,12 +1030,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
  
              }
          }
 -    }
-+    }*/ // Grinder
++    }*/ // Grinder - remove sleep status
  
      public void updateSleepingPlayerList() {
 -        if (!this.players.isEmpty() && this.sleepStatus.update(this.players)) {
 +        /*if (!this.players.isEmpty() && this.sleepStatus.update(this.players)) {
              this.announceSleepStatus();
 -        }
-+        }*/ // Grinder
++        }*/ // Grinder - remove sleep status
  
      }
  

@@ -1,0 +1,93 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Tue, 2 Jul 2024 14:27:11 +0200
+Subject: [PATCH] use mojang's messages
+
+
+diff --git a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+index ddf42645402afefc0f5caebc684b191eef9d6ec2..cad3b8b326b3b9ca38e6892b3bc01e4b2d23999d 100644
+--- a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+@@ -119,9 +119,9 @@ public class ServerHandshakePacketListenerImpl implements ServerHandshakePacketL
+                     net.kyori.adventure.text.Component adventureComponent; // Paper - Fix hex colors not working in some kick messages
+ 
+             if (packet.protocolVersion() < SharedConstants.getCurrentVersion().getProtocolVersion()) { // Spigot - SPIGOT-7546: Handle version check correctly for outdated client message
+-                        adventureComponent = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(java.text.MessageFormat.format(org.spigotmc.SpigotConfig.outdatedClientMessage.replaceAll("'", "''"), SharedConstants.getCurrentVersion().getName())); // Spigot // Paper - Fix hex colors not working in some kick messages
++                        adventureComponent = net.kyori.adventure.text.Component.translatable("multiplayer.disconnect.outdated_client", SharedConstants.getCurrentVersion().getName());/*net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(java.text.MessageFormat.format(org.spigotmc.SpigotConfig.outdatedClientMessage.replaceAll("'", "''"), SharedConstants.getCurrentVersion().getName()));*/ // Spigot // Paper - Fix hex colors not working in some kick messages // Grinder - use mojang ones
+             } else {
+-                        adventureComponent = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(java.text.MessageFormat.format(org.spigotmc.SpigotConfig.outdatedServerMessage.replaceAll("'", "''"), SharedConstants.getCurrentVersion().getName())); // Spigot // Paper - Fix hex colors not working in some kick messages
++                        adventureComponent = net.kyori.adventure.text.Component.translatable("multiplayer.disconnect.outdated_server", SharedConstants.getCurrentVersion().getName()); /*net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(java.text.MessageFormat.format(org.spigotmc.SpigotConfig.outdatedServerMessage.replaceAll("'", "''"), SharedConstants.getCurrentVersion().getName()));*/ // Spigot // Paper - Fix hex colors not working in some kick messages // Grinder - use mojang ones
+             }
+ 
+                     Component ichatmutablecomponent = io.papermc.paper.adventure.PaperAdventure.asVanilla(adventureComponent); // Paper - Fix hex colors not working in some kick messages
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index cb31903078b6cdfd8e3c9a4d81c8080f7d604842..927f14710f299e25e64a69e98797e3293873c778 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -746,7 +746,7 @@ public abstract class PlayerList {
+         } else {*/ // Grinder
+             // return this.players.size() >= this.maxPlayers && !this.canBypassPlayerLimit(gameprofile) ? IChatBaseComponent.translatable("multiplayer.disconnect.server_full") : null;
+             if (this.players.size() >= this.maxPlayers && !this.canBypassPlayerLimit(gameprofile)) {
+-                event.disallow(PlayerLoginEvent.Result.KICK_FULL, net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(org.spigotmc.SpigotConfig.serverFullMessage)); // Spigot // Paper - Adventure
++                event.disallow(PlayerLoginEvent.Result.KICK_FULL, net.kyori.adventure.text.Component.translatable("multiplayer.disconnect.server_full"))/*serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(org.spigotmc.SpigotConfig.serverFullMessage))*/; // Spigot // Paper - Adventure // Grinder - use mojang ones
+             }
+         //}
+ 
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 6b186e01d4df0c288079d10bfcb009c9b9cb523a..1812ada7582923cecce5db0b1786247743a9f1b2 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -1826,8 +1826,8 @@ public final class CraftServer implements Server {
+     // Paper start
+     @Override
+     public net.kyori.adventure.text.Component shutdownMessage() {
+-        String msg = getShutdownMessage();
+-        return msg != null ? net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(msg) : null;
++        /*String msg = getShutdownMessage();
++        return msg != null ? net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(msg) : null;*/ return net.kyori.adventure.text.Component.translatable("multiplayer.disconnect.server_shutdown"); // Grinder - use mojang's message
+     }
+     // Paper end
+     @Override
+diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
+index e2284942e116ca975808d862897fb7637555ffbc..1ec841df636784c5e33e68cf21a24cfd00adea00 100644
+--- a/src/main/java/org/spigotmc/SpigotConfig.java
++++ b/src/main/java/org/spigotmc/SpigotConfig.java
+@@ -196,7 +196,7 @@ public class SpigotConfig
+ 
+     public static String whitelistMessage;
+     public static String unknownCommandMessage;
+-    public static String serverFullMessage;
++    /*public static String serverFullMessage;
+     public static String outdatedClientMessage = "Outdated client! Please use {0}";
+     public static String outdatedServerMessage = "Outdated server! I\'m still on {0}";
+     private static String transform(String s)
+@@ -216,7 +216,7 @@ public class SpigotConfig
+         SpigotConfig.serverFullMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.server-full", "The server is full!" ) );
+         SpigotConfig.outdatedClientMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.outdated-client", SpigotConfig.outdatedClientMessage ) );
+         SpigotConfig.outdatedServerMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.outdated-server", SpigotConfig.outdatedServerMessage ) );
+-    }
++    }*/ // Grinder
+ 
+     public static int timeoutTime = 60;
+     public static boolean restartOnCrash = false;
+@@ -227,7 +227,7 @@ public class SpigotConfig
+         SpigotConfig.timeoutTime = SpigotConfig.getInt( "settings.timeout-time", SpigotConfig.timeoutTime );
+         SpigotConfig.restartOnCrash = SpigotConfig.getBoolean( "settings.restart-on-crash", SpigotConfig.restartOnCrash );
+         SpigotConfig.restartScript = SpigotConfig.getString( "settings.restart-script", SpigotConfig.restartScript );
+-        SpigotConfig.restartMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.restart", "Server is restarting" ) );
++        //SpigotConfig.restartMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.restart", "Server is restarting" ) ); // Grinder
+         //SpigotConfig.commands.put( "restart", new RestartCommand( "restart" ) ); // Grinder
+         // WatchdogThread.doStart( SpigotConfig.timeoutTime, SpigotConfig.restartOnCrash ); // Paper - moved to after paper config initialization
+     }
+diff --git a/src/main/resources/configurations/bukkit.yml b/src/main/resources/configurations/bukkit.yml
+index 25aaf35cb1728f58ddb6e79e94b53f3d4923fb9a..27dc9b87e9ee86202cf16fee0937ebc19a0c3c0f 100644
+--- a/src/main/resources/configurations/bukkit.yml
++++ b/src/main/resources/configurations/bukkit.yml
+@@ -19,7 +19,6 @@ settings:
+     connection-throttle: 4000
+     query-plugins: true
+     deprecated-verbose: default
+-    shutdown-message: Server closed
+     minimum-api: none
+     use-map-color-cache: true
+ spawn-limits:

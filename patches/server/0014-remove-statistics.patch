@@ -5,7 +5,7 @@ Subject: [PATCH] remove statistics
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index f30ca51e6ab33c04d44fd3db47ed2feaf1eac632..4623e307faaf8d6438ce3691851edf7aa7c1a404 100644
+index 746c414bfc2bc823d3e85a2bc38979436026c009..cb31903078b6cdfd8e3c9a4d81c8080f7d604842 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -303,7 +303,7 @@ public abstract class PlayerList {
@@ -17,7 +17,7 @@ index f30ca51e6ab33c04d44fd3db47ed2feaf1eac632..4623e307faaf8d6438ce3691851edf7a
          player.getRecipeBook().sendInitialRecipeBook(player);
          this.updateEntireScoreboard(worldserver1.getScoreboard(), player);
          this.server.invalidateStatus();
-@@ -1420,7 +1420,7 @@ public abstract class PlayerList {
+@@ -1421,7 +1421,7 @@ public abstract class PlayerList {
      }
  
      public ServerStatsCounter getPlayerStats(UUID uuid, String displayName) {
@@ -26,7 +26,7 @@ index f30ca51e6ab33c04d44fd3db47ed2feaf1eac632..4623e307faaf8d6438ce3691851edf7a
          ServerStatsCounter serverstatisticmanager = entityhuman == null ? null : (ServerStatsCounter) entityhuman.getStats();
          // CraftBukkit end
  
-@@ -1441,7 +1441,7 @@ public abstract class PlayerList {
+@@ -1442,7 +1442,7 @@ public abstract class PlayerList {
              // this.stats.put(uuid, serverstatisticmanager); // CraftBukkit
          }
  
@@ -161,7 +161,7 @@ index 6eff3bdab7ce445b703b983ddbebac0470559a53..e1c7df3169231ed25afa6f3f73289cba
      }
  }
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index 25a46e552537465d00ba19bb3ba884fe781d3c93..7dd17b561233c91cfd4d1f19bc180d2445254c11 100644
+index f80fe0a888b83e9e17c78e668e23d687256da33b..e2284942e116ca975808d862897fb7637555ffbc 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
 @@ -249,7 +249,7 @@ public class SpigotConfig
