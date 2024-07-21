@@ -4,19 +4,6 @@ Date: Fri, 31 May 2024 15:11:24 +0200
 Subject: [PATCH] tweak default configs
 
 
-diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index b8499c1cea97a1a88a53053bc7da132f2fd3928d..40bbc0d339d9da8d210fe9efd3752614ec5fcd25 100644
---- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-+++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-@@ -96,7 +96,7 @@ public class GlobalConfiguration extends ConfigurationPart {
- 
-     @Deprecated(forRemoval = true)
-     public class Timings extends ConfigurationPart {
--        public boolean enabled = true;
-+        public boolean enabled = false; // Grinder
-         public boolean verbose = true;
-         public String url = "https://timings.aikar.co/";
-         public boolean serverNamePrivacy = false;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 index d6431376184e5650b370cbab204e28bc31f4dac6..ec1320941e8a4004f33182c0a2af1f13a0abe8f8 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java

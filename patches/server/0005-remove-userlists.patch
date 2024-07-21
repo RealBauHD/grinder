@@ -5,7 +5,7 @@ Subject: [PATCH] remove userlists
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 3e454515360c22a26c9329e4032d525579110d7e..885cebe23bc2158b24126d754669c60c98bb9867 100644
+index 1d1e76de60e40224f5cb81893f9ee50fe987badb..0994bb2beb95c9a6cfab5131d884eb0586267ded 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -235,13 +235,13 @@ public class Commands {
@@ -34,10 +34,10 @@ index 3e454515360c22a26c9329e4032d525579110d7e..885cebe23bc2158b24126d754669c60c
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index ef177f21d654d69c128f3f39ea58f2d8ee598628..b6ab8d30906524ea934571dff32b22bb68ce8898 100644
+index 43eeb8ce4bc350c2b524ade11ca25d8d4d21bea5..7eb4c8652d1edbf72caf896c6362bf4bab04cc5b 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -719,7 +719,7 @@ public abstract class PlayerList {
+@@ -720,7 +720,7 @@ public abstract class PlayerList {
          PlayerLoginEvent event = new PlayerLoginEvent(player, loginlistener.connection.hostname, ((java.net.InetSocketAddress) socketaddress).getAddress(), ((java.net.InetSocketAddress) loginlistener.connection.channel.remoteAddress()).getAddress());
  
          // Paper start - Fix MC-158900
@@ -46,7 +46,7 @@ index ef177f21d654d69c128f3f39ea58f2d8ee598628..b6ab8d30906524ea934571dff32b22bb
          if (this.bans.isBanned(gameprofile) && (gameprofilebanentry = this.bans.get(gameprofile)) != null) {
              // Paper end - Fix MC-158900
  
-@@ -743,12 +743,12 @@ public abstract class PlayerList {
+@@ -744,12 +744,12 @@ public abstract class PlayerList {
  
              // return chatmessage;
              event.disallow(PlayerLoginEvent.Result.KICK_BANNED, io.papermc.paper.adventure.PaperAdventure.asAdventure(ichatmutablecomponent)); // Paper - Adventure
@@ -191,10 +191,10 @@ index c038da20b76c0b7b1c18471b20be01e849d29f3a..53cab295a705e72fc2801fea49389ee3
      }
  }
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index db9c812cf7267adf0bfd8be7368140e91245d640..0d8c51e318daf7e2e924052ff3f25c2d78e94702 100644
+index 4dbb109d0526afee99b9190fc256585121aac9b5..2bbee0823cef128a5c2cc2dfb67c403a4ba96bfc 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
-@@ -211,7 +211,7 @@ public class SpigotConfig
+@@ -207,7 +207,7 @@ public class SpigotConfig
              SpigotConfig.set( "messages.outdated-server", SpigotConfig.outdatedServerMessage );
          }
  

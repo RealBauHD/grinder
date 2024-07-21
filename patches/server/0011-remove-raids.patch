@@ -5,7 +5,7 @@ Subject: [PATCH] remove raids
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 707e3aadc91973e70ead466688e5b30403d85888..5726ed51dc293be9361bb786b707fef905daff80 100644
+index a983e7bbfcae4294a2a5430313db5e6d06a8fd1b..b247b7cdeb89887f6129c98dff08248bc8501ef7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -210,7 +210,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
@@ -17,7 +17,7 @@ index 707e3aadc91973e70ead466688e5b30403d85888..5726ed51dc293be9361bb786b707fef9
      private final ObjectLinkedOpenHashSet<BlockEventData> blockEvents;
      private final List<BlockEventData> blockEventsToReschedule;
      private boolean handlingTick;
-@@ -572,7 +572,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -599,7 +599,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          this.updateSkyBrightness();
          this.prepareWeather();
          this.getWorldBorder().setAbsoluteMaxSize(minecraftserver.getAbsoluteMaxWorldSize());
@@ -26,7 +26,7 @@ index 707e3aadc91973e70ead466688e5b30403d85888..5726ed51dc293be9361bb786b707fef9
          if (!minecraftserver.isSingleplayer()) {
              iworlddataserver.setGameType(minecraftserver.getDefaultGameType());
          }
-@@ -693,12 +693,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -720,12 +720,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          }
          this.timings.scheduledBlocks.stopTiming(); // Paper
  
@@ -41,7 +41,7 @@ index 707e3aadc91973e70ead466688e5b30403d85888..5726ed51dc293be9361bb786b707fef9
  
          gameprofilerfiller.popPush("chunkSource");
          this.timings.chunkProviderTick.startTiming(); // Paper - timings
-@@ -2057,13 +2057,13 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -2148,13 +2148,13 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          return this.getPoiManager().sectionsToVillage(pos);
      }
  
@@ -88,7 +88,7 @@ index bbf21ea433f9e3963aac0ede597ed8d3c8e50ed8..1f9cf77896a64e2b3d31e2a8038fc566
              if (this.raid != null) {
                  this.raid.addWaveMob(this.wave, this, false);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 8045d6c9398d1c88595da6e41aa1ed27fb6fbad0..3d8d240436780399bf24cbfab50b053df2a9a82e 100644
+index 362ca138a5cd5ad19f1300015c2571794adc3649..10747cd373d1981d91cc27c4f590be88f5dbc87b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -2314,23 +2314,23 @@ public class CraftWorld extends CraftRegionAccessor implements World {

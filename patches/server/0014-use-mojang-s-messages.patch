@@ -21,10 +21,10 @@ index ddf42645402afefc0f5caebc684b191eef9d6ec2..cad3b8b326b3b9ca38e6892b3bc01e4b
  
                      Component ichatmutablecomponent = io.papermc.paper.adventure.PaperAdventure.asVanilla(adventureComponent); // Paper - Fix hex colors not working in some kick messages
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index cb31903078b6cdfd8e3c9a4d81c8080f7d604842..927f14710f299e25e64a69e98797e3293873c778 100644
+index bd49a3159cf4ca3a7b0ac75ac52d6bc268fc96c8..7963baf20d1b05db4b10a89ad17cf23b7a1f8ddf 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -746,7 +746,7 @@ public abstract class PlayerList {
+@@ -747,7 +747,7 @@ public abstract class PlayerList {
          } else {*/ // Grinder
              // return this.players.size() >= this.maxPlayers && !this.canBypassPlayerLimit(gameprofile) ? IChatBaseComponent.translatable("multiplayer.disconnect.server_full") : null;
              if (this.players.size() >= this.maxPlayers && !this.canBypassPlayerLimit(gameprofile)) {
@@ -34,10 +34,10 @@ index cb31903078b6cdfd8e3c9a4d81c8080f7d604842..927f14710f299e25e64a69e98797e329
          //}
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 6b186e01d4df0c288079d10bfcb009c9b9cb523a..1812ada7582923cecce5db0b1786247743a9f1b2 100644
+index 36b796893e96e6bb4a8c916ccdae7a87795cffe2..4a669b2027896b6a50530507bebc49b49ea35a15 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1826,8 +1826,8 @@ public final class CraftServer implements Server {
+@@ -1838,8 +1838,8 @@ public final class CraftServer implements Server {
      // Paper start
      @Override
      public net.kyori.adventure.text.Component shutdownMessage() {
@@ -49,10 +49,10 @@ index 6b186e01d4df0c288079d10bfcb009c9b9cb523a..1812ada7582923cecce5db0b17862477
      // Paper end
      @Override
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index e2284942e116ca975808d862897fb7637555ffbc..1ec841df636784c5e33e68cf21a24cfd00adea00 100644
+index 6296175dc5f06ac08417afed7859e49601c32e3c..eec28530666c63d2ca9e419d8e24b549075425ca 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
-@@ -196,7 +196,7 @@ public class SpigotConfig
+@@ -192,7 +192,7 @@ public class SpigotConfig
  
      public static String whitelistMessage;
      public static String unknownCommandMessage;
@@ -61,7 +61,7 @@ index e2284942e116ca975808d862897fb7637555ffbc..1ec841df636784c5e33e68cf21a24cfd
      public static String outdatedClientMessage = "Outdated client! Please use {0}";
      public static String outdatedServerMessage = "Outdated server! I\'m still on {0}";
      private static String transform(String s)
-@@ -216,7 +216,7 @@ public class SpigotConfig
+@@ -212,7 +212,7 @@ public class SpigotConfig
          SpigotConfig.serverFullMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.server-full", "The server is full!" ) );
          SpigotConfig.outdatedClientMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.outdated-client", SpigotConfig.outdatedClientMessage ) );
          SpigotConfig.outdatedServerMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.outdated-server", SpigotConfig.outdatedServerMessage ) );
@@ -70,7 +70,7 @@ index e2284942e116ca975808d862897fb7637555ffbc..1ec841df636784c5e33e68cf21a24cfd
  
      public static int timeoutTime = 60;
      public static boolean restartOnCrash = false;
-@@ -227,7 +227,7 @@ public class SpigotConfig
+@@ -223,7 +223,7 @@ public class SpigotConfig
          SpigotConfig.timeoutTime = SpigotConfig.getInt( "settings.timeout-time", SpigotConfig.timeoutTime );
          SpigotConfig.restartOnCrash = SpigotConfig.getBoolean( "settings.restart-on-crash", SpigotConfig.restartOnCrash );
          SpigotConfig.restartScript = SpigotConfig.getString( "settings.restart-script", SpigotConfig.restartScript );

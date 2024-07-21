@@ -5,7 +5,7 @@ Subject: [PATCH] deactivate commands
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 885cebe23bc2158b24126d754669c60c98bb9867..52aecca3c7f5ec39945694d707e0f6713ca4e0a2 100644
+index 0994bb2beb95c9a6cfab5131d884eb0586267ded..3fe792214392a025d774e0b3988aba044e8410a0 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -169,7 +169,7 @@ public class Commands {
@@ -36,10 +36,10 @@ index 885cebe23bc2158b24126d754669c60c98bb9867..52aecca3c7f5ec39945694d707e0f671
          ScoreboardCommand.register(this.dispatcher, commandRegistryAccess);
          SeedCommand.register(this.dispatcher, environment != Commands.CommandSelection.INTEGRATED);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 1bce7cf6020760dfac6fcd119bc3155bc3a99caa..5a23fd597245e72d46f508890e340ec43b8510e8 100644
+index 8b82f3214087ae8d2b924561a45c8a9ff8da576d..36b796893e96e6bb4a8c916ccdae7a87795cffe2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -581,11 +581,11 @@ public final class CraftServer implements Server {
+@@ -592,11 +592,11 @@ public final class CraftServer implements Server {
  
          if (type == PluginLoadOrder.POSTWORLD) {
              // Spigot start - Allow vanilla commands to be forced to be the main command
@@ -54,7 +54,7 @@ index 1bce7cf6020760dfac6fcd119bc3155bc3a99caa..5a23fd597245e72d46f508890e340ec4
              CraftDefaultPermissions.registerCorePermissions();
              if (!io.papermc.paper.configuration.GlobalConfiguration.get().misc.loadPermissionsYmlBeforePlugins) this.loadCustomPermissions(); // Paper
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index db9c812cf7267adf0bfd8be7368140e91245d640..25a46e552537465d00ba19bb3ba884fe781d3c93 100644
+index 2bbee0823cef128a5c2cc2dfb67c403a4ba96bfc..e3fbbb2d04a693966506cfcb38d0f696492bd83c 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
 @@ -69,7 +69,7 @@ public class SpigotConfig
@@ -79,7 +79,7 @@ index db9c812cf7267adf0bfd8be7368140e91245d640..25a46e552537465d00ba19bb3ba884fe
  
          /* // Paper - Replace with our own
          if ( SpigotConfig.metrics == null )
-@@ -191,7 +191,7 @@ public class SpigotConfig
+@@ -187,7 +187,7 @@ public class SpigotConfig
              }
          }
          SpigotConfig.tabComplete = SpigotConfig.getInt( "commands.tab-complete", 0 );
@@ -88,7 +88,7 @@ index db9c812cf7267adf0bfd8be7368140e91245d640..25a46e552537465d00ba19bb3ba884fe
      }
  
      public static String whitelistMessage;
-@@ -219,7 +219,7 @@ public class SpigotConfig
+@@ -215,7 +215,7 @@ public class SpigotConfig
      }
  
      public static int timeoutTime = 60;
@@ -97,7 +97,7 @@ index db9c812cf7267adf0bfd8be7368140e91245d640..25a46e552537465d00ba19bb3ba884fe
      public static String restartScript = "./start.sh";
      public static String restartMessage;
      private static void watchdog()
-@@ -228,7 +228,7 @@ public class SpigotConfig
+@@ -224,7 +224,7 @@ public class SpigotConfig
          SpigotConfig.restartOnCrash = SpigotConfig.getBoolean( "settings.restart-on-crash", SpigotConfig.restartOnCrash );
          SpigotConfig.restartScript = SpigotConfig.getString( "settings.restart-script", SpigotConfig.restartScript );
          SpigotConfig.restartMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.restart", "Server is restarting" ) );
@@ -106,7 +106,7 @@ index db9c812cf7267adf0bfd8be7368140e91245d640..25a46e552537465d00ba19bb3ba884fe
          // WatchdogThread.doStart( SpigotConfig.timeoutTime, SpigotConfig.restartOnCrash ); // Paper - moved to after paper config initialization
      }
  
-@@ -302,10 +302,10 @@ public class SpigotConfig
+@@ -298,10 +298,10 @@ public class SpigotConfig
      public static List<String> spamExclusions;
      private static void spamExclusions()
      {
@@ -119,7 +119,7 @@ index db9c812cf7267adf0bfd8be7368140e91245d640..25a46e552537465d00ba19bb3ba884fe
      }
  
      public static boolean silentCommandBlocks;
-@@ -314,7 +314,7 @@ public class SpigotConfig
+@@ -310,7 +310,7 @@ public class SpigotConfig
          SpigotConfig.silentCommandBlocks = SpigotConfig.getBoolean( "commands.silent-commandblock-console", false );
      }
  
@@ -128,7 +128,7 @@ index db9c812cf7267adf0bfd8be7368140e91245d640..25a46e552537465d00ba19bb3ba884fe
      private static void replaceCommands()
      {
          if ( SpigotConfig.config.contains( "replace-commands" ) )
-@@ -324,7 +324,7 @@ public class SpigotConfig
+@@ -320,7 +320,7 @@ public class SpigotConfig
          }
          SpigotConfig.replaceCommands = new HashSet<String>( (List<String>) SpigotConfig.getList( "commands.replace-commands",
                  Arrays.asList( "setblock", "summon", "testforblock", "tellraw" ) ) );

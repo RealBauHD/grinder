@@ -5,7 +5,7 @@ Subject: [PATCH] remove statistics
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 746c414bfc2bc823d3e85a2bc38979436026c009..cb31903078b6cdfd8e3c9a4d81c8080f7d604842 100644
+index 77cf13ac6fbc4cbb58e43b64af2a2c8f26497f9d..bd49a3159cf4ca3a7b0ac75ac52d6bc268fc96c8 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -303,7 +303,7 @@ public abstract class PlayerList {
@@ -17,7 +17,7 @@ index 746c414bfc2bc823d3e85a2bc38979436026c009..cb31903078b6cdfd8e3c9a4d81c8080f
          player.getRecipeBook().sendInitialRecipeBook(player);
          this.updateEntireScoreboard(worldserver1.getScoreboard(), player);
          this.server.invalidateStatus();
-@@ -1421,7 +1421,7 @@ public abstract class PlayerList {
+@@ -1435,7 +1435,7 @@ public abstract class PlayerList {
      }
  
      public ServerStatsCounter getPlayerStats(UUID uuid, String displayName) {
@@ -26,7 +26,7 @@ index 746c414bfc2bc823d3e85a2bc38979436026c009..cb31903078b6cdfd8e3c9a4d81c8080f
          ServerStatsCounter serverstatisticmanager = entityhuman == null ? null : (ServerStatsCounter) entityhuman.getStats();
          // CraftBukkit end
  
-@@ -1442,7 +1442,7 @@ public abstract class PlayerList {
+@@ -1456,7 +1456,7 @@ public abstract class PlayerList {
              // this.stats.put(uuid, serverstatisticmanager); // CraftBukkit
          }
  
@@ -161,10 +161,10 @@ index 6eff3bdab7ce445b703b983ddbebac0470559a53..e1c7df3169231ed25afa6f3f73289cba
      }
  }
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index f80fe0a888b83e9e17c78e668e23d687256da33b..e2284942e116ca975808d862897fb7637555ffbc 100644
+index e3fbbb2d04a693966506cfcb38d0f696492bd83c..6296175dc5f06ac08417afed7859e49601c32e3c 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
-@@ -249,7 +249,7 @@ public class SpigotConfig
+@@ -245,7 +245,7 @@ public class SpigotConfig
          Bukkit.getLogger().log( Level.INFO, "Using {0} threads for Netty based IO", count );
      }
  
@@ -173,7 +173,7 @@ index f80fe0a888b83e9e17c78e668e23d687256da33b..e2284942e116ca975808d862897fb763
      public static Map<ResourceLocation, Integer> forcedStats = new HashMap<>();
      private static void stats()
      {
-@@ -279,7 +279,7 @@ public class SpigotConfig
+@@ -275,7 +275,7 @@ public class SpigotConfig
                  }
              }
          }

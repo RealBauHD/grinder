@@ -1,17 +1,17 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Aaron <bauhd@gmx.net>
-Date: Thu, 30 May 2024 23:44:59 +0200
+Date: Sun, 21 Jul 2024 00:58:33 +0200
 Subject: [PATCH] deactivate metrics
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 1bfab581e59c607c7a30eeda17c88bb2938536f2..78c2fcceced6f4f156ec9dc8b8046a9ac0c7ab4a 100644
+index ea71430fddf516671593ac2c071652a43233221a..0f2f81f429d39a9a153a966e74c4749634cf0556 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -235,7 +235,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         org.spigotmc.WatchdogThread.doStart(org.spigotmc.SpigotConfig.timeoutTime, org.spigotmc.SpigotConfig.restartOnCrash); // Paper - start watchdog thread
+@@ -237,7 +237,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          thread.start(); // Paper - Enhance console tab completions for brigadier commands; start console thread after MinecraftServer.console & PaperConfig are initialized
          io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
+         this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark
 -        com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
 +        // com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics // Grinder - deactivate metrics
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // Paper - load version history now

@@ -23,10 +23,10 @@ index 244a19ecd0234fa1d7a6ecfea20751595688605d..0bc825b16f768b7700df9cbf219c7c1b
                  Main.LOGGER.info("Initialized '{}' and '{}'", path1.toAbsolutePath(), path2.toAbsolutePath());
                  return;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3fb73cd01d 100644
+index 421e1d44a5bf44290d02fd29b32bc3da669e00b4..8b82f3214087ae8d2b924561a45c8a9ff8da576d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -420,13 +420,13 @@ public final class CraftServer implements Server {
+@@ -421,13 +421,13 @@ public final class CraftServer implements Server {
          this.configuration = YamlConfiguration.loadConfiguration(this.getConfigFile());
          this.configuration.options().copyDefaults(true);
          this.configuration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml"), Charsets.UTF_8)));
@@ -43,7 +43,7 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3f
              legacyAlias = null;
          }
          this.commandsConfiguration = YamlConfiguration.loadConfiguration(this.getCommandsConfigFile());
-@@ -458,7 +458,7 @@ public final class CraftServer implements Server {
+@@ -459,7 +459,7 @@ public final class CraftServer implements Server {
  
          this.saveCommandsConfig();
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
@@ -52,7 +52,7 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3f
          //this.pluginManager.useTimings(this.configuration.getBoolean("settings.plugin-profiling")); // Paper - we already moved this
          this.overrideSpawnLimits();
          console.autosavePeriod = this.configuration.getInt("ticks-per.autosave");
-@@ -477,7 +477,7 @@ public final class CraftServer implements Server {
+@@ -479,7 +479,7 @@ public final class CraftServer implements Server {
      }
  
      public boolean getCommandBlockOverride(String command) {
@@ -61,7 +61,7 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3f
      }
  
      private File getConfigFile() {
-@@ -1029,7 +1029,7 @@ public final class CraftServer implements Server {
+@@ -1040,7 +1040,7 @@ public final class CraftServer implements Server {
          org.spigotmc.WatchdogThread.hasStarted = false; // Paper - Disable watchdog early timeout on reload
          this.reloadCount++;
          this.configuration = YamlConfiguration.loadConfiguration(this.getConfigFile());
@@ -70,10 +70,10 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3f
  
          this.console.settings = new DedicatedServerSettings(this.console.options);
          DedicatedServerProperties config = this.console.settings.getProperties();
-@@ -1090,8 +1090,8 @@ public final class CraftServer implements Server {
-         this.reloadData();
+@@ -1102,8 +1102,8 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          io.papermc.paper.command.PaperCommands.registerCommands(this.console); // Paper
+         this.spark.registerCommandBeforePlugins(this); // Paper - spark
 -        this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
 -        this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
 +        /*this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
@@ -81,7 +81,7 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3f
  
          int pollCount = 0;
  
-@@ -1793,7 +1793,7 @@ public final class CraftServer implements Server {
+@@ -1806,7 +1806,7 @@ public final class CraftServer implements Server {
  
      @Override
      public Map<String, String[]> getCommandAliases() {
@@ -90,17 +90,16 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3f
          Map<String, String[]> result = new LinkedHashMap<String, String[]>();
  
          if (section != null) {
-@@ -1810,7 +1810,8 @@ public final class CraftServer implements Server {
+@@ -1823,7 +1823,7 @@ public final class CraftServer implements Server {
              }
          }
  
 -        return result;
-+        return result;*/ // Grinder - deactivate commands.yml
-+        return new LinkedHashMap<>();
++        return result;*/ return new LinkedHashMap<>(); // Grinder - deactivate commands.yml
      }
  
      public void removeBukkitSpawnRadius() {
-@@ -3117,7 +3118,7 @@ public final class CraftServer implements Server {
+@@ -3130,7 +3130,7 @@ public final class CraftServer implements Server {
                  .map(key -> key.toLowerCase(java.util.Locale.ENGLISH))
                  .collect(java.util.stream.Collectors.toSet());
          getCommandMap().getKnownCommands().keySet().removeIf(removals::contains);
@@ -109,7 +108,7 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3f
          try {
              commandsConfiguration.load(file);
          } catch (FileNotFoundException ex) {
-@@ -3125,7 +3126,7 @@ public final class CraftServer implements Server {
+@@ -3138,7 +3138,7 @@ public final class CraftServer implements Server {
          } catch (IOException | org.bukkit.configuration.InvalidConfigurationException ex) {
              Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
              return false;
@@ -119,7 +118,7 @@ index 3c07954a0a88ab61974b2e45c15ea56e6e86c748..f09318c4cf9ba8319dc9fdc5691cab3f
          return true;
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 1acc0a579804dee7bb3d0f755c24240413ed7540..2f0e9052f9041d041ca3dc0665cc49ac178703e8 100644
+index 618f4b2e1d012b647b3e7bf359c8ecdd7f159e63..dc03f0a871ff8a5e5219d8f5840cbcb12ffb6401 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -127,11 +127,11 @@ public class Main {
