@@ -4,6 +4,31 @@ Date: Fri, 31 May 2024 15:11:24 +0200
 Subject: [PATCH] tweak default configs
 
 
+diff --git a/src/main/java/net/minecraft/server/ServerAdvancementManager.java b/src/main/java/net/minecraft/server/ServerAdvancementManager.java
+index 2172e23b22b411fe79e930128bd43ac07becb620..5b1b60112f9ae6abf96d5f04d57e096759805dca 100644
+--- a/src/main/java/net/minecraft/server/ServerAdvancementManager.java
++++ b/src/main/java/net/minecraft/server/ServerAdvancementManager.java
+@@ -48,9 +48,10 @@ public class ServerAdvancementManager extends SimpleJsonResourceReloadListener {
+         RegistryOps<JsonElement> registryops = this.registries.createSerializationContext(JsonOps.INSTANCE);
+         Builder<ResourceLocation, AdvancementHolder> builder = ImmutableMap.builder();
+ 
++        if (org.spigotmc.SpigotConfig.disabledAdvancements != null && !org.spigotmc.SpigotConfig.disabledAdvancements.contains("*")) { // Grinder - move on top, to only check once
+         prepared.forEach((minecraftkey, jsonelement) -> {
+             // Spigot start
+-            if (org.spigotmc.SpigotConfig.disabledAdvancements != null && (org.spigotmc.SpigotConfig.disabledAdvancements.contains("*") || org.spigotmc.SpigotConfig.disabledAdvancements.contains(minecraftkey.toString()) || org.spigotmc.SpigotConfig.disabledAdvancements.contains(minecraftkey.getNamespace()))) {
++            if (org.spigotmc.SpigotConfig.disabledAdvancements.contains(minecraftkey.toString()) || org.spigotmc.SpigotConfig.disabledAdvancements.contains(minecraftkey.getNamespace())) {
+                 return;
+             }
+             // Spigot end
+@@ -64,7 +65,7 @@ public class ServerAdvancementManager extends SimpleJsonResourceReloadListener {
+                 ServerAdvancementManager.LOGGER.error("Parsing error loading custom advancement {}: {}", minecraftkey, exception.getMessage());
+             }
+ 
+-        });
++        });}
+         this.advancements = new HashMap<>(builder.buildOrThrow()); // CraftBukkit - SPIGOT-7734: mutable
+         AdvancementTree advancementtree = new AdvancementTree();
+ 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 index d6431376184e5650b370cbab204e28bc31f4dac6..ec1320941e8a4004f33182c0a2af1f13a0abe8f8 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
@@ -17,6 +42,21 @@ index d6431376184e5650b370cbab204e28bc31f4dac6..ec1320941e8a4004f33182c0a2af1f13
          this.spawnMonsters = this.get("spawn-monsters", true);
          this.useNativeTransport = this.get("use-native-transport", true);
          this.enableCommandBlock = this.get("enable-command-block", false);
+diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
+index 2bbee0823cef128a5c2cc2dfb67c403a4ba96bfc..a1999eb8e364a75688132cc4086af44f8f1b606b 100644
+--- a/src/main/java/org/spigotmc/SpigotConfig.java
++++ b/src/main/java/org/spigotmc/SpigotConfig.java
+@@ -388,8 +388,8 @@ public class SpigotConfig
+     public static boolean disableAdvancementSaving;
+     public static List<String> disabledAdvancements;
+     private static void disabledAdvancements() {
+-        SpigotConfig.disableAdvancementSaving = SpigotConfig.getBoolean("advancements.disable-saving", false);
+-        SpigotConfig.disabledAdvancements = SpigotConfig.getList("advancements.disabled", Arrays.asList(new String[]{"minecraft:story/disabled"}));
++        SpigotConfig.disableAdvancementSaving = SpigotConfig.getBoolean("advancements.disable-saving", true); // Grinder - tweak default configs
++        SpigotConfig.disabledAdvancements = SpigotConfig.getList("advancements.disabled", List.of("*")); // Grinder - tweak default configs
+     }
+ 
+     public static boolean logVillagerDeaths;
 diff --git a/src/main/resources/configurations/bukkit.yml b/src/main/resources/configurations/bukkit.yml
 index 3c05f7c3fba89ef0572bbb7d8a0d73365b115849..25aaf35cb1728f58ddb6e79e94b53f3d4923fb9a 100644
 --- a/src/main/resources/configurations/bukkit.yml
@@ -30,86 +70,3 @@ index 3c05f7c3fba89ef0572bbb7d8a0d73365b115849..25aaf35cb1728f58ddb6e79e94b53f3d
      warn-on-overload: true
      update-folder: update
      plugin-profiling: false
-diff --git a/src/main/resources/configurations/commands.yml b/src/main/resources/configurations/commands.yml
-deleted file mode 100644
-index 18f54571200e2eca09a39b88f170fe7b99d8618f..0000000000000000000000000000000000000000
---- a/src/main/resources/configurations/commands.yml
-+++ /dev/null
-@@ -1,16 +0,0 @@
--# This is the commands configuration file for Bukkit.
--# For documentation on how to make use of this file, check out the Bukkit Wiki at
--# https://www.spigotmc.org/go/commands-yml
--# 
--# If you need help on this file, feel free to join us on Discord or leave a message
--# on the forums asking for advice.
--# 
--# Discord: https://www.spigotmc.org/go/discord
--# Forums: https://www.spigotmc.org/
--# Bug tracker: https://www.spigotmc.org/go/bugs
--
--command-block-overrides: []
--ignore-vanilla-permissions: false
--aliases:
--    icanhasbukkit:
--      - "version $1-"
-diff --git a/src/main/resources/configurations/help.yml b/src/main/resources/configurations/help.yml
-deleted file mode 100644
-index 15c3d07070624ad453032a02d8d4d3f26bd6cb8d..0000000000000000000000000000000000000000
---- a/src/main/resources/configurations/help.yml
-+++ /dev/null
-@@ -1,55 +0,0 @@
--# This is the help configuration file for Bukkit.
--# 
--# By default you do not need to modify this file. Help topics for all plugin commands are automatically provided by
--# or extracted from your installed plugins. You only need to modify this file if you wish to add new help pages to
--# your server or override the help pages of existing plugin commands.
--# 
--# This file is divided up into the following parts:
--# -- general-topics: lists admin defined help topics
--# -- index-topics:   lists admin defined index topics
--# -- amend-topics:   lists topic amendments to apply to existing help topics
--# -- ignore-plugins: lists any plugins that should be excluded from help
--# 
--# Examples are given below. When amending command topic, the string <text> will be replaced with the existing value
--# in the help topic. Color codes can be used in topic text. The color code character is & followed by 0-F.
--# ================================================================
--# 
--# Set this to true to list the individual command help topics in the master help.
--# command-topics-in-master-index: true
--# 
--# Each general topic will show up as a separate topic in the help index along with all the plugin command topics.
--# general-topics:
--#     Rules:
--#         shortText: Rules of the server
--#         fullText: |
--#             &61. Be kind to your fellow players.
--#             &B2. No griefing.
--#             &D3. No swearing.
--#         permission: topics.rules
--# 
--# Each index topic will show up as a separate sub-index in the help index along with all the plugin command topics.
--# To override the default help index (displayed when the user executes /help), name the index topic "Default".
--# index-topics:
--#     Ban Commands:
--#         shortText: Player banning commands
--#         preamble: Moderator - do not abuse these commands
--#         permission: op
--#         commands:
--#             - /ban
--#             - /ban-ip
--#             - /banlist
--# 
--# Topic amendments are used to change the content of automatically generated plugin command topics.
--# amended-topics:
--#     /stop:
--#         shortText: Stops the server cold....in its tracks!
--#         fullText: <text> - This kills the server.
--#         permission: you.dont.have
--# 
--# Any plugin in the ignored plugins list will be excluded from help. The name must match the name displayed by
--# the /plugins command. Ignore "Bukkit" to remove the standard bukkit commands from the index. Ignore "All"
--# to completely disable automatic help topic generation.
--# ignore-plugins:
--#    - PluginNameOne
--#    - PluginNameTwo
--#    - PluginNameThree

@@ -49,14 +49,16 @@ index 36b796893e96e6bb4a8c916ccdae7a87795cffe2..4a669b2027896b6a50530507bebc49b4
      // Paper end
      @Override
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index 6296175dc5f06ac08417afed7859e49601c32e3c..eec28530666c63d2ca9e419d8e24b549075425ca 100644
+index 023bef6a4b914514a52d484759c7c2e53298888b..bb58a33a79cd44b3d74682bfdb561b9cadbd3589 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
-@@ -192,7 +192,7 @@ public class SpigotConfig
+@@ -191,8 +191,8 @@ public class SpigotConfig
+     }
  
      public static String whitelistMessage;
-     public static String unknownCommandMessage;
+-    public static String unknownCommandMessage;
 -    public static String serverFullMessage;
++    public static String unknownCommandMessage = ""; // Grinder
 +    /*public static String serverFullMessage;
      public static String outdatedClientMessage = "Outdated client! Please use {0}";
      public static String outdatedServerMessage = "Outdated server! I\'m still on {0}";

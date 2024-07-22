@@ -4,19 +4,6 @@ Date: Tue, 9 Jul 2024 00:59:33 +0200
 Subject: [PATCH] better structure
 
 
-diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index 0bc825b16f768b7700df9cbf219c7c1bdc97becd..a3ee0c66ab4885fa4751300ca9655cfc8c979f11 100644
---- a/src/main/java/net/minecraft/server/Main.java
-+++ b/src/main/java/net/minecraft/server/Main.java
-@@ -187,7 +187,7 @@ public class Main {
-                 file = (File) optionset.valueOf("universe"); // CraftBukkit
-                 userCacheFile = new File(file, Services.USERID_CACHE_FILE);
-             } else {
--                file = new File(bukkitConfiguration.getString("settings.world-container", "."));
-+                file = new File(/*bukkitConfiguration.getString("settings.world-container", ".")*/ "worlds"); // Grinder - better structure
-             }
-             // Paper end - fix SPIGOT-5824
-             Services services = Services.create(new com.destroystokyo.paper.profile.PaperAuthenticationService(Proxy.NO_PROXY), file, userCacheFile, optionset); // Paper - pass OptionSet to load paper config files; override authentication service; fix world-container
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
 index dc03f0a871ff8a5e5219d8f5840cbcb12ffb6401..a98f45cccd47ea5288f1bb0868a8ae99d55a5038 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
