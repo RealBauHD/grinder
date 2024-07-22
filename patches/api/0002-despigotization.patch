@@ -447,7 +447,7 @@ index 20a028450667edf102b59b6b50ac6e890f2c34ab..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..156b0a1a09f95394bd1d52c98c4875e0a6523ae3 100644
+index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..fc559bb166ebf74c050bf544ffdc60924ef1b929 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -481,10 +481,10 @@ public final class Bukkit {
@@ -476,6 +476,17 @@ index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..156b0a1a09f95394bd1d52c98c4875e0
      // Paper end
  
      /**
+@@ -2906,8 +2906,8 @@ public final class Bukkit {
+     }
+     // Paper end - Folia region threading API
+ 
+-    @NotNull
++    /*@NotNull
+     public static Server.Spigot spigot() {
+         return server.spigot();
+-    }
++    }*/ // Grinder - despigotization
+ }
 diff --git a/src/main/java/org/bukkit/ChatColor.java b/src/main/java/org/bukkit/ChatColor.java
 index 918a045165cdcde264bc24082b7afebb407271de..bfbc7ec642e2e0065ecfa087d31092dd1f21caee 100644
 --- a/src/main/java/org/bukkit/ChatColor.java
@@ -760,7 +771,7 @@ index 918a045165cdcde264bc24082b7afebb407271de..bfbc7ec642e2e0065ecfa087d31092dd
      /**
       * Gets the char value associated with this color
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7a3d3f1edf608510e03a89d6033d1e8a221b9272 100644
+index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7021039a1ffc9440195670edd64e048a1fa37ad2 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -392,10 +392,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -789,6 +800,24 @@ index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7a3d3f1edf608510e03a89d6033d1e8a
      // Paper end
  
      /**
+@@ -2227,7 +2227,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     UnsafeValues getUnsafe();
+ 
+     // Spigot start
+-    public class Spigot {
++    /*public class Spigot {
+ 
+         @NotNull
+         public org.bukkit.configuration.file.YamlConfiguration getConfig() {
+@@ -2251,7 +2251,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+         public org.bukkit.configuration.file.YamlConfiguration getPaperConfig()
+         {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+         // Paper end
+ 
+         /**
 @@ -2260,10 +2260,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
           * @param component the components to send
           * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
@@ -802,7 +831,7 @@ index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7a3d3f1edf608510e03a89d6033d1e8a
  
          /**
           * Sends an array of components as a single message to the player
-@@ -2271,10 +2271,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2271,21 +2271,21 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
           * @param components the components to send
           * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
           */
@@ -815,6 +844,72 @@ index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7a3d3f1edf608510e03a89d6033d1e8a
  
          /**
           * Restart the server. If the server administrator has not configured restarting, the server will stop.
+          */
+-        public void restart() {
++        /*public void restart() {
+             throw new UnsupportedOperationException("Not supported yet.");
+         }
+     }
+ 
+     @NotNull
+-    Spigot spigot();
++    Spigot spigot();*/ // Grinder - despigotization
+     // Spigot end
+ 
+     void reloadPermissions(); // Paper
+diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
+index d8a23aa0d898ca3360757721e38ddb97387f7d21..2f0d3f780a0fbd080515a536658ba09155837f42 100644
+--- a/src/main/java/org/bukkit/World.java
++++ b/src/main/java/org/bukkit/World.java
+@@ -4006,8 +4006,8 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+     // Paper end
+ 
+     // Spigot start
+-    @Deprecated(forRemoval = true) // Paper
+-    public class Spigot {
++    /*@Deprecated(forRemoval = true) // Paper
++    public class Spigot {*/ // Grinder - despigotization
+ 
+         /**
+          * Strikes lightning at the given {@link Location} and possibly without sound
+@@ -4018,11 +4018,11 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+          * @deprecated sound is now client side and cannot be removed
+          * @see World#strikeLightning(org.bukkit.Location)
+          */
+-        @NotNull
++        /*@NotNull
+         @Deprecated
+         public LightningStrike strikeLightning(@NotNull Location loc, boolean isSilent) {
+             throw new UnsupportedOperationException("Not supported yet.");
+-        }
++        }*/ // Grinder - despigotization
+ 
+         /**
+          * Strikes lightning at the given {@link Location} without doing damage and possibly without sound
+@@ -4033,19 +4033,19 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+          * @deprecated sound is now client side and cannot be removed
+          * @see World#strikeLightningEffect(org.bukkit.Location)
+          */
+-        @NotNull
++        /*@NotNull
+         @Deprecated
+         public LightningStrike strikeLightningEffect(@NotNull Location loc, boolean isSilent) {
+             throw new UnsupportedOperationException("Not supported yet.");
+         }
+-    }
++    }*/ // Grinder - despigotization
+ 
+     /**
+      * @deprecated Unsupported api
+      */
+-    @NotNull
++    /*@NotNull
+     @Deprecated // Paper
+-    Spigot spigot();
++    Spigot spigot();*/ // Grinder - despigotization
+     // Spigot end
+ 
+     /**
 diff --git a/src/main/java/org/bukkit/command/CommandSender.java b/src/main/java/org/bukkit/command/CommandSender.java
 index 04e7cd0e4e2d0eb38fb2862ce6688a4470f30d6b..15849d9a38ecac1ae5a229668ae446aedb7269bb 100644
 --- a/src/main/java/org/bukkit/command/CommandSender.java
@@ -913,10 +1008,10 @@ index 04e7cd0e4e2d0eb38fb2862ce6688a4470f30d6b..15849d9a38ecac1ae5a229668ae446ae
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/command/MessageCommandSender.java b/src/main/java/org/bukkit/command/MessageCommandSender.java
-index 9d263ab3afb938c215c0b64d9171345fca6ceb2c..9e84f7ac2af103ac677b69c5b2fb8cdf46df13c1 100644
+index 946d2f0ef37c6cf895caf8d3c6963c7889e0567b..546775f87c2c6cef209f80cde06e03361a6d2f3f 100644
 --- a/src/main/java/org/bukkit/command/MessageCommandSender.java
 +++ b/src/main/java/org/bukkit/command/MessageCommandSender.java
-@@ -126,10 +126,10 @@ public interface MessageCommandSender extends CommandSender {
+@@ -129,10 +129,10 @@ public interface MessageCommandSender extends CommandSender {
          throw new UnsupportedOperationException();
      }
  
@@ -1413,7 +1508,7 @@ index f0c6943da3f783101ca647b75b3230fae3a310da..b9f11410b995ce73178b3b17d2f24e18
      // Spigot end
  }
 diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-index 1a4260b00b193b94ce4b1b2954644f4e41baff4c..9f35ee77318a3f06c150cbe9e8d7c4e1d209d2ee 100644
+index 5d5fcb2720b62e47d47f441032c4de02574b051a..9992eb9cd04e038c54bd3498ae1d3dfb410a972d 100644
 --- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 +++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 @@ -79,9 +79,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste

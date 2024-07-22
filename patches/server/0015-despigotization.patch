@@ -35,6 +35,27 @@ index 367ef7e0769537e8c13c7fd818a1249e15a28a65..76a4de436ebad526411ea95aa066a1e5
  
      @Override
      public Component name() {
+diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
+index d20969e18984c9b93483477f31b079686977b1db..26228fde0375daac77c7bb2d815aae1ffacd08b4 100644
+--- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
+@@ -127,6 +127,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+         public BungeeCord bungeeCord;
+ 
+         public class BungeeCord extends ConfigurationPart {
++            public boolean enabled = false; // Grinder - despigotization
+             public boolean onlineMode = true;
+         }
+ 
+@@ -147,7 +148,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+         }
+         public boolean proxyProtocol = false;
+         public boolean isProxyOnlineMode() {
+-            return org.bukkit.Bukkit.getOnlineMode() || (org.spigotmc.SpigotConfig.bungee && this.bungeeCord.onlineMode) || (this.velocity.enabled && this.velocity.onlineMode);
++            return org.bukkit.Bukkit.getOnlineMode() || (this.bungeeCord.enabled && this.bungeeCord.onlineMode) || (this.velocity.enabled && this.velocity.onlineMode); // Grinder - despigotization
+         }
+     }
+ 
 diff --git a/src/main/java/net/minecraft/network/protocol/game/ClientboundSystemChatPacket.java b/src/main/java/net/minecraft/network/protocol/game/ClientboundSystemChatPacket.java
 index fdb75db02603ef97b624219211a0db22cd447dea..42f3dfa1be1e8408bc71dbaa830e37f94b08541e 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/ClientboundSystemChatPacket.java
@@ -51,8 +72,65 @@ index fdb75db02603ef97b624219211a0db22cd447dea..42f3dfa1be1e8408bc71dbaa830e37f9
      // Spigot end
      // Paper start
      public ClientboundSystemChatPacket(net.kyori.adventure.text.Component content, boolean overlay) {
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index ea71430fddf516671593ac2c071652a43233221a..5f7784b2bd6028027b4a27c696695659cad03f18 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -254,7 +254,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+                 DedicatedServer.LOGGER.error("**** INVALID CONFIGURATION!");
+                 DedicatedServer.LOGGER.error("You are trying to use a Unix domain socket but you're not on a supported OS.");
+                 return false;
+-            } else if (!io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled && !org.spigotmc.SpigotConfig.bungee) {
++            } else if (!io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled && !io.papermc.paper.configuration.GlobalConfiguration.get().proxies.bungeeCord.enabled) { // Grinder - despigotization
+                 DedicatedServer.LOGGER.error("**** INVALID CONFIGURATION!");
+                 DedicatedServer.LOGGER.error("Unix domain sockets require IPs to be forwarded from a proxy.");
+                 return false;
+@@ -294,7 +294,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         // CraftBukkit end
+ 
+         // Paper start - Add Velocity IP Forwarding Support
+-        boolean usingProxy = org.spigotmc.SpigotConfig.bungee || io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled;
++        boolean usingProxy = io.papermc.paper.configuration.GlobalConfiguration.get().proxies.bungeeCord.enabled || io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled; // Grinder - despigotization
+         String proxyFlavor = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "Velocity" : "BungeeCord";
+         String proxyLink = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "https://docs.papermc.io/velocity/security" : "http://www.spigotmc.org/wiki/firewall-guide/";
+         // Paper end - Add Velocity IP Forwarding Support
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index 7796e191747be545e744564a2b0b65790f69114d..c1e732404b1762c19fb70edc5500c292cd046d32 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -2355,7 +2355,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+ 
+                         String message = String.format(queueEvent.getFormat(), queueEvent.getPlayer().getDisplayName(), queueEvent.getMessage());
+                         if (((LazyPlayerSet) queueEvent.getRecipients()).isLazy()) {
+-                            if (!org.spigotmc.SpigotConfig.bungee && originalFormat.equals(queueEvent.getFormat()) && originalMessage.equals(queueEvent.getMessage()) && queueEvent.getPlayer().getName().equalsIgnoreCase(queueEvent.getPlayer().getDisplayName())) { // Spigot
++                            if (!io.papermc.paper.configuration.GlobalConfiguration.get().proxies.bungeeCord.enabled && originalFormat.equals(queueEvent.getFormat()) && originalMessage.equals(queueEvent.getMessage()) && queueEvent.getPlayer().getName().equalsIgnoreCase(queueEvent.getPlayer().getDisplayName())) { // Spigot // Grinder - despigotization
+                                 ServerGamePacketListenerImpl.this.server.getPlayerList().broadcastChatMessage(original, ServerGamePacketListenerImpl.this.player, ChatType.bind(ChatType.CHAT, (Entity) ServerGamePacketListenerImpl.this.player));
+                                 return null;
+                             }
+@@ -2391,7 +2391,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+ 
+                 s = String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage());
+                 if (((LazyPlayerSet) event.getRecipients()).isLazy()) {
+-                    if (!org.spigotmc.SpigotConfig.bungee && originalFormat.equals(event.getFormat()) && originalMessage.equals(event.getMessage()) && event.getPlayer().getName().equalsIgnoreCase(event.getPlayer().getDisplayName())) { // Spigot
++                    if (!io.papermc.paper.configuration.GlobalConfiguration.get().proxies.bungeeCord.enabled && originalFormat.equals(event.getFormat()) && originalMessage.equals(event.getMessage()) && event.getPlayer().getName().equalsIgnoreCase(event.getPlayer().getDisplayName())) { // Spigot // Grinder - despigotization
+                         ServerGamePacketListenerImpl.this.server.getPlayerList().broadcastChatMessage(original, ServerGamePacketListenerImpl.this.player, ChatType.bind(ChatType.CHAT, (Entity) ServerGamePacketListenerImpl.this.player));
+                         return;
+                     }
+diff --git a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+index cad3b8b326b3b9ca38e6892b3bc01e4b2d23999d..3cafc65919ecb0fcaa49c5d550bd47951a245bcf 100644
+--- a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+@@ -131,7 +131,7 @@ public class ServerHandshakePacketListenerImpl implements ServerHandshakePacketL
+         } else {
+             this.connection.setupInboundProtocol(LoginProtocols.SERVERBOUND, new ServerLoginPacketListenerImpl(this.server, this.connection, transfer));
+             // Paper start - PlayerHandshakeEvent
+-            boolean proxyLogicEnabled = org.spigotmc.SpigotConfig.bungee;
++            boolean proxyLogicEnabled = io.papermc.paper.configuration.GlobalConfiguration.get().proxies.bungeeCord.enabled; // Grinder - despigotization
+             boolean handledByEvent = false;
+             // Try and handle the handshake through the event
+             if (com.destroystokyo.paper.event.player.PlayerHandshakeEvent.getHandlerList().getRegisteredListeners().length != 0) { // Hello? Can you hear me?
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4a669b2027896b6a50530507bebc49b49ea35a15..f3fc42b5d8b463cc7e05e1fc6a3bf885d529d4ad 100644
+index 4a669b2027896b6a50530507bebc49b49ea35a15..601e97c664a57c50cffa75269fa4664214f5e857 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -260,7 +260,7 @@ import org.yaml.snakeyaml.Yaml;
@@ -64,24 +142,55 @@ index 4a669b2027896b6a50530507bebc49b49ea35a15..f3fc42b5d8b463cc7e05e1fc6a3bf885
  
  import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
-@@ -2996,7 +2996,7 @@ public final class CraftServer implements Server {
-             org.spigotmc.RestartCommand.restart();
-         }
+@@ -890,7 +890,7 @@ public final class CraftServer implements Server {
+     @Override
+     public long getConnectionThrottle() {
+         // Spigot Start - Automatically set connection throttle for bungee configurations
+-        if (org.spigotmc.SpigotConfig.bungee || io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) { // Paper - Add Velocity IP Forwarding Support
++        if (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.bungeeCord.enabled || io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) { // Paper - Add Velocity IP Forwarding Support // Grinder - despigotization
+             return -1;
+         } else {
+             return this.configuration.getInt("settings.connection-throttle");
+@@ -2963,7 +2963,7 @@ public final class CraftServer implements Server {
+     }
  
--        @Override
-+        /*@Override
-         public void broadcast(BaseComponent component) {
-             for (Player player : CraftServer.this.getOnlinePlayers()) {
-                 player.spigot().sendMessage(component);
-@@ -3008,7 +3008,7 @@ public final class CraftServer implements Server {
-             for (Player player : CraftServer.this.getOnlinePlayers()) {
-                 player.spigot().sendMessage(components);
-             }
--        }
-+        }*/ // Grinder - despigotization
-     };
+     // Spigot start
+-    private final org.bukkit.Server.Spigot spigot = new org.bukkit.Server.Spigot()
++    /*private final org.bukkit.Server.Spigot spigot = new org.bukkit.Server.Spigot()
+     {
  
+         @Deprecated
+@@ -3014,7 +3014,7 @@ public final class CraftServer implements Server {
      public org.bukkit.Server.Spigot spigot()
+     {
+         return this.spigot;
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 10747cd373d1981d91cc27c4f590be88f5dbc87b..396c36705d824f0ea6b793124c908b548e088821 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -2385,7 +2385,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+     }
+ 
+     // Spigot start
+-    private final org.bukkit.World.Spigot spigot = new org.bukkit.World.Spigot()
++    /*private final org.bukkit.World.Spigot spigot = new org.bukkit.World.Spigot()
+     {
+ 
+         @Override
+@@ -2404,7 +2404,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+     public org.bukkit.World.Spigot spigot()
+     {
+         return this.spigot;
+-    }
++    }*/ // Grinder - despigotization
+     // Spigot end
+     // Paper start
+     public java.util.concurrent.CompletableFuture<Chunk> getChunkAtAsync(int x, int z, boolean gen, boolean urgent) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java b/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java
 index 3e7d14564f11a3ed0b0766444e9d681804597e9a..db2e91d6f6245b17d5061e57b8b902fcc1bedfc4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java
@@ -449,3 +558,55 @@ index d87bfdda1f06a94e97465c105d28989e1d64e1e0..c27e09b5786401c43de9192070c92da9
              // Paper end
              if (!(object instanceof String)) {
                  if (object != null) {
+diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
+index eec28530666c63d2ca9e419d8e24b549075425ca..567699858ef25a3384f0df3d63cde361e9701b63 100644
+--- a/src/main/java/org/spigotmc/SpigotConfig.java
++++ b/src/main/java/org/spigotmc/SpigotConfig.java
+@@ -32,7 +32,7 @@ public class SpigotConfig
+ {
+ 
+     private static File CONFIG_FILE;
+-    private static final String HEADER = "This is the main configuration file for Spigot.\n"
++    private static final String HEADER = /*"This is the main configuration file for Spigot.\n"
+             + "As you can see, there's tons to configure. Some options may impact gameplay, so use\n"
+             + "with caution, and make sure you know what each option does before configuring.\n"
+             + "For a reference for any variable inside this file, check out the Spigot wiki at\n"
+@@ -42,7 +42,7 @@ public class SpigotConfig
+             + "join us at the Discord or drop by our forums and leave a post.\n"
+             + "\n"
+             + "Discord: https://www.spigotmc.org/go/discord\n"
+-            + "Forums: http://www.spigotmc.org/\n";
++            + "Forums: http://www.spigotmc.org/\n"*/ ""; // Grinder - despigotization
+     /*========================================================================*/
+     public static YamlConfiguration config;
+     static int version;
+@@ -218,7 +218,7 @@ public class SpigotConfig
+     public static boolean restartOnCrash = false;
+     public static String restartScript = "./start.sh";
+     public static String restartMessage;
+-    private static void watchdog()
++    /*private static void watchdog()
+     {
+         SpigotConfig.timeoutTime = SpigotConfig.getInt( "settings.timeout-time", SpigotConfig.timeoutTime );
+         SpigotConfig.restartOnCrash = SpigotConfig.getBoolean( "settings.restart-on-crash", SpigotConfig.restartOnCrash );
+@@ -226,9 +226,9 @@ public class SpigotConfig
+         //SpigotConfig.restartMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.restart", "Server is restarting" ) ); // Grinder
+         //SpigotConfig.commands.put( "restart", new RestartCommand( "restart" ) ); // Grinder
+         // WatchdogThread.doStart( SpigotConfig.timeoutTime, SpigotConfig.restartOnCrash ); // Paper - moved to after paper config initialization
+-    }
++    }*/ // Grinder - despigotization
+ 
+-    public static boolean bungee;
++    /*public static boolean bungee;
+     private static void bungee() {
+         if ( SpigotConfig.version < 4 )
+         {
+@@ -236,7 +236,7 @@ public class SpigotConfig
+             System.out.println( "Outdated config, disabling BungeeCord support!" );
+         }
+         SpigotConfig.bungee = SpigotConfig.getBoolean( "settings.bungeecord", false );
+-    }
++    }*/ // Grinder - despigotization
+ 
+     private static void nettyThreads()
+     {
