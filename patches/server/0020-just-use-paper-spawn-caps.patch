@@ -1,0 +1,56 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Tue, 23 Jul 2024 16:25:50 +0200
+Subject: [PATCH] just use paper spawn caps
+
+
+diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+index 7509b17414f836e8b53fc62b02b386ba4e8c5ca9..54dc96e0dbb76f719abcba9d808ef0d7e5361298 100644
+--- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
++++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
+@@ -180,7 +180,7 @@ public class WorldConfiguration extends ConfigurationPart {
+             public boolean perPlayerMobSpawns = true;
+             public boolean scanForLegacyEnderDragon = true;
+             @MergeMap
+-            public Reference2IntMap<MobCategory> spawnLimits = Util.make(new Reference2IntOpenHashMap<>(NaturalSpawner.SPAWNING_CATEGORIES.length), map -> Arrays.stream(NaturalSpawner.SPAWNING_CATEGORIES).forEach(mobCategory -> map.put(mobCategory, -1)));
++            public Reference2IntMap<MobCategory> spawnLimits = Util.make(new Reference2IntOpenHashMap<>(NaturalSpawner.SPAWNING_CATEGORIES.length), map -> Arrays.stream(NaturalSpawner.SPAWNING_CATEGORIES).forEach(mobCategory -> map.put(mobCategory, mobCategory.getMaxInstancesPerChunk()))); // Grinder
+             @MergeMap
+             public Map<MobCategory, DespawnRange> despawnRanges = Arrays.stream(MobCategory.values()).collect(Collectors.toMap(Function.identity(), category -> new DespawnRange(category.getNoDespawnDistance(), category.getDespawnDistance())));
+             @MergeMap
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 601e97c664a57c50cffa75269fa4664214f5e857..767a31f6c6e062faaca9c81bce4193ff377d60d5 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -491,11 +491,11 @@ public final class CraftServer implements Server {
+     }
+ 
+     private void overrideSpawnLimits() {
+-        for (SpawnCategory spawnCategory : SpawnCategory.values()) {
++        /*for (SpawnCategory spawnCategory : SpawnCategory.values()) {
+             if (CraftSpawnCategory.isValidForLimits(spawnCategory)) {
+                 this.spawnCategoryLimit.put(spawnCategory, this.configuration.getInt(CraftSpawnCategory.getConfigNameSpawnLimit(spawnCategory)));
+             }
+-        }
++        }*/ // Grinder
+     }
+ 
+     private void saveConfig() {
+diff --git a/src/main/resources/configurations/bukkit.yml b/src/main/resources/configurations/bukkit.yml
+index 373f1ebdd2ba943e7a6bd2ef1c46b797b2451f5c..4cf85a8e74613032a8af8f850f6841939f6f08a6 100644
+--- a/src/main/resources/configurations/bukkit.yml
++++ b/src/main/resources/configurations/bukkit.yml
+@@ -20,14 +20,6 @@ settings:
+     deprecated-verbose: default
+     minimum-api: none
+     use-map-color-cache: true
+-spawn-limits:
+-    monsters: 70
+-    animals: 10
+-    water-animals: 5
+-    water-ambient: 20
+-    water-underground-creature: 5
+-    axolotls: 5
+-    ambient: 15
+ chunk-gc:
+     period-in-ticks: 600
+ ticks-per:
