@@ -54,31 +54,9 @@ index 8b82f3214087ae8d2b924561a45c8a9ff8da576d..36b796893e96e6bb4a8c916ccdae7a87
              CraftDefaultPermissions.registerCorePermissions();
              if (!io.papermc.paper.configuration.GlobalConfiguration.get().misc.loadPermissionsYmlBeforePlugins) this.loadCustomPermissions(); // Paper
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index 2bbee0823cef128a5c2cc2dfb67c403a4ba96bfc..e3fbbb2d04a693966506cfcb38d0f696492bd83c 100644
+index 38e8030d0d88def45e35de1df70da628d2bdaeaf..eabb67a08a520a5452f5c7fa7c6e8d7e044df84d 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
-@@ -69,7 +69,7 @@ public class SpigotConfig
-         SpigotConfig.config.options().copyDefaults( true );
- 
-         SpigotConfig.commands = new HashMap<String, Command>();
--        SpigotConfig.commands.put( "spigot", new SpigotCommand( "spigot" ) );
-+        //SpigotConfig.commands.put( "spigot", new SpigotCommand( "spigot" ) ); // Grinder
- 
-         SpigotConfig.version = SpigotConfig.getInt( "config-version", 12 );
-         SpigotConfig.set( "config-version", 12 );
-@@ -78,10 +78,10 @@ public class SpigotConfig
- 
-     public static void registerCommands()
-     {
--        for ( Map.Entry<String, Command> entry : SpigotConfig.commands.entrySet() )
-+        /*for ( Map.Entry<String, Command> entry : SpigotConfig.commands.entrySet() )
-         {
-             MinecraftServer.getServer().server.getCommandMap().register( entry.getKey(), "Spigot", entry.getValue() );
--        }
-+        }*/ // Grinder
- 
-         /* // Paper - Replace with our own
-         if ( SpigotConfig.metrics == null )
 @@ -187,7 +187,7 @@ public class SpigotConfig
              }
          }

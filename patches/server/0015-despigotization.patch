@@ -398,7 +398,7 @@ index 317af98f8bd166a5a534f74e6ba177be9afb6a8f..d3acdb149c67909aeff2fba2dfcb92ec
  
      // Paper start - old getSpawnEgg API
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
-index 27a275f324891e395bf3fd3038c0b9a724bbbf66..39ec2342716270fdde74ed0b3497e0cd062b03be 100644
+index 70f20de37c1f8d57a8d9fe00dcd864fdd9948ec2..082109341c0fb75fb3f9a4d5123c302b9e050a7a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
 @@ -23,10 +23,10 @@ import org.bukkit.inventory.meta.BookMeta;
@@ -414,7 +414,7 @@ index 27a275f324891e395bf3fd3038c0b9a724bbbf66..39ec2342716270fdde74ed0b3497e0cd
  // Spigot end
  
  @DelegateDeserialization(SerializableMeta.class)
-@@ -379,7 +379,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
+@@ -377,7 +377,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
          if (this.pages != null) {
              meta.pages = new ArrayList<String>(this.pages);
          }
@@ -423,7 +423,7 @@ index 27a275f324891e395bf3fd3038c0b9a724bbbf66..39ec2342716270fdde74ed0b3497e0cd
          return meta;
      }
  
-@@ -422,7 +422,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
+@@ -420,7 +420,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
      }
  
      // Spigot start
@@ -432,7 +432,7 @@ index 27a275f324891e395bf3fd3038c0b9a724bbbf66..39ec2342716270fdde74ed0b3497e0cd
      private class SpigotMeta extends BookMeta.Spigot {
  
          private String pageToJSON(String page) {
-@@ -507,6 +507,6 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
+@@ -505,6 +505,6 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
      @Override
      public BookMeta.Spigot spigot() {
          return this.spigot;
@@ -441,7 +441,7 @@ index 27a275f324891e395bf3fd3038c0b9a724bbbf66..39ec2342716270fdde74ed0b3497e0cd
      // Spigot end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
-index d357c8ddf06aea99bac6b43c1e20d2e99f98d034..34834f0542315a4b5621e2e5e459daf17adc0047 100644
+index 040dac82e484cb44b3afd444b4bbd1fd994bfe7c..b9150516512e0cf1d7dfe26d8969b6ca21948217 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
 @@ -22,9 +22,9 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
@@ -559,7 +559,7 @@ index d87bfdda1f06a94e97465c105d28989e1d64e1e0..c27e09b5786401c43de9192070c92da9
              if (!(object instanceof String)) {
                  if (object != null) {
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index eec28530666c63d2ca9e419d8e24b549075425ca..567699858ef25a3384f0df3d63cde361e9701b63 100644
+index bc5c3b5d98607a95ba5418fb8f8a924142be1c87..7693b67dea1153ede1005b9c97056f8bcd93bfec 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
 @@ -32,7 +32,7 @@ public class SpigotConfig

@@ -62,7 +62,7 @@ index 43eeb8ce4bc350c2b524ade11ca25d8d4d21bea5..7eb4c8652d1edbf72caf896c6362bf4b
          this.cserver.getPluginManager().callEvent(event);
          if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
 diff --git a/src/main/java/net/minecraft/server/players/StoredUserList.java b/src/main/java/net/minecraft/server/players/StoredUserList.java
-index c038da20b76c0b7b1c18471b20be01e849d29f3a..53cab295a705e72fc2801fea49389ee36ab5d846 100644
+index c038da20b76c0b7b1c18471b20be01e849d29f3a..131fe59f631ef061353c9a40ad0dd17a17804d53 100644
 --- a/src/main/java/net/minecraft/server/players/StoredUserList.java
 +++ b/src/main/java/net/minecraft/server/players/StoredUserList.java
 @@ -14,6 +14,7 @@ import java.io.BufferedWriter;
@@ -94,7 +94,7 @@ index c038da20b76c0b7b1c18471b20be01e849d29f3a..53cab295a705e72fc2801fea49389ee3
          } catch (IOException ioexception) {
              StoredUserList.LOGGER.warn("Could not save the list after adding a user.", ioexception);
 -        }
-+        }*/ // Grinder
++        }*/ // Grinder - remove userlists
  
      }
  
@@ -106,7 +106,7 @@ index c038da20b76c0b7b1c18471b20be01e849d29f3a..53cab295a705e72fc2801fea49389ee3
              return v.hasExpired() ? null : v;
          });
 -        // Paper end - Use ConcurrentHashMap in JsonList
-+        // Paper end - Use ConcurrentHashMap in JsonList*/ // Grinder
++        // Paper end - Use ConcurrentHashMap in JsonList*/ // Grinder - remove userlists
 +        return null;
      }
  
@@ -119,46 +119,42 @@ index c038da20b76c0b7b1c18471b20be01e849d29f3a..53cab295a705e72fc2801fea49389ee3
          } catch (IOException ioexception) {
              StoredUserList.LOGGER.warn("Could not save the list after removing a user.", ioexception);
 -        }
-+        }*/ // Grinder
++        }*/ // Grinder - remove userlists
  
      }
  
-@@ -76,11 +78,13 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+@@ -76,11 +78,11 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
      }
  
      public String[] getUserList() {
 -        return (String[]) this.map.keySet().toArray(new String[0]);
-+        //return (String[]) this.map.keySet().toArray(new String[0]);
-+        return new String[0]; // Grinder
++        /*return (String[]) this.map.keySet().toArray(new String[0]);*/ return new String[0]; // Grinder - remove userlists
      }
  
      public boolean isEmpty() {
 -        return this.map.isEmpty(); // Paper - Use ConcurrentHashMap in JsonList
-+        //return this.map.isEmpty(); // Paper - Use ConcurrentHashMap in JsonList
-+        return true; // Grinder
++        /*return this.map.isEmpty(); // Paper - Use ConcurrentHashMap in JsonList*/ return true; // Grinder - remove userlists
      }
  
      protected String getKeyForUser(K profile) {
-@@ -89,21 +93,23 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+@@ -89,21 +91,21 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
  
      protected boolean contains(K k0) {
          this.removeExpired(); // CraftBukkit - SPIGOT-7589: Consistently remove expired entries to mirror .get(...)
 -        return this.map.containsKey(this.getKeyForUser(k0));
-+        //return this.map.containsKey(this.getKeyForUser(k0));
-+        return false;
++        /*return this.map.containsKey(this.getKeyForUser(k0));*/ return false; // Grinder - remove userlists
      }
  
      private void removeExpired() {
 -        this.map.values().removeIf(StoredUserEntry::hasExpired); // Paper - Use ConcurrentHashMap in JsonList
-+        //this.map.values().removeIf(StoredUserEntry::hasExpired); // Paper - Use ConcurrentHashMap in JsonList // Grinder
++        //this.map.values().removeIf(StoredUserEntry::hasExpired); // Paper - Use ConcurrentHashMap in JsonList // Grinder - remove userlists
      }
  
      protected abstract StoredUserEntry<K> createEntry(JsonObject json);
  
      public Collection<V> getEntries() {
 -        return this.map.values();
-+        //return this.map.values();
-+        return List.of(); // Grinder
++        /*return this.map.values();*/ return List.of(); // Grinder - remove userlists
      }
  
      public void save() throws IOException {
@@ -167,12 +163,12 @@ index c038da20b76c0b7b1c18471b20be01e849d29f3a..53cab295a705e72fc2801fea49389ee3
          JsonArray jsonarray = new JsonArray();
          Stream<JsonObject> stream = this.map.values().stream().map((jsonlistentry) -> { // CraftBukkit - decompile error
              JsonObject jsonobject = new JsonObject();
-@@ -132,12 +138,12 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+@@ -132,12 +134,12 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
  
          if (bufferedwriter != null) {
              bufferedwriter.close();
 -        }
-+        }*/ // Grinder
++        }*/ // Grinder - remove userlists
  
      }
  
@@ -182,24 +178,11 @@ index c038da20b76c0b7b1c18471b20be01e849d29f3a..53cab295a705e72fc2801fea49389ee3
              BufferedReader bufferedreader = Files.newReader(this.file, StandardCharsets.UTF_8);
  
              label54:
-@@ -192,6 +198,6 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+@@ -192,6 +194,6 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
                  bufferedreader.close();
              }
  
 -        }
-+        }*/ // Grinder
++        }*/ // Grinder - remove userlists
      }
  }
-diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index 4dbb109d0526afee99b9190fc256585121aac9b5..2bbee0823cef128a5c2cc2dfb67c403a4ba96bfc 100644
---- a/src/main/java/org/spigotmc/SpigotConfig.java
-+++ b/src/main/java/org/spigotmc/SpigotConfig.java
-@@ -207,7 +207,7 @@ public class SpigotConfig
-             SpigotConfig.set( "messages.outdated-server", SpigotConfig.outdatedServerMessage );
-         }
- 
--        SpigotConfig.whitelistMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.whitelist", "You are not whitelisted on this server!" ) );
-+        //SpigotConfig.whitelistMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.whitelist", "You are not whitelisted on this server!" ) ); // Grinder
-         SpigotConfig.unknownCommandMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.unknown-command", "Unknown command. Type \"/help\" for help." ) );
-         SpigotConfig.serverFullMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.server-full", "The server is full!" ) );
-         SpigotConfig.outdatedClientMessage = SpigotConfig.transform( SpigotConfig.getString( "messages.outdated-client", SpigotConfig.outdatedClientMessage ) );
