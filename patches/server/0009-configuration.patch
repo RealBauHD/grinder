@@ -37,10 +37,10 @@ index 0000000000000000000000000000000000000000..e70456fee4f6b4eace453555c6d9b35b
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 2766ec28f028c0bd672009928bf64c1a6e5d07d6..8d56d1f99fbfd2aecd2b394e4c9f4e3b122765e5 100644
+index 2fe9d9b38c01d04416843fdd48d3e33899b7de63..73980bbca72a88997404a1d3fcd641a440aaa623 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -671,7 +671,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -628,7 +628,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
  
          this.handlingTick = true;
          TickRateManager tickratemanager = this.tickRateManager();
@@ -49,7 +49,7 @@ index 2766ec28f028c0bd672009928bf64c1a6e5d07d6..8d56d1f99fbfd2aecd2b394e4c9f4e3b
  
          if (flag) {
              gameprofilerfiller.push("world border");
-@@ -786,7 +786,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -743,7 +743,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              this.timings.entityTick.stopTiming(); // Spigot
              this.timings.tickEntities.stopTiming(); // Spigot
              gameprofilerfiller.pop();

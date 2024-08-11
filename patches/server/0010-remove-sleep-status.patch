@@ -5,7 +5,7 @@ Subject: [PATCH] remove sleep status
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8d56d1f99fbfd2aecd2b394e4c9f4e3b122765e5..a983e7bbfcae4294a2a5430313db5e6d06a8fd1b 100644
+index 73980bbca72a88997404a1d3fcd641a440aaa623..fddb607f8a9c7ee9869b12535b39698994f74b78 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -202,7 +202,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
@@ -17,7 +17,7 @@ index 8d56d1f99fbfd2aecd2b394e4c9f4e3b122765e5..a983e7bbfcae4294a2a5430313db5e6d
      private int emptyTime;
      private final PortalForcer portalForcer;
      private final LevelTicks<Block> blockTicks;
-@@ -614,7 +614,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -571,7 +571,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              this.dragonFight = null;
          }
  
@@ -26,7 +26,7 @@ index 8d56d1f99fbfd2aecd2b394e4c9f4e3b122765e5..a983e7bbfcae4294a2a5430313db5e6d
          this.gameEventDispatcher = new GameEventDispatcher(this);
          this.randomSequences = (RandomSequences) Objects.requireNonNullElseGet(randomsequences, () -> {
              return (RandomSequences) this.getDataStorage().computeIfAbsent(RandomSequences.factory(l), "random_sequences");
-@@ -680,10 +680,10 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -637,10 +637,10 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              this.advanceWeatherCycle();
          }
  
@@ -39,7 +39,7 @@ index 8d56d1f99fbfd2aecd2b394e4c9f4e3b122765e5..a983e7bbfcae4294a2a5430313db5e6d
              // CraftBukkit start
              j = this.levelData.getDayTime() + 24000L;
              TimeSkipEvent event = new TimeSkipEvent(this.getWorld(), TimeSkipEvent.SkipReason.NIGHT_SKIP, (j - j % 24000L) - this.getDayTime());
-@@ -701,7 +701,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -658,7 +658,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
              if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE) && this.isRaining()) {
                  this.resetWeatherCycle();
              }
@@ -48,7 +48,7 @@ index 8d56d1f99fbfd2aecd2b394e4c9f4e3b122765e5..a983e7bbfcae4294a2a5430313db5e6d
  
          this.updateSkyBrightness();
          if (flag) {
-@@ -835,7 +835,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -792,7 +792,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
      }
  
      private void wakeUpAllPlayers() {
@@ -57,7 +57,7 @@ index 8d56d1f99fbfd2aecd2b394e4c9f4e3b122765e5..a983e7bbfcae4294a2a5430313db5e6d
          (this.players.stream().filter(LivingEntity::isSleeping).collect(Collectors.toList())).forEach((entityplayer) -> { // CraftBukkit - decompile error
              entityplayer.stopSleepInBed(false, false);
          });
-@@ -1045,7 +1045,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -1002,7 +1002,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          return this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE) <= 100;
      }
  
@@ -66,7 +66,7 @@ index 8d56d1f99fbfd2aecd2b394e4c9f4e3b122765e5..a983e7bbfcae4294a2a5430313db5e6d
          if (this.canSleepThroughNights()) {
              if (!this.getServer().isSingleplayer() || this.getServer().isPublished()) {
                  int i = this.getGameRules().getInt(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE);
-@@ -1067,12 +1067,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -1024,12 +1024,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
  
              }
          }

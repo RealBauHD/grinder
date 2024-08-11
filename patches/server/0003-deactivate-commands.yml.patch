@@ -5,10 +5,10 @@ Subject: [PATCH] deactivate commands.yml
 
 
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index 244a19ecd0234fa1d7a6ecfea20751595688605d..0bc825b16f768b7700df9cbf219c7c1bdc97becd 100644
+index 581bd217304e0f9e0b2113c335694805dfb4e2a1..b53c06d83cf1f4972040e3b2b0002eb22d6964a7 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
-@@ -143,11 +143,11 @@ public class Main {
+@@ -144,11 +144,11 @@ public class Main {
                  configuration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(Main.class.getClassLoader().getResourceAsStream("configurations/bukkit.yml"), Charsets.UTF_8)));
                  configuration.save(configFile);
  
@@ -23,7 +23,7 @@ index 244a19ecd0234fa1d7a6ecfea20751595688605d..0bc825b16f768b7700df9cbf219c7c1b
                  Main.LOGGER.info("Initialized '{}' and '{}'", path1.toAbsolutePath(), path2.toAbsolutePath());
                  return;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 421e1d44a5bf44290d02fd29b32bc3da669e00b4..8b82f3214087ae8d2b924561a45c8a9ff8da576d 100644
+index 345bad848a7284fb03ca56a4566398267e9840a6..691be235ec5c0f6f4521b468bf99be99cb7c7147 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -421,13 +421,13 @@ public final class CraftServer implements Server {
@@ -118,7 +118,7 @@ index 421e1d44a5bf44290d02fd29b32bc3da669e00b4..8b82f3214087ae8d2b924561a45c8a9f
          return true;
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 618f4b2e1d012b647b3e7bf359c8ecdd7f159e63..dc03f0a871ff8a5e5219d8f5840cbcb12ffb6401 100644
+index c1e88c31910e96ef07cece05046c0b55e708b52d..9e30842fd7a01f6d9e1d083d47fdc46fd23e1ef1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -127,11 +127,11 @@ public class Main {

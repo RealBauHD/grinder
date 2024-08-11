@@ -18,7 +18,7 @@ index 7509b17414f836e8b53fc62b02b386ba4e8c5ca9..54dc96e0dbb76f719abcba9d808ef0d7
              public Map<MobCategory, DespawnRange> despawnRanges = Arrays.stream(MobCategory.values()).collect(Collectors.toMap(Function.identity(), category -> new DespawnRange(category.getNoDespawnDistance(), category.getDespawnDistance())));
              @MergeMap
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 601e97c664a57c50cffa75269fa4664214f5e857..767a31f6c6e062faaca9c81bce4193ff377d60d5 100644
+index fc019b782e25c6793405a7d841186b8ab5ce4e5e..8ed1b0369e8ffe12235f85444e972e0dbc3951ca 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -491,11 +491,11 @@ public final class CraftServer implements Server {
