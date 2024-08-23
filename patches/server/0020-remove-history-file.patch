@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Fri, 23 Aug 2024 21:46:15 +0200
+Subject: [PATCH] remove history file
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
+index c5d5648f4ca603ef2b1df723b58f9caf4dd3c722..2bf8e5f665242fbe3690bac8b297e17c8a220266 100644
+--- a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
++++ b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
+@@ -18,7 +18,7 @@ public final class PaperConsole extends SimpleTerminalConsole {
+     protected LineReader buildReader(LineReaderBuilder builder) {
+         builder
+                 .appName("Paper")
+-                .variable(LineReader.HISTORY_FILE, java.nio.file.Paths.get(".console_history"))
++                //.variable(LineReader.HISTORY_FILE, java.nio.file.Paths.get(".console_history")) // Grinder - remove history file
+                 .completer(new ConsoleCommandCompleter(this.server))
+                 .option(LineReader.Option.COMPLETE_IN_WORD, true);
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().console.enableBrigadierHighlighting) {

@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Fri, 23 Aug 2024 21:48:26 +0200
+Subject: [PATCH] remove version history
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
+index ef4a33de2b771de4afe217982d0a29fc7d0ed53d..df191a052df70ce18d28148946dea6ebc10829d3 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
++++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
+@@ -51,7 +51,7 @@ public class PaperVersionFetcher implements VersionFetcher {
+         } else {
+             updateMessage = getUpdateStatusMessage("GrindClub/Grinder", build);
+         }
+-        final @Nullable Component history = this.getHistory();
++        final @Nullable Component history = /*this.getHistory()*/ null; // Grinder - remove version history
+ 
+         return history != null ? Component.textOfChildren(updateMessage, Component.newline(), history) : updateMessage;
+     }
+@@ -130,7 +130,7 @@ public class PaperVersionFetcher implements VersionFetcher {
+         }
+     }
+ 
+-    private @Nullable Component getHistory() {
++    /*private @Nullable Component getHistory() {
+         final VersionHistoryManager.@Nullable VersionData data = VersionHistoryManager.INSTANCE.getVersionData();
+         if (data == null) {
+             return null;
+@@ -142,5 +142,5 @@ public class PaperVersionFetcher implements VersionFetcher {
+         }
+ 
+         return text("Previous version: " + oldVersion, NamedTextColor.GRAY, TextDecoration.ITALIC);
+-    }
++    }*/ // Grinder - remove version history
+ }
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 9a44953496426d0ab744f8626ce8ca2dd234da62..3fbb98c2f6975368002b3ac8574a92a6f192af51 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -238,7 +238,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
+         this.server.spark.registerCommandBeforePlugins(this.server); // Paper - spark
+         // com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics // Grinder - deactivate metrics
+-        com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // Paper - load version history now
++        //com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // Paper - load version history now // Grinder - remove version history
+ 
+         this.setPvpAllowed(dedicatedserverproperties.pvp);
+         this.setFlightAllowed(dedicatedserverproperties.allowFlight);
