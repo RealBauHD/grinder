@@ -88,10 +88,10 @@ index bbf21ea433f9e3963aac0ede597ed8d3c8e50ed8..1f9cf77896a64e2b3d31e2a8038fc566
              if (this.raid != null) {
                  this.raid.addWaveMob(this.wave, this, false);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 362ca138a5cd5ad19f1300015c2571794adc3649..10747cd373d1981d91cc27c4f590be88f5dbc87b 100644
+index ffd284f0e25c6f20672f7225aafd37e6c87ccf03..056e047c74189d9f414af7605462e5bcae59e07b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2314,23 +2314,23 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2309,23 +2309,23 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          Preconditions.checkArgument(location != null, "Location cannot be null");
          Preconditions.checkArgument(radius >= 0, "Radius value (%s) cannot be negative", radius);
  

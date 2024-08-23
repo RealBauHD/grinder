@@ -5,7 +5,7 @@ Subject: [PATCH] remove statistics
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 77cf13ac6fbc4cbb58e43b64af2a2c8f26497f9d..bd49a3159cf4ca3a7b0ac75ac52d6bc268fc96c8 100644
+index 07c7fa89450c7b09c9d5f92ced3b1ad3ba63978a..fd45da5b9140f50111e4e223fe1e38501e8fbf86 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -303,7 +303,7 @@ public abstract class PlayerList {
@@ -17,7 +17,7 @@ index 77cf13ac6fbc4cbb58e43b64af2a2c8f26497f9d..bd49a3159cf4ca3a7b0ac75ac52d6bc2
          player.getRecipeBook().sendInitialRecipeBook(player);
          this.updateEntireScoreboard(worldserver1.getScoreboard(), player);
          this.server.invalidateStatus();
-@@ -1435,7 +1435,7 @@ public abstract class PlayerList {
+@@ -1438,7 +1438,7 @@ public abstract class PlayerList {
      }
  
      public ServerStatsCounter getPlayerStats(UUID uuid, String displayName) {
@@ -26,7 +26,7 @@ index 77cf13ac6fbc4cbb58e43b64af2a2c8f26497f9d..bd49a3159cf4ca3a7b0ac75ac52d6bc2
          ServerStatsCounter serverstatisticmanager = entityhuman == null ? null : (ServerStatsCounter) entityhuman.getStats();
          // CraftBukkit end
  
-@@ -1456,7 +1456,7 @@ public abstract class PlayerList {
+@@ -1459,7 +1459,7 @@ public abstract class PlayerList {
              // this.stats.put(uuid, serverstatisticmanager); // CraftBukkit
          }
  
@@ -161,7 +161,7 @@ index 6eff3bdab7ce445b703b983ddbebac0470559a53..e1c7df3169231ed25afa6f3f73289cba
      }
  }
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index e3fbbb2d04a693966506cfcb38d0f696492bd83c..6296175dc5f06ac08417afed7859e49601c32e3c 100644
+index eabb67a08a520a5452f5c7fa7c6e8d7e044df84d..43c72d8776b30a07f13128dec7d2485ce48d6112 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
 @@ -245,7 +245,7 @@ public class SpigotConfig

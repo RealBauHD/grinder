@@ -447,7 +447,7 @@ index 20a028450667edf102b59b6b50ac6e890f2c34ab..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..fc559bb166ebf74c050bf544ffdc60924ef1b929 100644
+index 419c056faf0d49d9b0435feb01252e87e227b9a9..3e31cebb91600f06fbd6fc83e0393d9b18f0f929 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -481,10 +481,10 @@ public final class Bukkit {
@@ -476,7 +476,7 @@ index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..fc559bb166ebf74c050bf544ffdc6092
      // Paper end
  
      /**
-@@ -2906,8 +2906,8 @@ public final class Bukkit {
+@@ -2917,8 +2917,8 @@ public final class Bukkit {
      }
      // Paper end - Folia region threading API
  
@@ -771,7 +771,7 @@ index 918a045165cdcde264bc24082b7afebb407271de..bfbc7ec642e2e0065ecfa087d31092dd
      /**
       * Gets the char value associated with this color
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7021039a1ffc9440195670edd64e048a1fa37ad2 100644
+index 5aa64ea39ebd92e5067c53cea49a8685c0b9eee4..12da292bb66032c1d001ca8b16b7e496041fc006 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -392,10 +392,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -800,7 +800,7 @@ index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7021039a1ffc9440195670edd64e048a
      // Paper end
  
      /**
-@@ -2227,7 +2227,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2238,7 +2238,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      UnsafeValues getUnsafe();
  
      // Spigot start
@@ -809,7 +809,7 @@ index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7021039a1ffc9440195670edd64e048a
  
          @NotNull
          public org.bukkit.configuration.file.YamlConfiguration getConfig() {
-@@ -2251,7 +2251,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2262,7 +2262,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          public org.bukkit.configuration.file.YamlConfiguration getPaperConfig()
          {
              throw new UnsupportedOperationException("Not supported yet.");
@@ -818,7 +818,7 @@ index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7021039a1ffc9440195670edd64e048a
          // Paper end
  
          /**
-@@ -2260,10 +2260,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2271,10 +2271,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
           * @param component the components to send
           * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
           */
@@ -831,7 +831,7 @@ index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..7021039a1ffc9440195670edd64e048a
  
          /**
           * Sends an array of components as a single message to the player
-@@ -2271,21 +2271,21 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2282,21 +2282,21 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
           * @param components the components to send
           * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
           */
@@ -1508,7 +1508,7 @@ index f0c6943da3f783101ca647b75b3230fae3a310da..b9f11410b995ce73178b3b17d2f24e18
      // Spigot end
  }
 diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
-index 5d5fcb2720b62e47d47f441032c4de02574b051a..9992eb9cd04e038c54bd3498ae1d3dfb410a972d 100644
+index f5541454ba5e508a72c83989c6feaef5406e2535..1478a3d223cefce3da2e124a5adbdbe9d7ac8a64 100644
 --- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 +++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
 @@ -79,9 +79,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste

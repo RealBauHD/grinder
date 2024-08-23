@@ -5,20 +5,20 @@ Subject: [PATCH] just use paper spawn caps
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 7509b17414f836e8b53fc62b02b386ba4e8c5ca9..54dc96e0dbb76f719abcba9d808ef0d7e5361298 100644
+index 95e96fe8aa93efbbb2e0a7dd98377fdc4fe0e6dd..2e0ac43d2a365ba863f37c89194e5d25a7f42b0a 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -180,7 +180,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -182,7 +182,7 @@ public class WorldConfiguration extends ConfigurationPart {
              public boolean perPlayerMobSpawns = true;
              public boolean scanForLegacyEnderDragon = true;
              @MergeMap
 -            public Reference2IntMap<MobCategory> spawnLimits = Util.make(new Reference2IntOpenHashMap<>(NaturalSpawner.SPAWNING_CATEGORIES.length), map -> Arrays.stream(NaturalSpawner.SPAWNING_CATEGORIES).forEach(mobCategory -> map.put(mobCategory, -1)));
 +            public Reference2IntMap<MobCategory> spawnLimits = Util.make(new Reference2IntOpenHashMap<>(NaturalSpawner.SPAWNING_CATEGORIES.length), map -> Arrays.stream(NaturalSpawner.SPAWNING_CATEGORIES).forEach(mobCategory -> map.put(mobCategory, mobCategory.getMaxInstancesPerChunk()))); // Grinder
              @MergeMap
-             public Map<MobCategory, DespawnRange> despawnRanges = Arrays.stream(MobCategory.values()).collect(Collectors.toMap(Function.identity(), category -> new DespawnRange(category.getNoDespawnDistance(), category.getDespawnDistance())));
+             public Map<MobCategory, DespawnRangePair> despawnRanges = Arrays.stream(MobCategory.values()).collect(Collectors.toMap(Function.identity(), category -> DespawnRangePair.createDefault()));
              @MergeMap
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index fc019b782e25c6793405a7d841186b8ab5ce4e5e..8ed1b0369e8ffe12235f85444e972e0dbc3951ca 100644
+index db046d071149ae868cb478d8801144f72c712707..ed9ca2cddff80b8f425ae0ebc72d84d710e12ac8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -491,11 +491,11 @@ public final class CraftServer implements Server {

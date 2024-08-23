@@ -54,10 +54,10 @@ index 367ef7e0769537e8c13c7fd818a1249e15a28a65..76a4de436ebad526411ea95aa066a1e5
      @Override
      public Component name() {
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 214ea75502d4abf9ebbc99a3811e4d2f8465227e..7896ee3f5f324d71548ab6f967005c6f4b7a705e 100644
+index 690086adcb1f87adc0b3ab664fde735ad3e1093a..121809d158247f686ff25a2df014d18f1565e846 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-@@ -128,6 +128,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -129,6 +129,7 @@ public class GlobalConfiguration extends ConfigurationPart {
          public BungeeCord bungeeCord;
  
          public class BungeeCord extends ConfigurationPart {
@@ -65,7 +65,7 @@ index 214ea75502d4abf9ebbc99a3811e4d2f8465227e..7896ee3f5f324d71548ab6f967005c6f
              public boolean onlineMode = true;
          }
  
-@@ -148,7 +149,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -149,7 +150,7 @@ public class GlobalConfiguration extends ConfigurationPart {
          }
          public boolean proxyProtocol = false;
          public boolean isProxyOnlineMode() {
@@ -113,10 +113,10 @@ index ea71430fddf516671593ac2c071652a43233221a..5f7784b2bd6028027b4a27c696695659
          String proxyLink = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "https://docs.papermc.io/velocity/security" : "http://www.spigotmc.org/wiki/firewall-guide/";
          // Paper end - Add Velocity IP Forwarding Support
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 624b80c796e9c95040d71d1595d11f98e2899cf3..9a24c5207cd3ddfb117f379683cb4d058791d99d 100644
+index b13057c0792067cc6b0abdf0d64a9be2cc9389a4..d066f919d16a826a9b2c63949d2f5f8a408e3a85 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2355,7 +2355,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2426,7 +2426,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
                          String message = String.format(queueEvent.getFormat(), queueEvent.getPlayer().getDisplayName(), queueEvent.getMessage());
                          if (((LazyPlayerSet) queueEvent.getRecipients()).isLazy()) {
@@ -125,7 +125,7 @@ index 624b80c796e9c95040d71d1595d11f98e2899cf3..9a24c5207cd3ddfb117f379683cb4d05
                                  ServerGamePacketListenerImpl.this.server.getPlayerList().broadcastChatMessage(original, ServerGamePacketListenerImpl.this.player, ChatType.bind(ChatType.CHAT, (Entity) ServerGamePacketListenerImpl.this.player));
                                  return null;
                              }
-@@ -2391,7 +2391,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2462,7 +2462,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
                  s = String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage());
                  if (((LazyPlayerSet) event.getRecipients()).isLazy()) {
@@ -148,7 +148,7 @@ index cad3b8b326b3b9ca38e6892b3bc01e4b2d23999d..3cafc65919ecb0fcaa49c5d550bd4795
              // Try and handle the handshake through the event
              if (com.destroystokyo.paper.event.player.PlayerHandshakeEvent.getHandlerList().getRegisteredListeners().length != 0) { // Hello? Can you hear me?
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4721496bfab7ef43d8bfb1e31ee1ee63c89112ae..fc019b782e25c6793405a7d841186b8ab5ce4e5e 100644
+index 2813553dcf42d8574c41bfb66b3d8a60bdd5445a..db046d071149ae868cb478d8801144f72c712707 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -260,7 +260,7 @@ import org.yaml.snakeyaml.Yaml;
@@ -188,10 +188,10 @@ index 4721496bfab7ef43d8bfb1e31ee1ee63c89112ae..fc019b782e25c6793405a7d841186b8a
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 10747cd373d1981d91cc27c4f590be88f5dbc87b..396c36705d824f0ea6b793124c908b548e088821 100644
+index 056e047c74189d9f414af7605462e5bcae59e07b..20fb8c351f2346bdf76496047fa73492e681e9ee 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2385,7 +2385,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2380,7 +2380,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      }
  
      // Spigot start
@@ -200,7 +200,7 @@ index 10747cd373d1981d91cc27c4f590be88f5dbc87b..396c36705d824f0ea6b793124c908b54
      {
  
          @Override
-@@ -2404,7 +2404,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2399,7 +2399,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      public org.bukkit.World.Spigot spigot()
      {
          return this.spigot;
@@ -302,7 +302,7 @@ index e9f471e60af0725ec34e2985d63ae9ea9f88590a..9fe94bfa08aaf3399d2f4e7981ed10c3
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 992437a6e838f653f32d33b5b3f702c484640a97..0cbef24c55bc3af7513cbfa5015d62636b5a9bb2 100644
+index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01d01815d1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -191,7 +191,7 @@ import org.bukkit.profile.PlayerProfile;
@@ -577,7 +577,7 @@ index 5c45946f54e4b16440c15a9165ef85be43e53c84..3793ba181ebf124ecd22f0b37bd3542e
              if (!(object instanceof String)) {
                  if (object != null) {
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index bc5c3b5d98607a95ba5418fb8f8a924142be1c87..7693b67dea1153ede1005b9c97056f8bcd93bfec 100644
+index 1be9ae5a9b571340426680a881e81f2ed656c5b6..8a7ba6f1d4e7a41e16fa8d521a2d2eb8f120b20c 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
 @@ -32,7 +32,7 @@ public class SpigotConfig
