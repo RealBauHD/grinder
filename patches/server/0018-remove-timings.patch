@@ -188,588 +188,6 @@ index 6b3cde6d4d1e63bec01f502f2027ee9fddac08aa..00000000000000000000000000000000
 -        co.aikar.timings.Timings.setHistoryLength(config.historyLength * 20);
 -    }
 -}
-diff --git a/src/main/java/co/aikar/timings/WorldTimingsHandler.java b/src/main/java/co/aikar/timings/WorldTimingsHandler.java
-deleted file mode 100644
-index 2f0d9b953802dee821cfde82d22b0567cce8ee91..0000000000000000000000000000000000000000
---- a/src/main/java/co/aikar/timings/WorldTimingsHandler.java
-+++ /dev/null
-@@ -1,120 +0,0 @@
--package co.aikar.timings;
--
--import net.minecraft.server.level.ServerLevel;
--import net.minecraft.world.level.Level;
--import net.minecraft.world.level.storage.PrimaryLevelData;
--
--/**
-- * Set of timers per world, to track world specific timings.
-- */
--// TODO: Re-implement missing timers
--@Deprecated(forRemoval = true)
--public class WorldTimingsHandler {
--    public final Timing mobSpawn;
--    public final Timing doChunkUnload;
--    public final Timing doPortalForcer;
--    public final Timing scheduledBlocks;
--    public final Timing scheduledBlocksCleanup;
--    public final Timing scheduledBlocksTicking;
--    public final Timing chunkTicks;
--    public final Timing lightChunk;
--    public final Timing chunkTicksBlocks;
--    public final Timing doVillages;
--    public final Timing doChunkMap;
--    public final Timing doChunkMapUpdate;
--    public final Timing doChunkMapToUpdate;
--    public final Timing doChunkMapSortMissing;
--    public final Timing doChunkMapSortSendToPlayers;
--    public final Timing doChunkMapPlayersNeedingChunks;
--    public final Timing doChunkMapPendingSendToPlayers;
--    public final Timing doChunkMapUnloadChunks;
--    public final Timing doChunkGC;
--    public final Timing doSounds;
--    public final Timing entityRemoval;
--    public final Timing entityTick;
--    public final Timing tileEntityTick;
--    public final Timing tileEntityPending;
--    public final Timing tracker1;
--    public final Timing tracker2;
--    public final Timing doTick;
--    public final Timing tickEntities;
--    public final Timing chunks;
--    public final Timing newEntities;
--    public final Timing raids;
--    public final Timing chunkProviderTick;
--    public final Timing broadcastChunkUpdates;
--    public final Timing countNaturalMobs;
--
--    public final Timing chunkLoad;
--    public final Timing chunkLoadPopulate;
--    public final Timing syncChunkLoad;
--    public final Timing chunkLoadLevelTimer;
--    public final Timing chunkIO;
--    public final Timing chunkPostLoad;
--    public final Timing worldSave;
--    public final Timing worldSaveChunks;
--    public final Timing worldSaveLevel;
--    public final Timing chunkSaveData;
--
--
--    public final Timing miscMobSpawning;
--
--    public WorldTimingsHandler(Level server) {
--        String name = ((PrimaryLevelData) server.getLevelData()).getLevelName() + " - ";
--
--        mobSpawn = Timings.ofSafe(name + "mobSpawn");
--        doChunkUnload = Timings.ofSafe(name + "doChunkUnload");
--        scheduledBlocks = Timings.ofSafe(name + "Scheduled Blocks");
--        scheduledBlocksCleanup = Timings.ofSafe(name + "Scheduled Blocks - Cleanup");
--        scheduledBlocksTicking = Timings.ofSafe(name + "Scheduled Blocks - Ticking");
--        chunkTicks = Timings.ofSafe(name + "Chunk Ticks");
--        lightChunk = Timings.ofSafe(name + "Light Chunk");
--        chunkTicksBlocks = Timings.ofSafe(name + "Chunk Ticks - Blocks");
--        doVillages = Timings.ofSafe(name + "doVillages");
--        doChunkMap = Timings.ofSafe(name + "doChunkMap");
--        doChunkMapUpdate = Timings.ofSafe(name + "doChunkMap - Update");
--        doChunkMapToUpdate = Timings.ofSafe(name + "doChunkMap - To Update");
--        doChunkMapSortMissing = Timings.ofSafe(name + "doChunkMap - Sort Missing");
--        doChunkMapSortSendToPlayers = Timings.ofSafe(name + "doChunkMap - Sort Send To Players");
--        doChunkMapPlayersNeedingChunks = Timings.ofSafe(name + "doChunkMap - Players Needing Chunks");
--        doChunkMapPendingSendToPlayers = Timings.ofSafe(name + "doChunkMap - Pending Send To Players");
--        doChunkMapUnloadChunks = Timings.ofSafe(name + "doChunkMap - Unload Chunks");
--        doSounds = Timings.ofSafe(name + "doSounds");
--        doChunkGC = Timings.ofSafe(name + "doChunkGC");
--        doPortalForcer = Timings.ofSafe(name + "doPortalForcer");
--        entityTick = Timings.ofSafe(name + "entityTick");
--        entityRemoval = Timings.ofSafe(name + "entityRemoval");
--        tileEntityTick = Timings.ofSafe(name + "tileEntityTick");
--        tileEntityPending = Timings.ofSafe(name + "tileEntityPending");
--
--        chunkLoad = Timings.ofSafe(name + "Chunk Load");
--        chunkLoadPopulate = Timings.ofSafe(name + "Chunk Load - Populate");
--        syncChunkLoad = Timings.ofSafe(name + "Sync Chunk Load");
--        chunkLoadLevelTimer = Timings.ofSafe(name + "Chunk Load - Load Level");
--        chunkIO = Timings.ofSafe(name + "Chunk Load - DiskIO");
--        chunkPostLoad = Timings.ofSafe(name + "Chunk Load - Post Load");
--        worldSave = Timings.ofSafe(name + "World Save");
--        worldSaveLevel = Timings.ofSafe(name + "World Save - Level");
--        worldSaveChunks = Timings.ofSafe(name + "World Save - Chunks");
--        chunkSaveData = Timings.ofSafe(name + "Chunk Save - Data");
--
--        tracker1 = Timings.ofSafe(name + "tracker stage 1");
--        tracker2 = Timings.ofSafe(name + "tracker stage 2");
--        doTick = Timings.ofSafe(name + "doTick");
--        tickEntities = Timings.ofSafe(name + "tickEntities");
--
--        chunks = Timings.ofSafe(name + "Chunks");
--        newEntities = Timings.ofSafe(name + "New entity registration");
--        raids = Timings.ofSafe(name + "Raids");
--        chunkProviderTick = Timings.ofSafe(name + "Chunk provider tick");
--        broadcastChunkUpdates = Timings.ofSafe(name + "Broadcast chunk updates");
--        countNaturalMobs = Timings.ofSafe(name + "Count natural mobs");
--
--
--        miscMobSpawning = Timings.ofSafe(name + "Mob spawning - Misc");
--    }
--
--    public static Timing getTickList(ServerLevel worldserver, String timingsType) {
--        return Timings.ofSafe(((PrimaryLevelData) worldserver.getLevelData()).getLevelName() + " - Scheduled " + timingsType);
--    }
--}
-diff --git a/src/main/java/io/papermc/paper/command/brigadier/bukkit/BukkitCommandNode.java b/src/main/java/io/papermc/paper/command/brigadier/bukkit/BukkitCommandNode.java
-index 0c3c82b28e581286b798ee58ca4193efc2faff4a..865acfe22a21b445747c6c7b9d3e6f7a958b6c86 100644
---- a/src/main/java/io/papermc/paper/command/brigadier/bukkit/BukkitCommandNode.java
-+++ b/src/main/java/io/papermc/paper/command/brigadier/bukkit/BukkitCommandNode.java
-@@ -1,6 +1,6 @@
- package io.papermc.paper.command.brigadier.bukkit;
- 
--import co.aikar.timings.Timing;
-+//import co.aikar.timings.Timing; // Grinder - remove timings
- import com.mojang.brigadier.arguments.StringArgumentType;
- import com.mojang.brigadier.builder.RequiredArgumentBuilder;
- import com.mojang.brigadier.context.CommandContext;
-@@ -79,17 +79,17 @@ public class BukkitCommandNode extends LiteralCommandNode<CommandSourceStack> {
-             CommandSender sender = context.getSource().getSender();
- 
-             // Plugins do weird things to workaround normal registration
--            if (this.command.timings == null) {
-+            /*if (this.command.timings == null) {
-                 this.command.timings = co.aikar.timings.TimingsManager.getCommandTiming(null, this.command);
--            }
-+            }*/ // Grinder - remove timings
- 
-             String content = context.getRange().get(context.getInput());
-             String[] args = org.apache.commons.lang3.StringUtils.split(content, ' '); // fix adjacent spaces (from console/plugins) causing empty array elements
- 
--            try (Timing ignored = this.command.timings.startTiming()) {
-+            //try (Timing ignored = this.command.timings.startTiming()) { // Grinder - remove timings
-                 // Note: we don't return the result of target.execute as thats success / failure, we return handled (true) or not handled (false)
-                 this.command.execute(sender, this.literal, Arrays.copyOfRange(args, 1, args.length));
--            }
-+            //}
- 
-             // return true as command was handled
-             return 1;
-diff --git a/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java b/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
-index 7ce9ebba8ce304d1f3f21d4f15ee5f3560d7700b..9938c5f91248d5c63b78e6c2cb6748a24aafa250 100644
---- a/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
-+++ b/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
-@@ -1,6 +1,6 @@
- package io.papermc.paper.plugin.manager;
- 
--import co.aikar.timings.TimedEventExecutor;
-+//import co.aikar.timings.TimedEventExecutor; // Grinder - remove timings
- import com.destroystokyo.paper.event.server.ServerExceptionEvent;
- import com.destroystokyo.paper.exception.ServerEventException;
- import com.google.common.collect.Sets;
-@@ -95,7 +95,7 @@ class PaperEventManager {
-             throw new IllegalPluginAccessException("Plugin attempted to register " + event + " while not enabled");
-         }
- 
--        executor = new TimedEventExecutor(executor, plugin, null, event);
-+        //executor = new TimedEventExecutor(executor, plugin, null, event); // Grinder - remove timings
-         this.getEventListeners(event).register(new RegisteredListener(listener, executor, priority, plugin, ignoreCancelled));
-     }
- 
-@@ -182,7 +182,7 @@ class PaperEventManager {
-                 }
-             }
- 
--            EventExecutor executor = new TimedEventExecutor(EventExecutor.create(method, eventClass), plugin, method, eventClass);
-+            EventExecutor executor = /*new TimedEventExecutor(*/EventExecutor.create(method, eventClass)/*, plugin, method, eventClass)*/; // Grinder - remove timings
-             eventSet.add(new RegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));
-         }
-         return ret;
-diff --git a/src/main/java/io/papermc/paper/plugin/manager/PaperPluginManagerImpl.java b/src/main/java/io/papermc/paper/plugin/manager/PaperPluginManagerImpl.java
-index 097500a59336db1bbfffcd1aa4cff7a8586e46ec..b2ef91f20bd2175d6f2eed88779dd319fd52ae4e 100644
---- a/src/main/java/io/papermc/paper/plugin/manager/PaperPluginManagerImpl.java
-+++ b/src/main/java/io/papermc/paper/plugin/manager/PaperPluginManagerImpl.java
-@@ -230,10 +230,10 @@ public class PaperPluginManagerImpl implements PluginManager, DependencyContext
- 
-     // Etc
- 
--    @Override
-+    /*@Override
-     public boolean useTimings() {
-         return co.aikar.timings.Timings.isTimingsEnabled();
--    }
-+    }*/ // Grinder - remove timings
- 
-     @Override
-     public void registerInterface(@NotNull Class<? extends PluginLoader> loader) throws IllegalArgumentException {
-diff --git a/src/main/java/net/minecraft/network/protocol/PacketUtils.java b/src/main/java/net/minecraft/network/protocol/PacketUtils.java
-index e2c24813f59c2fd075c740ac1842a38f20ed8554..321c9ee3cf1bafbec20994aa1f2ce1a0c0a793bf 100644
---- a/src/main/java/net/minecraft/network/protocol/PacketUtils.java
-+++ b/src/main/java/net/minecraft/network/protocol/PacketUtils.java
-@@ -51,8 +51,8 @@ public class PacketUtils {
-                 try { // Paper - detailed watchdog information
-                 if (listener instanceof ServerCommonPacketListenerImpl serverCommonPacketListener && serverCommonPacketListener.processedDisconnect) return; // CraftBukkit - Don't handle sync packets for kicked players
-                 if (listener.shouldHandleMessage(packet)) {
--                    co.aikar.timings.Timing timing = co.aikar.timings.MinecraftTimings.getPacketTiming(packet); // Paper - timings
--                    try (co.aikar.timings.Timing ignored = timing.startTiming()) { // Paper - timings
-+                    //co.aikar.timings.Timing timing = co.aikar.timings.MinecraftTimings.getPacketTiming(packet); // Paper - timings // Grinder - remove timings
-+                    try /*(co.aikar.timings.Timing ignored = timing.startTiming())*/ { // Paper - timings // Grinder - remove timings
-                         packet.handle(listener);
-                     } catch (Exception exception) {
-                         if (exception instanceof ReportedException) {
-diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index cb61462d4691a055a4b25f7b953609d8a154fdfe..e77404e9b745faed3d2600fd29ea7eab362ccc00 100644
---- a/src/main/java/net/minecraft/world/entity/EntityType.java
-+++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -343,10 +343,10 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
-         this(factory, spawnGroup, saveable, summonable, fireImmune, spawnableFarFromPlayer, canSpawnInside, dimensions, spawnBoxScale, maxTrackDistance, trackTickInterval, requiredFeatures, "custom");
-     }
-     public EntityType(EntityType.EntityFactory<T> factory, MobCategory spawnGroup, boolean saveable, boolean summonable, boolean fireImmune, boolean spawnableFarFromPlayer, ImmutableSet<Block> canSpawnInside, EntityDimensions dimensions, float spawnBoxScale, int maxTrackDistance, int trackTickInterval, FeatureFlagSet requiredFeatures, String id) {
--        this.tickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "tick");
-+        /*this.tickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "tick");
-         this.inactiveTickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "inactiveTick");
-         this.passengerTickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "passengerTick");
--        this.passengerInactiveTickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "passengerInactiveTick");
-+        this.passengerInactiveTickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "passengerInactiveTick");*/ // Grinder - remove timings
-         // Paper end
-         this.builtInRegistryHolder = BuiltInRegistries.ENTITY_TYPE.createIntrusiveHolder(this);
-         this.factory = factory;
-@@ -701,10 +701,10 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
-     }
- 
-     // Paper start - timings
--    public final co.aikar.timings.Timing tickTimer;
-+    /*public final co.aikar.timings.Timing tickTimer;
-     public final co.aikar.timings.Timing inactiveTickTimer;
-     public final co.aikar.timings.Timing passengerTickTimer;
--    public final co.aikar.timings.Timing passengerInactiveTickTimer;
-+    public final co.aikar.timings.Timing passengerInactiveTickTimer;*/ // Grinder - remove timings
-     // Paper end
-     public boolean trackDeltas() {
-         return this != EntityType.PLAYER && this != EntityType.LLAMA_SPIT && this != EntityType.WITHER && this != EntityType.BAT && this != EntityType.ITEM_FRAME && this != EntityType.GLOW_ITEM_FRAME && this != EntityType.LEASH_KNOT && this != EntityType.PAINTING && this != EntityType.END_CRYSTAL && this != EntityType.EVOKER_FANGS;
-diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-index 9379dd4056018b52c93ed4888dcdc94579bd9691..9a8eefbaf1d5d39f45e1e79e1fe563f3498d799e 100644
---- a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-+++ b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-@@ -16,7 +16,7 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
-     private final int maxDuration;
-     // Paper start - configurable behavior tick rate and timings
-     private final String configKey;
--    private final co.aikar.timings.Timing timing;
-+    //private final co.aikar.timings.Timing timing; // Grinder - remove timings
-     // Paper end - configurable behavior tick rate and timings
- 
-     public Behavior(Map<MemoryModuleType<?>, MemoryStatus> requiredMemoryState) {
-@@ -38,7 +38,7 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
-             key = key.substring(lastSeparator + 1);
-         }
-         this.configKey = key.toLowerCase(java.util.Locale.ROOT);
--        this.timing = co.aikar.timings.MinecraftTimings.getBehaviorTimings(configKey);
-+        //this.timing = co.aikar.timings.MinecraftTimings.getBehaviorTimings(configKey); // Grinder - remove timings
-         // Paper end - configurable behavior tick rate and timings
-     }
- 
-@@ -59,9 +59,9 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
-             this.status = Behavior.Status.RUNNING;
-             int i = this.minDuration + world.getRandom().nextInt(this.maxDuration + 1 - this.minDuration);
-             this.endTimestamp = time + (long)i;
--            this.timing.startTiming(); // Paper - behavior timings
-+            //this.timing.startTiming(); // Paper - behavior timings // Grinder - remove timings
-             this.start(world, entity, time);
--            this.timing.stopTiming(); // Paper - behavior timings
-+            //this.timing.stopTiming(); // Paper - behavior timings // Grinder - remove timings
-             return true;
-         } else {
-             return false;
-@@ -73,13 +73,13 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
- 
-     @Override
-     public final void tickOrStop(ServerLevel world, E entity, long time) {
--        this.timing.startTiming(); // Paper - behavior timings
-+        //this.timing.startTiming(); // Paper - behavior timings // Grinder - remove timings
-         if (!this.timedOut(time) && this.canStillUse(world, entity, time)) {
-             this.tick(world, entity, time);
-         } else {
-             this.doStop(world, entity, time);
-         }
--        this.timing.stopTiming(); // Paper - behavior timings
-+        //this.timing.stopTiming(); // Paper - behavior timings // Grinder - remove timings
-     }
- 
-     protected void tick(ServerLevel world, E entity, long time) {
-diff --git a/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java b/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
-index 85b4b24361e785acf75571ff98f924c00ae80748..f0463632d1e4db58d120d11f60b325a5d4152683 100644
---- a/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
-+++ b/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
-@@ -28,7 +28,7 @@ public abstract class Sensor<E extends LivingEntity> {
-     private long timeToTick;
-     // Paper start - configurable sensor tick rate and timings
-     private final String configKey;
--    private final co.aikar.timings.Timing timing;
-+    //private final co.aikar.timings.Timing timing; // Grinder - remove timings
-     // Paper end
- 
-     public Sensor(int senseInterval) {
-@@ -39,7 +39,7 @@ public abstract class Sensor<E extends LivingEntity> {
-             key = key.substring(lastSeparator + 1);
-         }
-         this.configKey = key.toLowerCase(java.util.Locale.ROOT);
--        this.timing = co.aikar.timings.MinecraftTimings.getSensorTimings(configKey, senseInterval);
-+        //this.timing = co.aikar.timings.MinecraftTimings.getSensorTimings(configKey, senseInterval); // Grinder - remove timings
-         // Paper end
-         this.scanRate = senseInterval;
-         this.timeToTick = (long)RANDOM.nextInt(senseInterval);
-@@ -53,10 +53,10 @@ public abstract class Sensor<E extends LivingEntity> {
-         if (--this.timeToTick <= 0L) {
-             // Paper start - configurable sensor tick rate and timings
-             this.timeToTick = java.util.Objects.requireNonNullElse(world.paperConfig().tickRates.sensor.get(entity.getType(), this.configKey), this.scanRate);
--            this.timing.startTiming();
-+            //this.timing.startTiming(); // Grinder - remove timings
-             // Paper end
-             this.doTick(world, entity);
--            this.timing.stopTiming(); // Paper - sensor timings
-+            //this.timing.stopTiming(); // Paper - sensor timings // Grinder - remove timings
-         }
-     }
- 
-diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index e2a0487089eb5a7bdc1433e4c75f69d8e9f9d5f9..7942fd8c05ed464812867b106c9e52d7bdd41cbe 100644
---- a/src/main/java/net/minecraft/world/level/Level.java
-+++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -173,7 +173,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
-     // Paper end - add paper world config
- 
-     public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
--    public final co.aikar.timings.WorldTimingsHandler timings; // Paper
-+    //public final co.aikar.timings.WorldTimingsHandler timings; // Paper // Grinder - remove timings
-     public static BlockPos lastPhysicsProblem; // Spigot
-     private org.spigotmc.TickLimiter entityLimiter;
-     private org.spigotmc.TickLimiter tileLimiter;
-@@ -763,7 +763,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
-             public void onBorderSetDamageSafeZOne(WorldBorder border, double safeZoneRadius) {}
-         });
-         // CraftBukkit end
--        this.timings = new co.aikar.timings.WorldTimingsHandler(this); // Paper - code below can generate new world and access timings
-+        //this.timings = new co.aikar.timings.WorldTimingsHandler(this); // Paper - code below can generate new world and access timings // Grinder - remove timings
-         this.entityLimiter = new org.spigotmc.TickLimiter(this.spigotConfig.entityMaxTickTime);
-         this.tileLimiter = new org.spigotmc.TickLimiter(this.spigotConfig.tileMaxTickTime);
-         this.entityLookup = new ca.spottedleaf.moonrise.patches.chunk_system.level.entity.dfl.DefaultEntityLookup(this); // Paper - rewrite chunk system
-@@ -1369,15 +1369,15 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
-         ProfilerFiller gameprofilerfiller = this.getProfiler();
- 
-         gameprofilerfiller.push("blockEntities");
--        this.timings.tileEntityPending.startTiming(); // Spigot
-+        //this.timings.tileEntityPending.startTiming(); // Spigot // Grinder - remove timings
-         this.tickingBlockEntities = true;
-         if (!this.pendingBlockEntityTickers.isEmpty()) {
-             this.blockEntityTickers.addAll(this.pendingBlockEntityTickers);
-             this.pendingBlockEntityTickers.clear();
-         }
--        this.timings.tileEntityPending.stopTiming(); // Spigot
-+        //this.timings.tileEntityPending.stopTiming(); // Spigot // Grinder - remove timings
- 
--        this.timings.tileEntityTick.startTiming(); // Spigot
-+        //this.timings.tileEntityTick.startTiming(); // Spigot // Grinder - remove timings
-         // Spigot start
-         // Iterator<TickingBlockEntity> iterator = this.blockEntityTickers.iterator();
-         boolean flag = this.tickRateManager().runsNormally();
-@@ -1408,9 +1408,9 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
-         }
-         this.blockEntityTickers.removeAll(toRemove); // Paper - Fix MC-117075
- 
--        this.timings.tileEntityTick.stopTiming(); // Spigot
-+        ///this.timings.tileEntityTick.stopTiming(); // Spigot // Grinder - remove timings
-         this.tickingBlockEntities = false;
--        co.aikar.timings.TimingHistory.tileEntityTicks += this.blockEntityTickers.size(); // Paper
-+        //co.aikar.timings.TimingHistory.tileEntityTicks += this.blockEntityTickers.size(); // Paper // Grinder - remove timings
-         gameprofilerfiller.pop();
-         this.spigotConfig.currentPrimedTnt = 0; // Spigot
-     }
-diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index e524b27d185da3e88668f8ef107517272860bd66..96ab8074077c0b48a89a9e3b37f3d53df1e370e5 100644
---- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-+++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-@@ -128,7 +128,7 @@ public final class NaturalSpawner {
- 
-     public static void spawnForChunk(ServerLevel world, LevelChunk chunk, NaturalSpawner.SpawnState info, boolean spawnAnimals, boolean spawnMonsters, boolean rareSpawn) {
-         world.getProfiler().push("spawner");
--        world.timings.mobSpawn.startTiming(); // Spigot
-+        //world.timings.mobSpawn.startTiming(); // Spigot // Grinder - remove timings
-         MobCategory[] aenumcreaturetype = NaturalSpawner.SPAWNING_CATEGORIES;
-         int i = aenumcreaturetype.length;
- 
-@@ -181,7 +181,7 @@ public final class NaturalSpawner {
-             }
-         }
- 
--        world.timings.mobSpawn.stopTiming(); // Spigot
-+        //world.timings.mobSpawn.stopTiming(); // Spigot // Grinder - remove timings
-         world.getProfiler().pop();
-     }
- 
-diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-index 2f4d6b56301195f8d39ed50dffe842464065bfe1..2240d7533720e004362e52b1a5b298b1d16b9a6c 100644
---- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-+++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-@@ -1,6 +1,6 @@
- package org.bukkit.craftbukkit.scheduler;
- 
--import co.aikar.timings.MinecraftTimings; // Paper
-+//import co.aikar.timings.MinecraftTimings; // Paper // Grinder - remove timings
- import com.google.common.base.Preconditions;
- import com.google.common.util.concurrent.ThreadFactoryBuilder;
- import java.util.ArrayList;
-@@ -297,7 +297,7 @@ public class CraftScheduler implements BukkitScheduler {
-                         }
-                         return false;
-                     }
--                }){{this.timings=co.aikar.timings.MinecraftTimings.getCancelTasksTimer();}}; // Paper
-+                }){{/*this.timings=co.aikar.timings.MinecraftTimings.getCancelTasksTimer();*/}}; // Paper // Grinder - remove timings
-         this.handle(task, 0L);
-         for (CraftTask taskPending = this.head.getNext(); taskPending != null; taskPending = taskPending.getNext()) {
-             if (taskPending == task) {
-@@ -337,7 +337,7 @@ public class CraftScheduler implements BukkitScheduler {
-                             }
-                         }
-                     }
--                }){{this.timings=co.aikar.timings.MinecraftTimings.getCancelTasksTimer(plugin);}}; // Paper
-+                }){{/*this.timings=co.aikar.timings.MinecraftTimings.getCancelTasksTimer(plugin);*/}}; // Paper // Grinder - remove timings
-         this.handle(task, 0L);
-         for (CraftTask taskPending = this.head.getNext(); taskPending != null; taskPending = taskPending.getNext()) {
-             if (taskPending == task) {
-@@ -504,10 +504,10 @@ public class CraftScheduler implements BukkitScheduler {
-                 this.runners.remove(task.getTaskId());
-             }
-         }
--        MinecraftTimings.bukkitSchedulerFinishTimer.startTiming(); // Paper
-+        //MinecraftTimings.bukkitSchedulerFinishTimer.startTiming(); // Paper // Grinder - remove timings
-         this.pending.addAll(temp);
-         temp.clear();
--        MinecraftTimings.bukkitSchedulerFinishTimer.stopTiming(); // Paper
-+        //MinecraftTimings.bukkitSchedulerFinishTimer.stopTiming(); // Paper // Grinder - remove timings
-         //this.debugHead = this.debugHead.getNextHead(currentTick); // Paper
-     }
- 
-@@ -550,7 +550,7 @@ public class CraftScheduler implements BukkitScheduler {
-     }
- 
-     void parsePending() { // Paper
--        if (!this.isAsyncScheduler) MinecraftTimings.bukkitSchedulerPendingTimer.startTiming(); // Paper
-+        //if (!this.isAsyncScheduler) MinecraftTimings.bukkitSchedulerPendingTimer.startTiming(); // Paper // Grinder - remove timings
-         CraftTask head = this.head;
-         CraftTask task = head.getNext();
-         CraftTask lastTask = head;
-@@ -569,7 +569,7 @@ public class CraftScheduler implements BukkitScheduler {
-             task.setNext(null);
-         }
-         this.head = lastTask;
--        if (!this.isAsyncScheduler) MinecraftTimings.bukkitSchedulerPendingTimer.stopTiming(); // Paper
-+        //if (!this.isAsyncScheduler) MinecraftTimings.bukkitSchedulerPendingTimer.stopTiming(); // Paper // Grinder - remove timings
-     }
- 
-     private boolean isReady(final int currentTick) {
-diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftTask.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftTask.java
-index ba369f3dcfdf498e971dc4405d39657a9b6e97cc..0cf8c222400f99cc0a094cd7c41812debadf396d 100644
---- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftTask.java
-+++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftTask.java
-@@ -2,14 +2,13 @@ package org.bukkit.craftbukkit.scheduler;
- 
- import java.util.function.Consumer;
- 
--import co.aikar.timings.NullTimingHandler;
-+//import co.aikar.timings.NullTimingHandler; // Grinder - remove timings
- import org.bukkit.Bukkit;
- import org.bukkit.plugin.Plugin;
- import org.bukkit.scheduler.BukkitTask;
- 
--import org.spigotmc.CustomTimingsHandler; // Spigot
--import co.aikar.timings.MinecraftTimings; // Paper
--import co.aikar.timings.Timing; // Paper
-+//import co.aikar.timings.MinecraftTimings; // Paper // Grinder - remove timings
-+//import co.aikar.timings.Timing; // Paper // Grinder - remove timings
- 
- public class CraftTask implements BukkitTask, Runnable { // Spigot
- 
-@@ -31,7 +30,7 @@ public class CraftTask implements BukkitTask, Runnable { // Spigot
-     private long nextRun;
-     public final Runnable rTask; // Paper
-     public final Consumer<BukkitTask> cTask; // Paper
--    public Timing timings; // Paper
-+    //public Timing timings; // Paper // Grinder - remove timings
-     private final Plugin plugin;
-     private final int id;
-     private final long createdAt = System.nanoTime();
-@@ -61,7 +60,7 @@ public class CraftTask implements BukkitTask, Runnable { // Spigot
-         }
-         this.id = id;
-         this.period = period;
--        timings = task != null ? MinecraftTimings.getPluginTaskTimings(this, period) : NullTimingHandler.NULL; // Paper
-+        //timings = task != null ? MinecraftTimings.getPluginTaskTimings(this, period) : NullTimingHandler.NULL; // Paper // Grinder - remove timings
-     }
- 
-     @Override
-@@ -81,13 +80,13 @@ public class CraftTask implements BukkitTask, Runnable { // Spigot
- 
-     @Override
-     public void run() {
--        try (Timing ignored = timings.startTiming()) { // Paper
-+        //try (Timing ignored = timings.startTiming()) { // Paper // Grinder - remove timings
-         if (this.rTask != null) {
-             this.rTask.run();
-         } else {
-             this.cTask.accept(this);
-         }
--        } // Paper
-+        //} // Paper // Grinder - remove timings
-     }
- 
-     long getCreatedAt() {
-diff --git a/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftScoreboardManager.java b/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftScoreboardManager.java
-index b3e1adeb932da9b3bed16acd94e2f16da48a7c72..cb276b1e54abf0bcf03179ed638030576ab04d3f 100644
---- a/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftScoreboardManager.java
-+++ b/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftScoreboardManager.java
-@@ -115,7 +115,7 @@ public final class CraftScoreboardManager implements ScoreboardManager {
-     public void forAllObjectives(ObjectiveCriteria criteria, ScoreHolder holder, Consumer<ScoreAccess> consumer) {
-         // Paper start - add timings for scoreboard search
-         // plugins leaking scoreboards will make this very expensive, let server owners debug it easily
--        co.aikar.timings.MinecraftTimings.scoreboardScoreSearch.startTimingIfSync();
-+        //co.aikar.timings.MinecraftTimings.scoreboardScoreSearch.startTimingIfSync(); // Grinder - remove timings
-         try {
-         // Paper end - add timings for scoreboard search
-         for (CraftScoreboard scoreboard : this.scoreboards) {
-@@ -123,7 +123,7 @@ public final class CraftScoreboardManager implements ScoreboardManager {
-             board.forAllObjectives(criteria, holder, (score) -> consumer.accept(score));
-         }
-         } finally { // Paper start - add timings for scoreboard search
--            co.aikar.timings.MinecraftTimings.scoreboardScoreSearch.stopTimingIfSync();
-+            //co.aikar.timings.MinecraftTimings.scoreboardScoreSearch.stopTimingIfSync(); // Grinder - remove timings
-         }
-         // Paper end - add timings for scoreboard search
-     }
-diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index bf2d18f74b0f0da7c3c30310c74224a1c0853564..fb040718f4b0a7e9ffd61f6a20943a041fb918b1 100644
---- a/src/main/java/org/spigotmc/ActivationRange.java
-+++ b/src/main/java/org/spigotmc/ActivationRange.java
-@@ -34,7 +34,7 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
- import net.minecraft.world.entity.projectile.ThrowableProjectile;
- import net.minecraft.world.entity.projectile.ThrownTrident;
- import net.minecraft.world.entity.raid.Raider;
--import co.aikar.timings.MinecraftTimings;
-+//import co.aikar.timings.MinecraftTimings; // Grinder - remove timings
- import net.minecraft.world.entity.schedule.Activity;
- import net.minecraft.world.level.Level;
- import net.minecraft.world.phys.AABB;
-@@ -167,7 +167,7 @@ public class ActivationRange
-      */
-     public static void activateEntities(Level world)
-     {
--        MinecraftTimings.entityActivationCheckTimer.startTiming();
-+        //MinecraftTimings.entityActivationCheckTimer.startTiming(); // Grinder - remove timings
-         final int miscActivationRange = world.spigotConfig.miscActivationRange;
-         final int raiderActivationRange = world.spigotConfig.raiderActivationRange;
-         final int animalActivationRange = world.spigotConfig.animalActivationRange;
-@@ -226,7 +226,7 @@ public class ActivationRange
-             }
-             // Paper end
-         }
--        MinecraftTimings.entityActivationCheckTimer.stopTiming();
-+        //MinecraftTimings.entityActivationCheckTimer.stopTiming(); // Grinder - remove timings
-     }
- 
-     /**
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
 deleted file mode 100644
 index 4ada08f7c8ee9226ee0f14b0d928b7bc00421822..0000000000000000000000000000000000000000
@@ -1164,6 +582,166 @@ index 4ada08f7c8ee9226ee0f14b0d928b7bc00421822..00000000000000000000000000000000
 -        }
 -    }
 -}
+diff --git a/src/main/java/co/aikar/timings/WorldTimingsHandler.java b/src/main/java/co/aikar/timings/WorldTimingsHandler.java
+deleted file mode 100644
+index 2f0d9b953802dee821cfde82d22b0567cce8ee91..0000000000000000000000000000000000000000
+--- a/src/main/java/co/aikar/timings/WorldTimingsHandler.java
++++ /dev/null
+@@ -1,120 +0,0 @@
+-package co.aikar.timings;
+-
+-import net.minecraft.server.level.ServerLevel;
+-import net.minecraft.world.level.Level;
+-import net.minecraft.world.level.storage.PrimaryLevelData;
+-
+-/**
+- * Set of timers per world, to track world specific timings.
+- */
+-// TODO: Re-implement missing timers
+-@Deprecated(forRemoval = true)
+-public class WorldTimingsHandler {
+-    public final Timing mobSpawn;
+-    public final Timing doChunkUnload;
+-    public final Timing doPortalForcer;
+-    public final Timing scheduledBlocks;
+-    public final Timing scheduledBlocksCleanup;
+-    public final Timing scheduledBlocksTicking;
+-    public final Timing chunkTicks;
+-    public final Timing lightChunk;
+-    public final Timing chunkTicksBlocks;
+-    public final Timing doVillages;
+-    public final Timing doChunkMap;
+-    public final Timing doChunkMapUpdate;
+-    public final Timing doChunkMapToUpdate;
+-    public final Timing doChunkMapSortMissing;
+-    public final Timing doChunkMapSortSendToPlayers;
+-    public final Timing doChunkMapPlayersNeedingChunks;
+-    public final Timing doChunkMapPendingSendToPlayers;
+-    public final Timing doChunkMapUnloadChunks;
+-    public final Timing doChunkGC;
+-    public final Timing doSounds;
+-    public final Timing entityRemoval;
+-    public final Timing entityTick;
+-    public final Timing tileEntityTick;
+-    public final Timing tileEntityPending;
+-    public final Timing tracker1;
+-    public final Timing tracker2;
+-    public final Timing doTick;
+-    public final Timing tickEntities;
+-    public final Timing chunks;
+-    public final Timing newEntities;
+-    public final Timing raids;
+-    public final Timing chunkProviderTick;
+-    public final Timing broadcastChunkUpdates;
+-    public final Timing countNaturalMobs;
+-
+-    public final Timing chunkLoad;
+-    public final Timing chunkLoadPopulate;
+-    public final Timing syncChunkLoad;
+-    public final Timing chunkLoadLevelTimer;
+-    public final Timing chunkIO;
+-    public final Timing chunkPostLoad;
+-    public final Timing worldSave;
+-    public final Timing worldSaveChunks;
+-    public final Timing worldSaveLevel;
+-    public final Timing chunkSaveData;
+-
+-
+-    public final Timing miscMobSpawning;
+-
+-    public WorldTimingsHandler(Level server) {
+-        String name = ((PrimaryLevelData) server.getLevelData()).getLevelName() + " - ";
+-
+-        mobSpawn = Timings.ofSafe(name + "mobSpawn");
+-        doChunkUnload = Timings.ofSafe(name + "doChunkUnload");
+-        scheduledBlocks = Timings.ofSafe(name + "Scheduled Blocks");
+-        scheduledBlocksCleanup = Timings.ofSafe(name + "Scheduled Blocks - Cleanup");
+-        scheduledBlocksTicking = Timings.ofSafe(name + "Scheduled Blocks - Ticking");
+-        chunkTicks = Timings.ofSafe(name + "Chunk Ticks");
+-        lightChunk = Timings.ofSafe(name + "Light Chunk");
+-        chunkTicksBlocks = Timings.ofSafe(name + "Chunk Ticks - Blocks");
+-        doVillages = Timings.ofSafe(name + "doVillages");
+-        doChunkMap = Timings.ofSafe(name + "doChunkMap");
+-        doChunkMapUpdate = Timings.ofSafe(name + "doChunkMap - Update");
+-        doChunkMapToUpdate = Timings.ofSafe(name + "doChunkMap - To Update");
+-        doChunkMapSortMissing = Timings.ofSafe(name + "doChunkMap - Sort Missing");
+-        doChunkMapSortSendToPlayers = Timings.ofSafe(name + "doChunkMap - Sort Send To Players");
+-        doChunkMapPlayersNeedingChunks = Timings.ofSafe(name + "doChunkMap - Players Needing Chunks");
+-        doChunkMapPendingSendToPlayers = Timings.ofSafe(name + "doChunkMap - Pending Send To Players");
+-        doChunkMapUnloadChunks = Timings.ofSafe(name + "doChunkMap - Unload Chunks");
+-        doSounds = Timings.ofSafe(name + "doSounds");
+-        doChunkGC = Timings.ofSafe(name + "doChunkGC");
+-        doPortalForcer = Timings.ofSafe(name + "doPortalForcer");
+-        entityTick = Timings.ofSafe(name + "entityTick");
+-        entityRemoval = Timings.ofSafe(name + "entityRemoval");
+-        tileEntityTick = Timings.ofSafe(name + "tileEntityTick");
+-        tileEntityPending = Timings.ofSafe(name + "tileEntityPending");
+-
+-        chunkLoad = Timings.ofSafe(name + "Chunk Load");
+-        chunkLoadPopulate = Timings.ofSafe(name + "Chunk Load - Populate");
+-        syncChunkLoad = Timings.ofSafe(name + "Sync Chunk Load");
+-        chunkLoadLevelTimer = Timings.ofSafe(name + "Chunk Load - Load Level");
+-        chunkIO = Timings.ofSafe(name + "Chunk Load - DiskIO");
+-        chunkPostLoad = Timings.ofSafe(name + "Chunk Load - Post Load");
+-        worldSave = Timings.ofSafe(name + "World Save");
+-        worldSaveLevel = Timings.ofSafe(name + "World Save - Level");
+-        worldSaveChunks = Timings.ofSafe(name + "World Save - Chunks");
+-        chunkSaveData = Timings.ofSafe(name + "Chunk Save - Data");
+-
+-        tracker1 = Timings.ofSafe(name + "tracker stage 1");
+-        tracker2 = Timings.ofSafe(name + "tracker stage 2");
+-        doTick = Timings.ofSafe(name + "doTick");
+-        tickEntities = Timings.ofSafe(name + "tickEntities");
+-
+-        chunks = Timings.ofSafe(name + "Chunks");
+-        newEntities = Timings.ofSafe(name + "New entity registration");
+-        raids = Timings.ofSafe(name + "Raids");
+-        chunkProviderTick = Timings.ofSafe(name + "Chunk provider tick");
+-        broadcastChunkUpdates = Timings.ofSafe(name + "Broadcast chunk updates");
+-        countNaturalMobs = Timings.ofSafe(name + "Count natural mobs");
+-
+-
+-        miscMobSpawning = Timings.ofSafe(name + "Mob spawning - Misc");
+-    }
+-
+-    public static Timing getTickList(ServerLevel worldserver, String timingsType) {
+-        return Timings.ofSafe(((PrimaryLevelData) worldserver.getLevelData()).getLevelName() + " - Scheduled " + timingsType);
+-    }
+-}
+diff --git a/src/main/java/io/papermc/paper/command/brigadier/bukkit/BukkitCommandNode.java b/src/main/java/io/papermc/paper/command/brigadier/bukkit/BukkitCommandNode.java
+index 0c3c82b28e581286b798ee58ca4193efc2faff4a..865acfe22a21b445747c6c7b9d3e6f7a958b6c86 100644
+--- a/src/main/java/io/papermc/paper/command/brigadier/bukkit/BukkitCommandNode.java
++++ b/src/main/java/io/papermc/paper/command/brigadier/bukkit/BukkitCommandNode.java
+@@ -1,6 +1,6 @@
+ package io.papermc.paper.command.brigadier.bukkit;
+ 
+-import co.aikar.timings.Timing;
++//import co.aikar.timings.Timing; // Grinder - remove timings
+ import com.mojang.brigadier.arguments.StringArgumentType;
+ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+ import com.mojang.brigadier.context.CommandContext;
+@@ -79,17 +79,17 @@ public class BukkitCommandNode extends LiteralCommandNode<CommandSourceStack> {
+             CommandSender sender = context.getSource().getSender();
+ 
+             // Plugins do weird things to workaround normal registration
+-            if (this.command.timings == null) {
++            /*if (this.command.timings == null) {
+                 this.command.timings = co.aikar.timings.TimingsManager.getCommandTiming(null, this.command);
+-            }
++            }*/ // Grinder - remove timings
+ 
+             String content = context.getRange().get(context.getInput());
+             String[] args = org.apache.commons.lang3.StringUtils.split(content, ' '); // fix adjacent spaces (from console/plugins) causing empty array elements
+ 
+-            try (Timing ignored = this.command.timings.startTiming()) {
++            //try (Timing ignored = this.command.timings.startTiming()) { // Grinder - remove timings
+                 // Note: we don't return the result of target.execute as thats success / failure, we return handled (true) or not handled (false)
+                 this.command.execute(sender, this.literal, Arrays.copyOfRange(args, 1, args.length));
+-            }
++            //}
+ 
+             // return true as command was handled
+             return 1;
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 index 121809d158247f686ff25a2df014d18f1565e846..830b7b164e6db438fc1ea4fbe22373d4da053b6b 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
@@ -1185,6 +763,68 @@ index 121809d158247f686ff25a2df014d18f1565e846..830b7b164e6db438fc1ea4fbe22373d4
          }
      }
  
+diff --git a/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java b/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
+index 7ce9ebba8ce304d1f3f21d4f15ee5f3560d7700b..9938c5f91248d5c63b78e6c2cb6748a24aafa250 100644
+--- a/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
++++ b/src/main/java/io/papermc/paper/plugin/manager/PaperEventManager.java
+@@ -1,6 +1,6 @@
+ package io.papermc.paper.plugin.manager;
+ 
+-import co.aikar.timings.TimedEventExecutor;
++//import co.aikar.timings.TimedEventExecutor; // Grinder - remove timings
+ import com.destroystokyo.paper.event.server.ServerExceptionEvent;
+ import com.destroystokyo.paper.exception.ServerEventException;
+ import com.google.common.collect.Sets;
+@@ -95,7 +95,7 @@ class PaperEventManager {
+             throw new IllegalPluginAccessException("Plugin attempted to register " + event + " while not enabled");
+         }
+ 
+-        executor = new TimedEventExecutor(executor, plugin, null, event);
++        //executor = new TimedEventExecutor(executor, plugin, null, event); // Grinder - remove timings
+         this.getEventListeners(event).register(new RegisteredListener(listener, executor, priority, plugin, ignoreCancelled));
+     }
+ 
+@@ -182,7 +182,7 @@ class PaperEventManager {
+                 }
+             }
+ 
+-            EventExecutor executor = new TimedEventExecutor(EventExecutor.create(method, eventClass), plugin, method, eventClass);
++            EventExecutor executor = /*new TimedEventExecutor(*/EventExecutor.create(method, eventClass)/*, plugin, method, eventClass)*/; // Grinder - remove timings
+             eventSet.add(new RegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));
+         }
+         return ret;
+diff --git a/src/main/java/io/papermc/paper/plugin/manager/PaperPluginManagerImpl.java b/src/main/java/io/papermc/paper/plugin/manager/PaperPluginManagerImpl.java
+index 097500a59336db1bbfffcd1aa4cff7a8586e46ec..b2ef91f20bd2175d6f2eed88779dd319fd52ae4e 100644
+--- a/src/main/java/io/papermc/paper/plugin/manager/PaperPluginManagerImpl.java
++++ b/src/main/java/io/papermc/paper/plugin/manager/PaperPluginManagerImpl.java
+@@ -230,10 +230,10 @@ public class PaperPluginManagerImpl implements PluginManager, DependencyContext
+ 
+     // Etc
+ 
+-    @Override
++    /*@Override
+     public boolean useTimings() {
+         return co.aikar.timings.Timings.isTimingsEnabled();
+-    }
++    }*/ // Grinder - remove timings
+ 
+     @Override
+     public void registerInterface(@NotNull Class<? extends PluginLoader> loader) throws IllegalArgumentException {
+diff --git a/src/main/java/net/minecraft/network/protocol/PacketUtils.java b/src/main/java/net/minecraft/network/protocol/PacketUtils.java
+index e2c24813f59c2fd075c740ac1842a38f20ed8554..321c9ee3cf1bafbec20994aa1f2ce1a0c0a793bf 100644
+--- a/src/main/java/net/minecraft/network/protocol/PacketUtils.java
++++ b/src/main/java/net/minecraft/network/protocol/PacketUtils.java
+@@ -51,8 +51,8 @@ public class PacketUtils {
+                 try { // Paper - detailed watchdog information
+                 if (listener instanceof ServerCommonPacketListenerImpl serverCommonPacketListener && serverCommonPacketListener.processedDisconnect) return; // CraftBukkit - Don't handle sync packets for kicked players
+                 if (listener.shouldHandleMessage(packet)) {
+-                    co.aikar.timings.Timing timing = co.aikar.timings.MinecraftTimings.getPacketTiming(packet); // Paper - timings
+-                    try (co.aikar.timings.Timing ignored = timing.startTiming()) { // Paper - timings
++                    //co.aikar.timings.Timing timing = co.aikar.timings.MinecraftTimings.getPacketTiming(packet); // Paper - timings // Grinder - remove timings
++                    try /*(co.aikar.timings.Timing ignored = timing.startTiming())*/ { // Paper - timings // Grinder - remove timings
+                         packet.handle(listener);
+                     } catch (Exception exception) {
+                         if (exception instanceof ReportedException) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
 index 23ddd26af762c1cd7fb3920669abb96b3213ab37..016311c1e6a19c9ed96a2e65a5f1519e698bd60b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
@@ -1348,7 +988,7 @@ index 23ddd26af762c1cd7fb3920669abb96b3213ab37..016311c1e6a19c9ed96a2e65a5f1519e
          this.profiler.popPush("send chunks");
          iterator = this.playerList.getPlayers().iterator();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 3fbb98c2f6975368002b3ac8574a92a6f192af51..d9f2e791dc39918f51d9c4023d46406047dce05c 100644
+index 9a44953496426d0ab744f8626ce8ca2dd234da62..21a83ebb61097356cf3ea6485e455de546421052 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -65,7 +65,7 @@ import org.apache.logging.log4j.Level;
@@ -1769,6 +1409,36 @@ index e9574b0a525215f2c38c5263ad9a7bc758ce08d8..f5643b3534774e6c27b88816cbcf97a3
          return null; }); // Paper - ensure main
      }
  
+diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
+index cb61462d4691a055a4b25f7b953609d8a154fdfe..e77404e9b745faed3d2600fd29ea7eab362ccc00 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityType.java
++++ b/src/main/java/net/minecraft/world/entity/EntityType.java
+@@ -343,10 +343,10 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+         this(factory, spawnGroup, saveable, summonable, fireImmune, spawnableFarFromPlayer, canSpawnInside, dimensions, spawnBoxScale, maxTrackDistance, trackTickInterval, requiredFeatures, "custom");
+     }
+     public EntityType(EntityType.EntityFactory<T> factory, MobCategory spawnGroup, boolean saveable, boolean summonable, boolean fireImmune, boolean spawnableFarFromPlayer, ImmutableSet<Block> canSpawnInside, EntityDimensions dimensions, float spawnBoxScale, int maxTrackDistance, int trackTickInterval, FeatureFlagSet requiredFeatures, String id) {
+-        this.tickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "tick");
++        /*this.tickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "tick");
+         this.inactiveTickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "inactiveTick");
+         this.passengerTickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "passengerTick");
+-        this.passengerInactiveTickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "passengerInactiveTick");
++        this.passengerInactiveTickTimer = co.aikar.timings.MinecraftTimings.getEntityTimings(id, "passengerInactiveTick");*/ // Grinder - remove timings
+         // Paper end
+         this.builtInRegistryHolder = BuiltInRegistries.ENTITY_TYPE.createIntrusiveHolder(this);
+         this.factory = factory;
+@@ -701,10 +701,10 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+     }
+ 
+     // Paper start - timings
+-    public final co.aikar.timings.Timing tickTimer;
++    /*public final co.aikar.timings.Timing tickTimer;
+     public final co.aikar.timings.Timing inactiveTickTimer;
+     public final co.aikar.timings.Timing passengerTickTimer;
+-    public final co.aikar.timings.Timing passengerInactiveTickTimer;
++    public final co.aikar.timings.Timing passengerInactiveTickTimer;*/ // Grinder - remove timings
+     // Paper end
+     public boolean trackDeltas() {
+         return this != EntityType.PLAYER && this != EntityType.LLAMA_SPIT && this != EntityType.WITHER && this != EntityType.BAT && this != EntityType.ITEM_FRAME && this != EntityType.GLOW_ITEM_FRAME && this != EntityType.LEASH_KNOT && this != EntityType.PAINTING && this != EntityType.END_CRYSTAL && this != EntityType.EVOKER_FANGS;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 index ccd9dff20a60f019e0c320acfb526b8bf3e5f806..5497a35ec57b4e0187b2a45c5bd173ef6bc83a4f 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
@@ -1781,6 +1451,166 @@ index ccd9dff20a60f019e0c320acfb526b8bf3e5f806..5497a35ec57b4e0187b2a45c5bd173ef
 +//import co.aikar.timings.MinecraftTimings; // Paper // Grinder - remove timings
  
  public abstract class LivingEntity extends Entity implements Attackable {
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
+index 9379dd4056018b52c93ed4888dcdc94579bd9691..9a8eefbaf1d5d39f45e1e79e1fe563f3498d799e 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
++++ b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
+@@ -16,7 +16,7 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
+     private final int maxDuration;
+     // Paper start - configurable behavior tick rate and timings
+     private final String configKey;
+-    private final co.aikar.timings.Timing timing;
++    //private final co.aikar.timings.Timing timing; // Grinder - remove timings
+     // Paper end - configurable behavior tick rate and timings
+ 
+     public Behavior(Map<MemoryModuleType<?>, MemoryStatus> requiredMemoryState) {
+@@ -38,7 +38,7 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
+             key = key.substring(lastSeparator + 1);
+         }
+         this.configKey = key.toLowerCase(java.util.Locale.ROOT);
+-        this.timing = co.aikar.timings.MinecraftTimings.getBehaviorTimings(configKey);
++        //this.timing = co.aikar.timings.MinecraftTimings.getBehaviorTimings(configKey); // Grinder - remove timings
+         // Paper end - configurable behavior tick rate and timings
+     }
+ 
+@@ -59,9 +59,9 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
+             this.status = Behavior.Status.RUNNING;
+             int i = this.minDuration + world.getRandom().nextInt(this.maxDuration + 1 - this.minDuration);
+             this.endTimestamp = time + (long)i;
+-            this.timing.startTiming(); // Paper - behavior timings
++            //this.timing.startTiming(); // Paper - behavior timings // Grinder - remove timings
+             this.start(world, entity, time);
+-            this.timing.stopTiming(); // Paper - behavior timings
++            //this.timing.stopTiming(); // Paper - behavior timings // Grinder - remove timings
+             return true;
+         } else {
+             return false;
+@@ -73,13 +73,13 @@ public abstract class Behavior<E extends LivingEntity> implements BehaviorContro
+ 
+     @Override
+     public final void tickOrStop(ServerLevel world, E entity, long time) {
+-        this.timing.startTiming(); // Paper - behavior timings
++        //this.timing.startTiming(); // Paper - behavior timings // Grinder - remove timings
+         if (!this.timedOut(time) && this.canStillUse(world, entity, time)) {
+             this.tick(world, entity, time);
+         } else {
+             this.doStop(world, entity, time);
+         }
+-        this.timing.stopTiming(); // Paper - behavior timings
++        //this.timing.stopTiming(); // Paper - behavior timings // Grinder - remove timings
+     }
+ 
+     protected void tick(ServerLevel world, E entity, long time) {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java b/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
+index 85b4b24361e785acf75571ff98f924c00ae80748..f0463632d1e4db58d120d11f60b325a5d4152683 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
++++ b/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
+@@ -28,7 +28,7 @@ public abstract class Sensor<E extends LivingEntity> {
+     private long timeToTick;
+     // Paper start - configurable sensor tick rate and timings
+     private final String configKey;
+-    private final co.aikar.timings.Timing timing;
++    //private final co.aikar.timings.Timing timing; // Grinder - remove timings
+     // Paper end
+ 
+     public Sensor(int senseInterval) {
+@@ -39,7 +39,7 @@ public abstract class Sensor<E extends LivingEntity> {
+             key = key.substring(lastSeparator + 1);
+         }
+         this.configKey = key.toLowerCase(java.util.Locale.ROOT);
+-        this.timing = co.aikar.timings.MinecraftTimings.getSensorTimings(configKey, senseInterval);
++        //this.timing = co.aikar.timings.MinecraftTimings.getSensorTimings(configKey, senseInterval); // Grinder - remove timings
+         // Paper end
+         this.scanRate = senseInterval;
+         this.timeToTick = (long)RANDOM.nextInt(senseInterval);
+@@ -53,10 +53,10 @@ public abstract class Sensor<E extends LivingEntity> {
+         if (--this.timeToTick <= 0L) {
+             // Paper start - configurable sensor tick rate and timings
+             this.timeToTick = java.util.Objects.requireNonNullElse(world.paperConfig().tickRates.sensor.get(entity.getType(), this.configKey), this.scanRate);
+-            this.timing.startTiming();
++            //this.timing.startTiming(); // Grinder - remove timings
+             // Paper end
+             this.doTick(world, entity);
+-            this.timing.stopTiming(); // Paper - sensor timings
++            //this.timing.stopTiming(); // Paper - sensor timings // Grinder - remove timings
+         }
+     }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index e2a0487089eb5a7bdc1433e4c75f69d8e9f9d5f9..7942fd8c05ed464812867b106c9e52d7bdd41cbe 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -173,7 +173,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+     // Paper end - add paper world config
+ 
+     public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
+-    public final co.aikar.timings.WorldTimingsHandler timings; // Paper
++    //public final co.aikar.timings.WorldTimingsHandler timings; // Paper // Grinder - remove timings
+     public static BlockPos lastPhysicsProblem; // Spigot
+     private org.spigotmc.TickLimiter entityLimiter;
+     private org.spigotmc.TickLimiter tileLimiter;
+@@ -763,7 +763,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+             public void onBorderSetDamageSafeZOne(WorldBorder border, double safeZoneRadius) {}
+         });
+         // CraftBukkit end
+-        this.timings = new co.aikar.timings.WorldTimingsHandler(this); // Paper - code below can generate new world and access timings
++        //this.timings = new co.aikar.timings.WorldTimingsHandler(this); // Paper - code below can generate new world and access timings // Grinder - remove timings
+         this.entityLimiter = new org.spigotmc.TickLimiter(this.spigotConfig.entityMaxTickTime);
+         this.tileLimiter = new org.spigotmc.TickLimiter(this.spigotConfig.tileMaxTickTime);
+         this.entityLookup = new ca.spottedleaf.moonrise.patches.chunk_system.level.entity.dfl.DefaultEntityLookup(this); // Paper - rewrite chunk system
+@@ -1369,15 +1369,15 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+         ProfilerFiller gameprofilerfiller = this.getProfiler();
+ 
+         gameprofilerfiller.push("blockEntities");
+-        this.timings.tileEntityPending.startTiming(); // Spigot
++        //this.timings.tileEntityPending.startTiming(); // Spigot // Grinder - remove timings
+         this.tickingBlockEntities = true;
+         if (!this.pendingBlockEntityTickers.isEmpty()) {
+             this.blockEntityTickers.addAll(this.pendingBlockEntityTickers);
+             this.pendingBlockEntityTickers.clear();
+         }
+-        this.timings.tileEntityPending.stopTiming(); // Spigot
++        //this.timings.tileEntityPending.stopTiming(); // Spigot // Grinder - remove timings
+ 
+-        this.timings.tileEntityTick.startTiming(); // Spigot
++        //this.timings.tileEntityTick.startTiming(); // Spigot // Grinder - remove timings
+         // Spigot start
+         // Iterator<TickingBlockEntity> iterator = this.blockEntityTickers.iterator();
+         boolean flag = this.tickRateManager().runsNormally();
+@@ -1408,9 +1408,9 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+         }
+         this.blockEntityTickers.removeAll(toRemove); // Paper - Fix MC-117075
+ 
+-        this.timings.tileEntityTick.stopTiming(); // Spigot
++        ///this.timings.tileEntityTick.stopTiming(); // Spigot // Grinder - remove timings
+         this.tickingBlockEntities = false;
+-        co.aikar.timings.TimingHistory.tileEntityTicks += this.blockEntityTickers.size(); // Paper
++        //co.aikar.timings.TimingHistory.tileEntityTicks += this.blockEntityTickers.size(); // Paper // Grinder - remove timings
+         gameprofilerfiller.pop();
+         this.spigotConfig.currentPrimedTnt = 0; // Spigot
+     }
+diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
+index e524b27d185da3e88668f8ef107517272860bd66..96ab8074077c0b48a89a9e3b37f3d53df1e370e5 100644
+--- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
++++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
+@@ -128,7 +128,7 @@ public final class NaturalSpawner {
+ 
+     public static void spawnForChunk(ServerLevel world, LevelChunk chunk, NaturalSpawner.SpawnState info, boolean spawnAnimals, boolean spawnMonsters, boolean rareSpawn) {
+         world.getProfiler().push("spawner");
+-        world.timings.mobSpawn.startTiming(); // Spigot
++        //world.timings.mobSpawn.startTiming(); // Spigot // Grinder - remove timings
+         MobCategory[] aenumcreaturetype = NaturalSpawner.SPAWNING_CATEGORIES;
+         int i = aenumcreaturetype.length;
+ 
+@@ -181,7 +181,7 @@ public final class NaturalSpawner {
+             }
+         }
+ 
+-        world.timings.mobSpawn.stopTiming(); // Spigot
++        //world.timings.mobSpawn.stopTiming(); // Spigot // Grinder - remove timings
+         world.getProfiler().pop();
+     }
  
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
 index 29947de9eb6887f2e61516523ff08d8b581b0f53..9a2612db024d6226a71c0fc52143ef0187cc3b87 100644
@@ -1864,6 +1694,145 @@ index 7c11853c5090fbc4fa5b3e73a69acf166158fdec..cbc37bcc9c9f39d6e0e22761fb10b8ae
                          // Spigot end
                      }
                  }
+diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
+index 2f4d6b56301195f8d39ed50dffe842464065bfe1..2240d7533720e004362e52b1a5b298b1d16b9a6c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
++++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
+@@ -1,6 +1,6 @@
+ package org.bukkit.craftbukkit.scheduler;
+ 
+-import co.aikar.timings.MinecraftTimings; // Paper
++//import co.aikar.timings.MinecraftTimings; // Paper // Grinder - remove timings
+ import com.google.common.base.Preconditions;
+ import com.google.common.util.concurrent.ThreadFactoryBuilder;
+ import java.util.ArrayList;
+@@ -297,7 +297,7 @@ public class CraftScheduler implements BukkitScheduler {
+                         }
+                         return false;
+                     }
+-                }){{this.timings=co.aikar.timings.MinecraftTimings.getCancelTasksTimer();}}; // Paper
++                }){{/*this.timings=co.aikar.timings.MinecraftTimings.getCancelTasksTimer();*/}}; // Paper // Grinder - remove timings
+         this.handle(task, 0L);
+         for (CraftTask taskPending = this.head.getNext(); taskPending != null; taskPending = taskPending.getNext()) {
+             if (taskPending == task) {
+@@ -337,7 +337,7 @@ public class CraftScheduler implements BukkitScheduler {
+                             }
+                         }
+                     }
+-                }){{this.timings=co.aikar.timings.MinecraftTimings.getCancelTasksTimer(plugin);}}; // Paper
++                }){{/*this.timings=co.aikar.timings.MinecraftTimings.getCancelTasksTimer(plugin);*/}}; // Paper // Grinder - remove timings
+         this.handle(task, 0L);
+         for (CraftTask taskPending = this.head.getNext(); taskPending != null; taskPending = taskPending.getNext()) {
+             if (taskPending == task) {
+@@ -504,10 +504,10 @@ public class CraftScheduler implements BukkitScheduler {
+                 this.runners.remove(task.getTaskId());
+             }
+         }
+-        MinecraftTimings.bukkitSchedulerFinishTimer.startTiming(); // Paper
++        //MinecraftTimings.bukkitSchedulerFinishTimer.startTiming(); // Paper // Grinder - remove timings
+         this.pending.addAll(temp);
+         temp.clear();
+-        MinecraftTimings.bukkitSchedulerFinishTimer.stopTiming(); // Paper
++        //MinecraftTimings.bukkitSchedulerFinishTimer.stopTiming(); // Paper // Grinder - remove timings
+         //this.debugHead = this.debugHead.getNextHead(currentTick); // Paper
+     }
+ 
+@@ -550,7 +550,7 @@ public class CraftScheduler implements BukkitScheduler {
+     }
+ 
+     void parsePending() { // Paper
+-        if (!this.isAsyncScheduler) MinecraftTimings.bukkitSchedulerPendingTimer.startTiming(); // Paper
++        //if (!this.isAsyncScheduler) MinecraftTimings.bukkitSchedulerPendingTimer.startTiming(); // Paper // Grinder - remove timings
+         CraftTask head = this.head;
+         CraftTask task = head.getNext();
+         CraftTask lastTask = head;
+@@ -569,7 +569,7 @@ public class CraftScheduler implements BukkitScheduler {
+             task.setNext(null);
+         }
+         this.head = lastTask;
+-        if (!this.isAsyncScheduler) MinecraftTimings.bukkitSchedulerPendingTimer.stopTiming(); // Paper
++        //if (!this.isAsyncScheduler) MinecraftTimings.bukkitSchedulerPendingTimer.stopTiming(); // Paper // Grinder - remove timings
+     }
+ 
+     private boolean isReady(final int currentTick) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftTask.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftTask.java
+index ba369f3dcfdf498e971dc4405d39657a9b6e97cc..0cf8c222400f99cc0a094cd7c41812debadf396d 100644
+--- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftTask.java
++++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftTask.java
+@@ -2,14 +2,13 @@ package org.bukkit.craftbukkit.scheduler;
+ 
+ import java.util.function.Consumer;
+ 
+-import co.aikar.timings.NullTimingHandler;
++//import co.aikar.timings.NullTimingHandler; // Grinder - remove timings
+ import org.bukkit.Bukkit;
+ import org.bukkit.plugin.Plugin;
+ import org.bukkit.scheduler.BukkitTask;
+ 
+-import org.spigotmc.CustomTimingsHandler; // Spigot
+-import co.aikar.timings.MinecraftTimings; // Paper
+-import co.aikar.timings.Timing; // Paper
++//import co.aikar.timings.MinecraftTimings; // Paper // Grinder - remove timings
++//import co.aikar.timings.Timing; // Paper // Grinder - remove timings
+ 
+ public class CraftTask implements BukkitTask, Runnable { // Spigot
+ 
+@@ -31,7 +30,7 @@ public class CraftTask implements BukkitTask, Runnable { // Spigot
+     private long nextRun;
+     public final Runnable rTask; // Paper
+     public final Consumer<BukkitTask> cTask; // Paper
+-    public Timing timings; // Paper
++    //public Timing timings; // Paper // Grinder - remove timings
+     private final Plugin plugin;
+     private final int id;
+     private final long createdAt = System.nanoTime();
+@@ -61,7 +60,7 @@ public class CraftTask implements BukkitTask, Runnable { // Spigot
+         }
+         this.id = id;
+         this.period = period;
+-        timings = task != null ? MinecraftTimings.getPluginTaskTimings(this, period) : NullTimingHandler.NULL; // Paper
++        //timings = task != null ? MinecraftTimings.getPluginTaskTimings(this, period) : NullTimingHandler.NULL; // Paper // Grinder - remove timings
+     }
+ 
+     @Override
+@@ -81,13 +80,13 @@ public class CraftTask implements BukkitTask, Runnable { // Spigot
+ 
+     @Override
+     public void run() {
+-        try (Timing ignored = timings.startTiming()) { // Paper
++        //try (Timing ignored = timings.startTiming()) { // Paper // Grinder - remove timings
+         if (this.rTask != null) {
+             this.rTask.run();
+         } else {
+             this.cTask.accept(this);
+         }
+-        } // Paper
++        //} // Paper // Grinder - remove timings
+     }
+ 
+     long getCreatedAt() {
+diff --git a/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftScoreboardManager.java b/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftScoreboardManager.java
+index b3e1adeb932da9b3bed16acd94e2f16da48a7c72..cb276b1e54abf0bcf03179ed638030576ab04d3f 100644
+--- a/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftScoreboardManager.java
++++ b/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftScoreboardManager.java
+@@ -115,7 +115,7 @@ public final class CraftScoreboardManager implements ScoreboardManager {
+     public void forAllObjectives(ObjectiveCriteria criteria, ScoreHolder holder, Consumer<ScoreAccess> consumer) {
+         // Paper start - add timings for scoreboard search
+         // plugins leaking scoreboards will make this very expensive, let server owners debug it easily
+-        co.aikar.timings.MinecraftTimings.scoreboardScoreSearch.startTimingIfSync();
++        //co.aikar.timings.MinecraftTimings.scoreboardScoreSearch.startTimingIfSync(); // Grinder - remove timings
+         try {
+         // Paper end - add timings for scoreboard search
+         for (CraftScoreboard scoreboard : this.scoreboards) {
+@@ -123,7 +123,7 @@ public final class CraftScoreboardManager implements ScoreboardManager {
+             board.forAllObjectives(criteria, holder, (score) -> consumer.accept(score));
+         }
+         } finally { // Paper start - add timings for scoreboard search
+-            co.aikar.timings.MinecraftTimings.scoreboardScoreSearch.stopTimingIfSync();
++            //co.aikar.timings.MinecraftTimings.scoreboardScoreSearch.stopTimingIfSync(); // Grinder - remove timings
+         }
+         // Paper end - add timings for scoreboard search
+     }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 index 28dbe30a98a6730839949bc9a6a90b78619ff84d..12c841d1c900e63a3c6e08b0f89ce822e286693c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
@@ -1894,3 +1863,34 @@ index 28dbe30a98a6730839949bc9a6a90b78619ff84d..12c841d1c900e63a3c6e08b0f89ce822
  
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
+diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
+index bf2d18f74b0f0da7c3c30310c74224a1c0853564..fb040718f4b0a7e9ffd61f6a20943a041fb918b1 100644
+--- a/src/main/java/org/spigotmc/ActivationRange.java
++++ b/src/main/java/org/spigotmc/ActivationRange.java
+@@ -34,7 +34,7 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
+ import net.minecraft.world.entity.projectile.ThrowableProjectile;
+ import net.minecraft.world.entity.projectile.ThrownTrident;
+ import net.minecraft.world.entity.raid.Raider;
+-import co.aikar.timings.MinecraftTimings;
++//import co.aikar.timings.MinecraftTimings; // Grinder - remove timings
+ import net.minecraft.world.entity.schedule.Activity;
+ import net.minecraft.world.level.Level;
+ import net.minecraft.world.phys.AABB;
+@@ -167,7 +167,7 @@ public class ActivationRange
+      */
+     public static void activateEntities(Level world)
+     {
+-        MinecraftTimings.entityActivationCheckTimer.startTiming();
++        //MinecraftTimings.entityActivationCheckTimer.startTiming(); // Grinder - remove timings
+         final int miscActivationRange = world.spigotConfig.miscActivationRange;
+         final int raiderActivationRange = world.spigotConfig.raiderActivationRange;
+         final int animalActivationRange = world.spigotConfig.animalActivationRange;
+@@ -226,7 +226,7 @@ public class ActivationRange
+             }
+             // Paper end
+         }
+-        MinecraftTimings.entityActivationCheckTimer.stopTiming();
++        //MinecraftTimings.entityActivationCheckTimer.stopTiming(); // Grinder - remove timings
+     }
+ 
+     /**
