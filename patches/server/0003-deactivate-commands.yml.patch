@@ -4,6 +4,28 @@ Date: Thu, 30 May 2024 23:44:30 +0200
 Subject: [PATCH] deactivate commands.yml
 
 
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index 1d1e76de60e40224f5cb81893f9ee50fe987badb..dff856f239778757392a2782b6365986fdf811d5 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -179,7 +179,7 @@ public class Commands {
+         GameModeCommand.register(this.dispatcher);
+         GameRuleCommand.register(this.dispatcher);
+         GiveCommand.register(this.dispatcher, commandRegistryAccess);
+-        HelpCommand.register(this.dispatcher);
++        //HelpCommand.register(this.dispatcher); // Grinder - deactivate commands
+         ItemCommands.register(this.dispatcher, commandRegistryAccess);
+         KickCommand.register(this.dispatcher);
+         KillCommand.register(this.dispatcher);
+@@ -214,7 +214,7 @@ public class Commands {
+         TickCommand.register(this.dispatcher);
+         TimeCommand.register(this.dispatcher);
+         TitleCommand.register(this.dispatcher, commandRegistryAccess);
+-        TriggerCommand.register(this.dispatcher);
++        //TriggerCommand.register(this.dispatcher); // Grinder - deactivate commands
+         WeatherCommand.register(this.dispatcher);
+         WorldBorderCommand.register(this.dispatcher);
+         if (JvmProfiler.INSTANCE.isAvailable()) {
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
 index 581bd217304e0f9e0b2113c335694805dfb4e2a1..b53c06d83cf1f4972040e3b2b0002eb22d6964a7 100644
 --- a/src/main/java/net/minecraft/server/Main.java
@@ -23,7 +45,7 @@ index 581bd217304e0f9e0b2113c335694805dfb4e2a1..b53c06d83cf1f4972040e3b2b0002eb2
                  Main.LOGGER.info("Initialized '{}' and '{}'", path1.toAbsolutePath(), path2.toAbsolutePath());
                  return;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 345bad848a7284fb03ca56a4566398267e9840a6..691be235ec5c0f6f4521b468bf99be99cb7c7147 100644
+index 344e565810fa9480d440860d62d5d6595a6b6b49..91237d55bda7400d06ac2469f4802a5e6133ed15 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -421,13 +421,13 @@ public final class CraftServer implements Server {
