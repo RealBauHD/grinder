@@ -5,7 +5,7 @@ Subject: [PATCH] remove raids
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index fddb607f8a9c7ee9869b12535b39698994f74b78..745a2223a0d0cde7cfafb51d9465917a88682630 100644
+index 4d74d61580082d7f19a834d908a51959d0003cee..f3594d3d158b9ac802b5f9ec48d6b83dbd59ba7f 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -210,7 +210,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
@@ -88,10 +88,10 @@ index bbf21ea433f9e3963aac0ede597ed8d3c8e50ed8..1f9cf77896a64e2b3d31e2a8038fc566
              if (this.raid != null) {
                  this.raid.addWaveMob(this.wave, this, false);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index ffd284f0e25c6f20672f7225aafd37e6c87ccf03..056e047c74189d9f414af7605462e5bcae59e07b 100644
+index 90d4834f97d3ba996d46493246b1947511553424..1bbe2e3a45d09d53d8c613f552f4f600308485f5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2309,23 +2309,23 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2319,23 +2319,23 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          Preconditions.checkArgument(location != null, "Location cannot be null");
          Preconditions.checkArgument(radius >= 0, "Radius value (%s) cannot be negative", radius);
  

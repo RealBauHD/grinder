@@ -113,7 +113,7 @@ index ea71430fddf516671593ac2c071652a43233221a..5f7784b2bd6028027b4a27c696695659
          String proxyLink = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "https://docs.papermc.io/velocity/security" : "http://www.spigotmc.org/wiki/firewall-guide/";
          // Paper end - Add Velocity IP Forwarding Support
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index b13057c0792067cc6b0abdf0d64a9be2cc9389a4..d066f919d16a826a9b2c63949d2f5f8a408e3a85 100644
+index fcccf989c25f0a259b160c4ff7873f7009e64d14..9f5daee9bd918621d92fc35fd572fa1dfa84aa35 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2426,7 +2426,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -188,10 +188,10 @@ index 2813553dcf42d8574c41bfb66b3d8a60bdd5445a..db046d071149ae868cb478d8801144f7
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 056e047c74189d9f414af7605462e5bcae59e07b..20fb8c351f2346bdf76496047fa73492e681e9ee 100644
+index 1bbe2e3a45d09d53d8c613f552f4f600308485f5..065aa18baecb75e5ca0c2f16a22b4c768e19cf94 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2380,7 +2380,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2390,7 +2390,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      }
  
      // Spigot start
@@ -200,7 +200,7 @@ index 056e047c74189d9f414af7605462e5bcae59e07b..20fb8c351f2346bdf76496047fa73492
      {
  
          @Override
-@@ -2399,7 +2399,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2409,7 +2409,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      public org.bukkit.World.Spigot spigot()
      {
          return this.spigot;
