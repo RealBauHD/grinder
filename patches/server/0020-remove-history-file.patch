@@ -5,10 +5,10 @@ Subject: [PATCH] remove history file
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
-index c5d5648f4ca603ef2b1df723b58f9caf4dd3c722..2bf8e5f665242fbe3690bac8b297e17c8a220266 100644
+index 6ee39b534b8d992655bc0cef3c299d12cbae0034..4f18f980479f44bc8a873976d8484dc5c8fb759e 100644
 --- a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
 +++ b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
-@@ -18,7 +18,7 @@ public final class PaperConsole extends SimpleTerminalConsole {
+@@ -21,7 +21,7 @@ public final class PaperConsole extends SimpleTerminalConsole {
      protected LineReader buildReader(LineReaderBuilder builder) {
          builder
                  .appName("Paper")
