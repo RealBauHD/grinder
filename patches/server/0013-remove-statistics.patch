@@ -5,7 +5,7 @@ Subject: [PATCH] remove statistics
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 07c7fa89450c7b09c9d5f92ced3b1ad3ba63978a..fd45da5b9140f50111e4e223fe1e38501e8fbf86 100644
+index 3f131ef97c5e46249880a0268aaacc64a0a07cfd..8f4747a8f9d268f57da2e9219ecc759db413ca35 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -303,7 +303,7 @@ public abstract class PlayerList {
@@ -17,7 +17,7 @@ index 07c7fa89450c7b09c9d5f92ced3b1ad3ba63978a..fd45da5b9140f50111e4e223fe1e3850
          player.getRecipeBook().sendInitialRecipeBook(player);
          this.updateEntireScoreboard(worldserver1.getScoreboard(), player);
          this.server.invalidateStatus();
-@@ -1438,7 +1438,7 @@ public abstract class PlayerList {
+@@ -1439,7 +1439,7 @@ public abstract class PlayerList {
      }
  
      public ServerStatsCounter getPlayerStats(UUID uuid, String displayName) {
@@ -26,7 +26,7 @@ index 07c7fa89450c7b09c9d5f92ced3b1ad3ba63978a..fd45da5b9140f50111e4e223fe1e3850
          ServerStatsCounter serverstatisticmanager = entityhuman == null ? null : (ServerStatsCounter) entityhuman.getStats();
          // CraftBukkit end
  
-@@ -1459,7 +1459,7 @@ public abstract class PlayerList {
+@@ -1460,7 +1460,7 @@ public abstract class PlayerList {
              // this.stats.put(uuid, serverstatisticmanager); // CraftBukkit
          }
  

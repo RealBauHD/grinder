@@ -2868,7 +2868,7 @@ index 3e61a926620a67daec3af54b72a1b911eaef2ed4..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 330e3013eda204aa9b33d5e1c3104e0b595abdbc..09ee800abf5cddb0066d6e708a15737c872d3cf2 100644
+index 10c87b7c19ed3eab28fdce5f225df3767292ee0a..c615498ac6ebe12db2711cdc8c67fdee76657ae4 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
 @@ -43,8 +43,8 @@ public interface UnsafeValues {
@@ -2882,7 +2882,7 @@ index 330e3013eda204aa9b33d5e1c3104e0b595abdbc..09ee800abf5cddb0066d6e708a15737c
      Material toLegacy(Material material);
  
      Material fromLegacy(Material material);
-@@ -159,10 +159,10 @@ public interface UnsafeValues {
+@@ -158,10 +158,10 @@ public interface UnsafeValues {
  
      // Paper start
      /**

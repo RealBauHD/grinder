@@ -5,10 +5,10 @@ Subject: [PATCH] just use paper spawn caps
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index aa3624fb8aaaf2720aaef7800f537dd4b906797f..8d0b0092f3040d4912aa96a2b72de5eb415ea37f 100644
+index 790e3167cfa2511ef2fc707d9b9aa681a78d8ba0..cc5669a59e3227d3c6871110532883259b8c7395 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -183,7 +183,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -182,7 +182,7 @@ public class WorldConfiguration extends ConfigurationPart {
              public boolean perPlayerMobSpawns = true;
              public boolean scanForLegacyEnderDragon = true;
              @MergeMap

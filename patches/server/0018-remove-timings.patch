@@ -1042,7 +1042,7 @@ index 9a44953496426d0ab744f8626ce8ca2dd234da62..21a83ebb61097356cf3ea6485e455de5
          // Paper start
          if (waitableArray[0] != null) {
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 1e0a6e5a3c907ab55ee6f2780a7d43bd455f2b7b..d210703c9be8c6a411d3ff87aad655270848c608 100644
+index af8cb316ac169aa8d98a88765b85bb013b9ba961..3753f54ad0502dc9ef47e8475d233ab4c6849f44 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -1,6 +1,6 @@
@@ -1191,7 +1191,7 @@ index dcb5651d1d9b10b40430fb2f713beedf68336704..6ec7f6f5066f9c8731f0a7fcf59f941f
              gameprofilerfiller.pop();
              gameprofilerfiller.pop();
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 745a2223a0d0cde7cfafb51d9465917a88682630..9789b699b36fa8f93e57bf8da4be111a7960f0c0 100644
+index f3594d3d158b9ac802b5f9ec48d6b83dbd59ba7f..b775daf50d9a3f7b25581192f1bf545078513454 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1,7 +1,7 @@
@@ -1380,7 +1380,7 @@ index 745a2223a0d0cde7cfafb51d9465917a88682630..9789b699b36fa8f93e57bf8da4be111a
  
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e9574b0a525215f2c38c5263ad9a7bc758ce08d8..f5643b3534774e6c27b88816cbcf97a389d77050 100644
+index e75f24bd66e91fa5b929c5850052bbdf6a20fba9..0a7c9d0857a56f48e36c7f376e6cbff44e2a1636 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1,6 +1,6 @@
@@ -1391,7 +1391,7 @@ index e9574b0a525215f2c38c5263ad9a7bc758ce08d8..f5643b3534774e6c27b88816cbcf97a3
  import com.google.common.collect.Lists;
  import com.google.common.collect.Maps;
  import com.google.common.collect.Sets;
-@@ -1204,7 +1204,7 @@ public abstract class PlayerList {
+@@ -1205,7 +1205,7 @@ public abstract class PlayerList {
  
      public void saveAll(int interval) {
          io.papermc.paper.util.MCUtil.ensureMain("Save Players" , () -> { // Paper - Ensure main
@@ -1400,7 +1400,7 @@ index e9574b0a525215f2c38c5263ad9a7bc758ce08d8..f5643b3534774e6c27b88816cbcf97a3
          int numSaved = 0;
          long now = MinecraftServer.currentTick;
          for (int i = 0; i < this.players.size(); ++i) {
-@@ -1215,7 +1215,7 @@ public abstract class PlayerList {
+@@ -1216,7 +1216,7 @@ public abstract class PlayerList {
              }
              // Paper end - Incremental chunk and player saving
          }
@@ -1440,7 +1440,7 @@ index cb61462d4691a055a4b25f7b953609d8a154fdfe..e77404e9b745faed3d2600fd29ea7eab
      public boolean trackDeltas() {
          return this != EntityType.PLAYER && this != EntityType.LLAMA_SPIT && this != EntityType.WITHER && this != EntityType.BAT && this != EntityType.ITEM_FRAME && this != EntityType.GLOW_ITEM_FRAME && this != EntityType.LEASH_KNOT && this != EntityType.PAINTING && this != EntityType.END_CRYSTAL && this != EntityType.EVOKER_FANGS;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index ccd9dff20a60f019e0c320acfb526b8bf3e5f806..5497a35ec57b4e0187b2a45c5bd173ef6bc83a4f 100644
+index 9c9e2377f44b1f1bbd8bb0e8bc963a80f4f9ee68..5c9becb87abb1969bff1b0ae8dae07aecd7698bc 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -157,7 +157,7 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -1834,7 +1834,7 @@ index b3e1adeb932da9b3bed16acd94e2f16da48a7c72..cb276b1e54abf0bcf03179ed63803057
          // Paper end - add timings for scoreboard search
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 28dbe30a98a6730839949bc9a6a90b78619ff84d..12c841d1c900e63a3c6e08b0f89ce822e286693c 100644
+index f78744b6d6075f584d9a88612661854f3f04aed1..93a5040e7c681cff5e4db013cd5efb28f9105014 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -198,10 +198,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
@@ -1850,7 +1850,7 @@ index 28dbe30a98a6730839949bc9a6a90b78619ff84d..12c841d1c900e63a3c6e08b0f89ce822
      // Paper end
  
      public static byte toLegacyData(BlockState data) {
-@@ -480,10 +480,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -476,10 +476,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
          return new CraftDamageSourceBuilder(damageType);
      }
      // Paper start

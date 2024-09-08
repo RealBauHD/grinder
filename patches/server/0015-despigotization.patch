@@ -188,10 +188,10 @@ index 2813553dcf42d8574c41bfb66b3d8a60bdd5445a..db046d071149ae868cb478d8801144f7
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 1bbe2e3a45d09d53d8c613f552f4f600308485f5..065aa18baecb75e5ca0c2f16a22b4c768e19cf94 100644
+index 68d56a23be7f688d9881eb39ea37e55f8c6ad8c4..3e51b4078334db24a4ba1f8afa3d8f2c23f5b6a3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2390,7 +2390,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2387,7 +2387,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      }
  
      // Spigot start
@@ -200,7 +200,7 @@ index 1bbe2e3a45d09d53d8c613f552f4f600308485f5..065aa18baecb75e5ca0c2f16a22b4c76
      {
  
          @Override
-@@ -2409,7 +2409,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2406,7 +2406,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      public org.bukkit.World.Spigot spigot()
      {
          return this.spigot;
