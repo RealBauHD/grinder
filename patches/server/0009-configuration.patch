@@ -6,10 +6,10 @@ Subject: [PATCH] configuration
 
 diff --git a/src/main/java/grinder/GrinderConfiguration.java b/src/main/java/grinder/GrinderConfiguration.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e70456fee4f6b4eace453555c6d9b35bc07c4bc4
+index 0000000000000000000000000000000000000000..51d5c2c52a1c2fc6a7c3b11aae1d4500dbadb2c2
 --- /dev/null
 +++ b/src/main/java/grinder/GrinderConfiguration.java
-@@ -0,0 +1,26 @@
+@@ -0,0 +1,28 @@
 +package grinder;
 +
 +import io.papermc.paper.configuration.ConfigurationLoaders;
@@ -21,6 +21,7 @@ index 0000000000000000000000000000000000000000..e70456fee4f6b4eace453555c6d9b35b
 +public final class GrinderConfiguration {
 +    public static final boolean SERVER_SIDE_FROZEN;
 +    public static final boolean BLOCK_ENTITY_TICKING;
++    public static final boolean LOAD_RECIPES;
 +
 +    static {
 +        try {
@@ -30,6 +31,7 @@ index 0000000000000000000000000000000000000000..e70456fee4f6b4eace453555c6d9b35b
 +            final CommentedConfigurationNode node = loader.load();
 +            SERVER_SIDE_FROZEN = node.node("server-side-frozen").getBoolean(false);
 +            BLOCK_ENTITY_TICKING = node.node("block-entity-ticking").getBoolean(true);
++            LOAD_RECIPES = node.node("load-recipes").getBoolean(true);
 +            loader.save(node);
 +        } catch (ConfigurateException e) {
 +            throw new RuntimeException(e);
@@ -37,7 +39,7 @@ index 0000000000000000000000000000000000000000..e70456fee4f6b4eace453555c6d9b35b
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 2fe9d9b38c01d04416843fdd48d3e33899b7de63..73980bbca72a88997404a1d3fcd641a440aaa623 100644
+index c96f3dcd365bc140b1f4680ef6bd770c80f8eda1..b29df5a7674326cfff133f45343cd6b50b41ac2d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -628,7 +628,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
@@ -58,3 +60,23 @@ index 2fe9d9b38c01d04416843fdd48d3e33899b7de63..73980bbca72a88997404a1d3fcd641a4
          }
  
          gameprofilerfiller.push("entityManagement");
+diff --git a/src/main/java/net/minecraft/world/item/crafting/RecipeManager.java b/src/main/java/net/minecraft/world/item/crafting/RecipeManager.java
+index de7c77c1b25680ecc65f0f43f2391aff269a974f..5ae6e4fe0b4c3d3353f4161350c5acd7b160eb36 100644
+--- a/src/main/java/net/minecraft/world/item/crafting/RecipeManager.java
++++ b/src/main/java/net/minecraft/world/item/crafting/RecipeManager.java
+@@ -58,6 +58,7 @@ public class RecipeManager extends SimpleJsonResourceReloadListener {
+         Builder<RecipeType<?>, RecipeHolder<?>> builder = ImmutableMultimap.builder();
+         com.google.common.collect.ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> com_google_common_collect_immutablemap_builder = ImmutableMap.builder();
+         RegistryOps<JsonElement> registryops = this.registries.createSerializationContext(JsonOps.INSTANCE);
++        if (grinder.GrinderConfiguration.LOAD_RECIPES) {
+         Iterator iterator = prepared.entrySet().iterator();
+ 
+         while (iterator.hasNext()) {
+@@ -74,6 +75,7 @@ public class RecipeManager extends SimpleJsonResourceReloadListener {
+                 RecipeManager.LOGGER.error("Parsing error loading recipe {}", minecraftkey, jsonparseexception);
+             }
+         }
++        }
+ 
+         // CraftBukkit start - mutable
+         this.byType = LinkedHashMultimap.create(builder.build());
