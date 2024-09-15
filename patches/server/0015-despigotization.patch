@@ -148,7 +148,7 @@ index cad3b8b326b3b9ca38e6892b3bc01e4b2d23999d..3cafc65919ecb0fcaa49c5d550bd4795
              // Try and handle the handshake through the event
              if (com.destroystokyo.paper.event.player.PlayerHandshakeEvent.getHandlerList().getRegisteredListeners().length != 0) { // Hello? Can you hear me?
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 2813553dcf42d8574c41bfb66b3d8a60bdd5445a..db046d071149ae868cb478d8801144f72c712707 100644
+index 758ed5323b50f0cedadf7814bf5b1b96aa315de6..0b1a1e4856c4c75218f2ee1400c4b348fa46c804 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -260,7 +260,7 @@ import org.yaml.snakeyaml.Yaml;
@@ -169,7 +169,7 @@ index 2813553dcf42d8574c41bfb66b3d8a60bdd5445a..db046d071149ae868cb478d8801144f7
              return -1;
          } else {
              return this.configuration.getInt("settings.connection-throttle");
-@@ -2963,7 +2963,7 @@ public final class CraftServer implements Server {
+@@ -2960,7 +2960,7 @@ public final class CraftServer implements Server {
      }
  
      // Spigot start
@@ -178,7 +178,7 @@ index 2813553dcf42d8574c41bfb66b3d8a60bdd5445a..db046d071149ae868cb478d8801144f7
      {
  
          @Deprecated
-@@ -3014,7 +3014,7 @@ public final class CraftServer implements Server {
+@@ -3011,7 +3011,7 @@ public final class CraftServer implements Server {
      public org.bukkit.Server.Spigot spigot()
      {
          return this.spigot;
@@ -302,7 +302,7 @@ index e9f471e60af0725ec34e2985d63ae9ea9f88590a..9fe94bfa08aaf3399d2f4e7981ed10c3
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01d01815d1 100644
+index ad740739437be632fc7fedec488a7d0c49534688..2a84d841b6edd7f84db8357287d0efd37f713d18 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -191,7 +191,7 @@ import org.bukkit.profile.PlayerProfile;
@@ -314,7 +314,7 @@ index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01
  
  @DelegateDeserialization(CraftOfflinePlayer.class)
  public class CraftPlayer extends CraftHumanEntity implements Player {
-@@ -420,13 +420,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -422,13 +422,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
  
      // Paper start
@@ -330,7 +330,7 @@ index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01
  
      @Override
      @Deprecated
-@@ -442,7 +442,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -444,7 +444,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          sendActionBar(org.bukkit.ChatColor.translateAlternateColorCodes(alternateChar, message));
      }
  
@@ -339,7 +339,7 @@ index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01
      public void setPlayerListHeaderFooter(BaseComponent[] header, BaseComponent[] footer) {
           if (header != null) {
               String headerJson = net.md_5.bungee.chat.ComponentSerializer.toString(header);
-@@ -465,7 +465,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -467,7 +467,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void setPlayerListHeaderFooter(BaseComponent header, BaseComponent footer) {
          this.setPlayerListHeaderFooter(header == null ? null : new BaseComponent[]{header},
                  footer == null ? null : new BaseComponent[]{footer});
@@ -348,7 +348,7 @@ index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01
  
  
      @Override
-@@ -473,7 +473,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -475,7 +475,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          getHandle().connection.send(new ClientboundSetTitlesAnimationPacket(fadeInTicks, stayTicks, fadeOutTicks));
      }
  
@@ -357,7 +357,7 @@ index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01
      public void setSubtitle(BaseComponent[] subtitle) {
          final ClientboundSetSubtitleTextPacket packet = new ClientboundSetSubtitleTextPacket(org.bukkit.craftbukkit.util.CraftChatMessage.fromJSON(net.md_5.bungee.chat.ComponentSerializer.toString(subtitle)));
          getHandle().connection.send(packet);
-@@ -525,7 +525,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -527,7 +527,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
              setSubtitle(title.getSubtitle());
          }
          showTitle(title.getTitle());
@@ -366,7 +366,7 @@ index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01
  
      @Override
      public void hideTitle() {
-@@ -3372,7 +3372,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3371,7 +3371,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
              return java.util.Collections.unmodifiableSet( ret );
          }
  
@@ -375,7 +375,7 @@ index a0d5082590ee03060f0dbb4770d196efc316c328..8e898a75dcb6ac91cc6a05f442a7fb01
          public void sendMessage(BaseComponent component) {
            this.sendMessage( new BaseComponent[] { component } );
          }
-@@ -3412,7 +3412,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3411,7 +3411,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
              if ( CraftPlayer.this.getHandle().connection == null ) return;
  
              CraftPlayer.this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundSystemChatPacket(components, position == net.md_5.bungee.api.ChatMessageType.ACTION_BAR));
@@ -502,7 +502,7 @@ index 040dac82e484cb44b3afd444b4bbd1fd994bfe7c..b9150516512e0cf1d7dfe26d8969b6ca
  
      // Paper start - adventure
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
-index 5c45946f54e4b16440c15a9165ef85be43e53c84..3793ba181ebf124ecd22f0b37bd3542eea402f2d 100644
+index e0414b0a48a95f1f5e718070dd0e5f955052a898..0cf443fbd5019e58d57c01dff4bd3b0db93c7115 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 @@ -1031,10 +1031,10 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
