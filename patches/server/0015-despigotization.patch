@@ -54,7 +54,7 @@ index 367ef7e0769537e8c13c7fd818a1249e15a28a65..76a4de436ebad526411ea95aa066a1e5
      @Override
      public Component name() {
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 690086adcb1f87adc0b3ab664fde735ad3e1093a..121809d158247f686ff25a2df014d18f1565e846 100644
+index a9dd0e5216e95afd98fd2200d110e2cc0b1b0dca..85f5207a63a578f0ccf5e912db7e4023f521c9e4 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 @@ -129,6 +129,7 @@ public class GlobalConfiguration extends ConfigurationPart {
@@ -65,7 +65,7 @@ index 690086adcb1f87adc0b3ab664fde735ad3e1093a..121809d158247f686ff25a2df014d18f
              public boolean onlineMode = true;
          }
  
-@@ -149,7 +150,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -156,7 +157,7 @@ public class GlobalConfiguration extends ConfigurationPart {
          }
          public boolean proxyProtocol = false;
          public boolean isProxyOnlineMode() {
@@ -113,10 +113,10 @@ index ea71430fddf516671593ac2c071652a43233221a..5f7784b2bd6028027b4a27c696695659
          String proxyLink = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "https://docs.papermc.io/velocity/security" : "http://www.spigotmc.org/wiki/firewall-guide/";
          // Paper end - Add Velocity IP Forwarding Support
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index fcccf989c25f0a259b160c4ff7873f7009e64d14..9f5daee9bd918621d92fc35fd572fa1dfa84aa35 100644
+index befeaac4786760f6847a5945da2296a3e68dbb17..2021036661c00cd24037f1b4cc6368e918f19ab2 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2426,7 +2426,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2434,7 +2434,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
                          String message = String.format(queueEvent.getFormat(), queueEvent.getPlayer().getDisplayName(), queueEvent.getMessage());
                          if (((LazyPlayerSet) queueEvent.getRecipients()).isLazy()) {
@@ -125,7 +125,7 @@ index fcccf989c25f0a259b160c4ff7873f7009e64d14..9f5daee9bd918621d92fc35fd572fa1d
                                  ServerGamePacketListenerImpl.this.server.getPlayerList().broadcastChatMessage(original, ServerGamePacketListenerImpl.this.player, ChatType.bind(ChatType.CHAT, (Entity) ServerGamePacketListenerImpl.this.player));
                                  return null;
                              }
-@@ -2462,7 +2462,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -2470,7 +2470,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
                  s = String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage());
                  if (((LazyPlayerSet) event.getRecipients()).isLazy()) {
