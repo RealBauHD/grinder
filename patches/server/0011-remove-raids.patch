@@ -5,7 +5,7 @@ Subject: [PATCH] remove raids
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 4d74d61580082d7f19a834d908a51959d0003cee..f3594d3d158b9ac802b5f9ec48d6b83dbd59ba7f 100644
+index aa874f0278baa186f290f94dc99b2b15d90c8f94..8e77cc39d6ca84e4b25fd991e31c197ff132fecb 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -210,7 +210,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
@@ -41,7 +41,7 @@ index 4d74d61580082d7f19a834d908a51959d0003cee..f3594d3d158b9ac802b5f9ec48d6b83d
  
          gameprofilerfiller.popPush("chunkSource");
          this.timings.chunkProviderTick.startTiming(); // Paper - timings
-@@ -2105,13 +2105,13 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
+@@ -2107,13 +2107,13 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
          return this.getPoiManager().sectionsToVillage(pos);
      }
  
@@ -88,10 +88,10 @@ index bbf21ea433f9e3963aac0ede597ed8d3c8e50ed8..1f9cf77896a64e2b3d31e2a8038fc566
              if (this.raid != null) {
                  this.raid.addWaveMob(this.wave, this, false);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 90d4834f97d3ba996d46493246b1947511553424..1bbe2e3a45d09d53d8c613f552f4f600308485f5 100644
+index 33e4818ba5a90d78d69baad9f6b1be1b1382e9f3..5134a7083860892cadb0b78f25393038cf427c7b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2319,23 +2319,23 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2362,23 +2362,23 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          Preconditions.checkArgument(location != null, "Location cannot be null");
          Preconditions.checkArgument(radius >= 0, "Radius value (%s) cannot be negative", radius);
  

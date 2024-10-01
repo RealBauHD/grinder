@@ -5,7 +5,7 @@ Subject: [PATCH] despigotization
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 540fe7e2c110e79c3742f229b3ed8c54b101d260..6b75d7337c201789c1539e58cc70f395c6a48d03 100644
+index ab84a1405acc1f0d5f267892243b82b8dab03e21..d440beec99f8d3f944f280ef475938756287ec95 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -32,9 +32,9 @@ dependencies {
@@ -447,7 +447,7 @@ index 20a028450667edf102b59b6b50ac6e890f2c34ab..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 419c056faf0d49d9b0435feb01252e87e227b9a9..3e31cebb91600f06fbd6fc83e0393d9b18f0f929 100644
+index e20e4239a5a1f952e1c70e899549989d5e42f73c..8deafe22b42a9857779181a76837494241c4e3b7 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -481,10 +481,10 @@ public final class Bukkit {
@@ -771,7 +771,7 @@ index 918a045165cdcde264bc24082b7afebb407271de..bfbc7ec642e2e0065ecfa087d31092dd
      /**
       * Gets the char value associated with this color
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 5aa64ea39ebd92e5067c53cea49a8685c0b9eee4..12da292bb66032c1d001ca8b16b7e496041fc006 100644
+index 6246251caf2c6f025c824b8e7a944b8d48751fa1..fbb900e310e7f1b53cf05c52a478744dc75ae9e1 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -392,10 +392,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -858,10 +858,10 @@ index 5aa64ea39ebd92e5067c53cea49a8685c0b9eee4..12da292bb66032c1d001ca8b16b7e496
  
      void reloadPermissions(); // Paper
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index d8a23aa0d898ca3360757721e38ddb97387f7d21..2f0d3f780a0fbd080515a536658ba09155837f42 100644
+index ef32a937e6faf1e8a5d6b1207986715bae5a246c..4b06c5e65c1d6ec03ec573ff4e60ce8d4bff5f4e 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -4006,8 +4006,8 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -4070,8 +4070,8 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
      // Paper end
  
      // Spigot start
@@ -872,7 +872,7 @@ index d8a23aa0d898ca3360757721e38ddb97387f7d21..2f0d3f780a0fbd080515a536658ba091
  
          /**
           * Strikes lightning at the given {@link Location} and possibly without sound
-@@ -4018,11 +4018,11 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -4082,11 +4082,11 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
           * @deprecated sound is now client side and cannot be removed
           * @see World#strikeLightning(org.bukkit.Location)
           */
@@ -886,7 +886,7 @@ index d8a23aa0d898ca3360757721e38ddb97387f7d21..2f0d3f780a0fbd080515a536658ba091
  
          /**
           * Strikes lightning at the given {@link Location} without doing damage and possibly without sound
-@@ -4033,19 +4033,19 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+@@ -4097,19 +4097,19 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
           * @deprecated sound is now client side and cannot be removed
           * @see World#strikeLightningEffect(org.bukkit.Location)
           */
@@ -1025,7 +1025,7 @@ index 946d2f0ef37c6cf895caf8d3c6963c7889e0567b..546775f87c2c6cef209f80cde06e0336
  
  }
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 725ef320f929d5e3d141c1ed3246d73a7d741f31..f5e5e9a38f1ec8b0d9191a7ed9604d1c61abd6db 100644
+index d0ae8a94db20281d3664d74718c65234eb2e5f83..aec6dc25c7629607e8aab63b1daefe7afd178767 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -937,13 +937,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
@@ -1084,7 +1084,7 @@ index 924ee7fcc3f87eb8553ef473a7d9671f0f469dd1..d0299d3d1368adf5e49f2a914c3de5b4
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 7c56182acaf827f4b1a986a61cea8e9960604c98..bfba81269e257992b5093e0f08c7ea3d0ede881c 100644
+index 8086acceacbceb2c5a7228fff005e41a86d37008..dbfbceb4b7eae0307a16d08ddd3144dc24f86904 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -1509,8 +1509,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
@@ -1337,9 +1337,9 @@ index 7c56182acaf827f4b1a986a61cea8e9960604c98..bfba81269e257992b5093e0f08c7ea3d
 +    //@Override // Grinder - despigotization
      Spigot spigot();
      // Spigot end
- }
+ 
 diff --git a/src/main/java/org/bukkit/inventory/ItemFactory.java b/src/main/java/org/bukkit/inventory/ItemFactory.java
-index bd0e55562f1cabef3078573182e0cf9fbc844585..58a06d33f10f1c3c666d42c1b3ea2e023bffe29f 100644
+index 2669d783088b9f63f0edd6d0384c3a307ddccac7..e96143e74b6ae2320d632ebdbaef1cf3ad4125ad 100644
 --- a/src/main/java/org/bukkit/inventory/ItemFactory.java
 +++ b/src/main/java/org/bukkit/inventory/ItemFactory.java
 @@ -268,9 +268,9 @@ public interface ItemFactory {

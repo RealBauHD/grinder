@@ -5,10 +5,10 @@ Subject: [PATCH] just use paper spawn caps
 
 
 diff --git a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-index 790e3167cfa2511ef2fc707d9b9aa681a78d8ba0..cc5669a59e3227d3c6871110532883259b8c7395 100644
+index fd3b1c10695634f65c7291016bf671c084bc4d57..d2107d6a15af45abb27d13e365742bc425fd40e1 100644
 --- a/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/WorldConfiguration.java
-@@ -182,7 +182,7 @@ public class WorldConfiguration extends ConfigurationPart {
+@@ -183,7 +183,7 @@ public class WorldConfiguration extends ConfigurationPart {
              public boolean perPlayerMobSpawns = true;
              public boolean scanForLegacyEnderDragon = true;
              @MergeMap
@@ -18,7 +18,7 @@ index 790e3167cfa2511ef2fc707d9b9aa681a78d8ba0..cc5669a59e3227d3c687111053288325
              public Map<MobCategory, DespawnRangePair> despawnRanges = Arrays.stream(MobCategory.values()).collect(Collectors.toMap(Function.identity(), category -> DespawnRangePair.createDefault()));
              public DespawnRange.Shape despawnRangeShape = DespawnRange.Shape.ELLIPSOID;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index db046d071149ae868cb478d8801144f72c712707..4f5041f3cb02f91c94683acf76887cdfe989db24 100644
+index 0b1a1e4856c4c75218f2ee1400c4b348fa46c804..2db5207b7f85929a406761c054d8a0ffadafaabb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -491,11 +491,11 @@ public final class CraftServer implements Server {

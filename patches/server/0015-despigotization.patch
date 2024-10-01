@@ -188,10 +188,10 @@ index 758ed5323b50f0cedadf7814bf5b1b96aa315de6..0b1a1e4856c4c75218f2ee1400c4b348
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 68d56a23be7f688d9881eb39ea37e55f8c6ad8c4..3e51b4078334db24a4ba1f8afa3d8f2c23f5b6a3 100644
+index 5134a7083860892cadb0b78f25393038cf427c7b..5313b81a83ce4303a1cf4941d9dbde79d9f346ac 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2387,7 +2387,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2430,7 +2430,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      }
  
      // Spigot start
@@ -200,7 +200,7 @@ index 68d56a23be7f688d9881eb39ea37e55f8c6ad8c4..3e51b4078334db24a4ba1f8afa3d8f2c
      {
  
          @Override
-@@ -2406,7 +2406,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -2449,7 +2449,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
      public org.bukkit.World.Spigot spigot()
      {
          return this.spigot;
@@ -249,7 +249,7 @@ index 1e3091687735b461d3b6a313ab8761127981d3e8..a1104b725d0bfbe4202072abe0c18153
  
      // Paper start - implement pointers
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index cd789c235acf740ec29c30b180e7fbe1a140caa9..d22160175ec316194b84125d8ce871d0d996edc2 100644
+index 89c8713d2c2206d1b0d8c0a392c9d13b3e736f0c..ca5d8f09e1b99b78381d669c4093618526498d69 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 @@ -58,7 +58,7 @@ import org.bukkit.util.BoundingBox;
@@ -302,7 +302,7 @@ index e9f471e60af0725ec34e2985d63ae9ea9f88590a..9fe94bfa08aaf3399d2f4e7981ed10c3
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index ad740739437be632fc7fedec488a7d0c49534688..2a84d841b6edd7f84db8357287d0efd37f713d18 100644
+index 42d7660efe5baa6f796f2a7606686c765b6f2478..fff9d58a3df577e7cbde705f83410d66560371d5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -191,7 +191,7 @@ import org.bukkit.profile.PlayerProfile;
@@ -366,7 +366,7 @@ index ad740739437be632fc7fedec488a7d0c49534688..2a84d841b6edd7f84db8357287d0efd3
  
      @Override
      public void hideTitle() {
-@@ -3371,7 +3371,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3376,7 +3376,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
              return java.util.Collections.unmodifiableSet( ret );
          }
  
@@ -375,7 +375,7 @@ index ad740739437be632fc7fedec488a7d0c49534688..2a84d841b6edd7f84db8357287d0efd3
          public void sendMessage(BaseComponent component) {
            this.sendMessage( new BaseComponent[] { component } );
          }
-@@ -3411,7 +3411,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -3416,7 +3416,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
              if ( CraftPlayer.this.getHandle().connection == null ) return;
  
              CraftPlayer.this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundSystemChatPacket(components, position == net.md_5.bungee.api.ChatMessageType.ACTION_BAR));
@@ -385,7 +385,7 @@ index ad740739437be632fc7fedec488a7d0c49534688..2a84d841b6edd7f84db8357287d0efd3
          // Paper start
          @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
-index 317af98f8bd166a5a534f74e6ba177be9afb6a8f..d3acdb149c67909aeff2fba2dfcb92ec9cf2b543 100644
+index 4abd939223a9d5a0c52a64e22c29fe1de85500e9..1fd37d09ba877b2f05da9256e36cb3724e43d825 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
 @@ -249,7 +249,7 @@ public final class CraftItemFactory implements ItemFactory {
