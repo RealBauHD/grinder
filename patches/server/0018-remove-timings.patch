@@ -743,7 +743,7 @@ index 0c3c82b28e581286b798ee58ca4193efc2faff4a..865acfe22a21b445747c6c7b9d3e6f7a
              // return true as command was handled
              return 1;
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 121809d158247f686ff25a2df014d18f1565e846..830b7b164e6db438fc1ea4fbe22373d4da053b6b 100644
+index 85f5207a63a578f0ccf5e912db7e4023f521c9e4..3e86e1b655101d7438c17ad9b402d85fbeca5cf0 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 @@ -1,6 +1,6 @@
@@ -1191,7 +1191,7 @@ index dcb5651d1d9b10b40430fb2f713beedf68336704..6ec7f6f5066f9c8731f0a7fcf59f941f
              gameprofilerfiller.pop();
              gameprofilerfiller.pop();
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index f3594d3d158b9ac802b5f9ec48d6b83dbd59ba7f..b775daf50d9a3f7b25581192f1bf545078513454 100644
+index 8e77cc39d6ca84e4b25fd991e31c197ff132fecb..276cf76d661d3d813e5429cd3822ae4f7bfe486a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1,7 +1,7 @@
@@ -1380,7 +1380,7 @@ index f3594d3d158b9ac802b5f9ec48d6b83dbd59ba7f..b775daf50d9a3f7b25581192f1bf5450
  
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 326ac8088f0d93ef3a2fc1faa7ca4deaf48da644..e7978890f5d5caca609db2682ac7a7ded126e0c6 100644
+index fc4eafde1d2c3365e8c3d1c130104501fce290fd..7966f388359d929b0b3c4d650542b4101b779d8b 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1,6 +1,6 @@
@@ -1391,7 +1391,7 @@ index 326ac8088f0d93ef3a2fc1faa7ca4deaf48da644..e7978890f5d5caca609db2682ac7a7de
  import com.google.common.collect.Lists;
  import com.google.common.collect.Maps;
  import com.google.common.collect.Sets;
-@@ -1210,7 +1210,7 @@ public abstract class PlayerList {
+@@ -1211,7 +1211,7 @@ public abstract class PlayerList {
  
      public void saveAll(int interval) {
          io.papermc.paper.util.MCUtil.ensureMain("Save Players" , () -> { // Paper - Ensure main
@@ -1400,7 +1400,7 @@ index 326ac8088f0d93ef3a2fc1faa7ca4deaf48da644..e7978890f5d5caca609db2682ac7a7de
          int numSaved = 0;
          long now = MinecraftServer.currentTick;
          for (int i = 0; i < this.players.size(); ++i) {
-@@ -1221,7 +1221,7 @@ public abstract class PlayerList {
+@@ -1222,7 +1222,7 @@ public abstract class PlayerList {
              }
              // Paper end - Incremental chunk and player saving
          }
@@ -1440,7 +1440,7 @@ index cb61462d4691a055a4b25f7b953609d8a154fdfe..e77404e9b745faed3d2600fd29ea7eab
      public boolean trackDeltas() {
          return this != EntityType.PLAYER && this != EntityType.LLAMA_SPIT && this != EntityType.WITHER && this != EntityType.BAT && this != EntityType.ITEM_FRAME && this != EntityType.GLOW_ITEM_FRAME && this != EntityType.LEASH_KNOT && this != EntityType.PAINTING && this != EntityType.END_CRYSTAL && this != EntityType.EVOKER_FANGS;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 30f4f1254fc295442d72d50479e8af635f2fe983..d772484870a06b4f0db9691ca566ee97ff5fda39 100644
+index 2aa6374cd4a96efd85899be8cd3172a8257bfe6b..18cd3d99a28f138fc88825e27033d8e30515f82a 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -157,7 +157,7 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -1538,7 +1538,7 @@ index 85b4b24361e785acf75571ff98f924c00ae80748..f0463632d1e4db58d120d11f60b325a5
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index e2a0487089eb5a7bdc1433e4c75f69d8e9f9d5f9..7942fd8c05ed464812867b106c9e52d7bdd41cbe 100644
+index 507671476c3d2d92a2fdb05be24443af27d26dcf..686ebecb659a636c089c3d83b886b88b0a1105aa 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -173,7 +173,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
