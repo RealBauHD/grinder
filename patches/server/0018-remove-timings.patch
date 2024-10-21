@@ -1834,10 +1834,10 @@ index b3e1adeb932da9b3bed16acd94e2f16da48a7c72..cb276b1e54abf0bcf03179ed63803057
          // Paper end - add timings for scoreboard search
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index f78744b6d6075f584d9a88612661854f3f04aed1..93a5040e7c681cff5e4db013cd5efb28f9105014 100644
+index d06aab9bd5cd901c8367f9680f5d27ddb17b3dc4..470b188222e9f80a0ecc9f533daf4270ac30ea2d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -198,10 +198,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -200,10 +200,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
      }
      // ========================================================================
      // Paper start
@@ -1850,7 +1850,7 @@ index f78744b6d6075f584d9a88612661854f3f04aed1..93a5040e7c681cff5e4db013cd5efb28
      // Paper end
  
      public static byte toLegacyData(BlockState data) {
-@@ -476,10 +476,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -482,10 +482,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
          return new CraftDamageSourceBuilder(damageType);
      }
      // Paper start

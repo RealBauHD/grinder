@@ -21,7 +21,7 @@ index ddf42645402afefc0f5caebc684b191eef9d6ec2..cad3b8b326b3b9ca38e6892b3bc01e4b
  
                      Component ichatmutablecomponent = io.papermc.paper.adventure.PaperAdventure.asVanilla(adventureComponent); // Paper - Fix hex colors not working in some kick messages
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index fd45da5b9140f50111e4e223fe1e38501e8fbf86..e9574b0a525215f2c38c5263ad9a7bc758ce08d8 100644
+index 7bfe2107663fbe19f76175b0f5637c28686d79b7..fc4eafde1d2c3365e8c3d1c130104501fce290fd 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -747,7 +747,7 @@ public abstract class PlayerList {
@@ -34,10 +34,10 @@ index fd45da5b9140f50111e4e223fe1e38501e8fbf86..e9574b0a525215f2c38c5263ad9a7bc7
          //}
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 276be3c21e199a4ceb1ce9c174dbde52fd925a0c..2813553dcf42d8574c41bfb66b3d8a60bdd5445a 100644
+index 79a1f71c125ad326d73f4bab71f82b91355bf12c..a2ab3ee19f47b87cc5ec74aa5674b05841424529 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1838,8 +1838,8 @@ public final class CraftServer implements Server {
+@@ -1840,8 +1840,8 @@ public final class CraftServer implements Server {
      // Paper start
      @Override
      public net.kyori.adventure.text.Component shutdownMessage() {

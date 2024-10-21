@@ -18,10 +18,10 @@ index fd3b1c10695634f65c7291016bf671c084bc4d57..d2107d6a15af45abb27d13e365742bc4
              public Map<MobCategory, DespawnRangePair> despawnRanges = Arrays.stream(MobCategory.values()).collect(Collectors.toMap(Function.identity(), category -> DespawnRangePair.createDefault()));
              public DespawnRange.Shape despawnRangeShape = DespawnRange.Shape.ELLIPSOID;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0b1a1e4856c4c75218f2ee1400c4b348fa46c804..2db5207b7f85929a406761c054d8a0ffadafaabb 100644
+index ad2b8ddfd3eb29aeb90d2b5913f38f3ee5246d4d..a94d531ba861000a2c083c8031a225dea63d518b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -491,11 +491,11 @@ public final class CraftServer implements Server {
+@@ -492,11 +492,11 @@ public final class CraftServer implements Server {
      }
  
      private void overrideSpawnLimits() {

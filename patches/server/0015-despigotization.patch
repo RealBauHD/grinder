@@ -113,7 +113,7 @@ index ea71430fddf516671593ac2c071652a43233221a..5f7784b2bd6028027b4a27c696695659
          String proxyLink = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "https://docs.papermc.io/velocity/security" : "http://www.spigotmc.org/wiki/firewall-guide/";
          // Paper end - Add Velocity IP Forwarding Support
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index befeaac4786760f6847a5945da2296a3e68dbb17..2021036661c00cd24037f1b4cc6368e918f19ab2 100644
+index 064d52d4479727c6a32bf357be8da32d1760e7fc..7f174d449bcd7a6f350e97b976344f96faefad9c 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2434,7 +2434,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -148,7 +148,7 @@ index cad3b8b326b3b9ca38e6892b3bc01e4b2d23999d..3cafc65919ecb0fcaa49c5d550bd4795
              // Try and handle the handshake through the event
              if (com.destroystokyo.paper.event.player.PlayerHandshakeEvent.getHandlerList().getRegisteredListeners().length != 0) { // Hello? Can you hear me?
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 758ed5323b50f0cedadf7814bf5b1b96aa315de6..0b1a1e4856c4c75218f2ee1400c4b348fa46c804 100644
+index a2ab3ee19f47b87cc5ec74aa5674b05841424529..ad2b8ddfd3eb29aeb90d2b5913f38f3ee5246d4d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -260,7 +260,7 @@ import org.yaml.snakeyaml.Yaml;
@@ -160,7 +160,7 @@ index 758ed5323b50f0cedadf7814bf5b1b96aa315de6..0b1a1e4856c4c75218f2ee1400c4b348
  
  import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
-@@ -890,7 +890,7 @@ public final class CraftServer implements Server {
+@@ -891,7 +891,7 @@ public final class CraftServer implements Server {
      @Override
      public long getConnectionThrottle() {
          // Spigot Start - Automatically set connection throttle for bungee configurations
@@ -169,7 +169,7 @@ index 758ed5323b50f0cedadf7814bf5b1b96aa315de6..0b1a1e4856c4c75218f2ee1400c4b348
              return -1;
          } else {
              return this.configuration.getInt("settings.connection-throttle");
-@@ -2960,7 +2960,7 @@ public final class CraftServer implements Server {
+@@ -2962,7 +2962,7 @@ public final class CraftServer implements Server {
      }
  
      // Spigot start
@@ -178,7 +178,7 @@ index 758ed5323b50f0cedadf7814bf5b1b96aa315de6..0b1a1e4856c4c75218f2ee1400c4b348
      {
  
          @Deprecated
-@@ -3011,7 +3011,7 @@ public final class CraftServer implements Server {
+@@ -3013,7 +3013,7 @@ public final class CraftServer implements Server {
      public org.bukkit.Server.Spigot spigot()
      {
          return this.spigot;
@@ -188,7 +188,7 @@ index 758ed5323b50f0cedadf7814bf5b1b96aa315de6..0b1a1e4856c4c75218f2ee1400c4b348
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 5134a7083860892cadb0b78f25393038cf427c7b..5313b81a83ce4303a1cf4941d9dbde79d9f346ac 100644
+index 20225621093aa3e0aa3341b1f7c0ac031c7c16d0..c21b51c23c8b3395a40e57cccdbf2e9031b5b50f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -2430,7 +2430,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
@@ -502,10 +502,10 @@ index 040dac82e484cb44b3afd444b4bbd1fd994bfe7c..b9150516512e0cf1d7dfe26d8969b6ca
  
      // Paper start - adventure
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
-index e0414b0a48a95f1f5e718070dd0e5f955052a898..0cf443fbd5019e58d57c01dff4bd3b0db93c7115 100644
+index 60ec9b228518de0521b12f3f4ef26cb30260315a..22a2dca05c7a0f6d4c49ef25c6f2ca7f8c0be3c8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
-@@ -1031,10 +1031,10 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+@@ -1033,10 +1033,10 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
      }
  
      // Paper start
@@ -518,7 +518,7 @@ index e0414b0a48a95f1f5e718070dd0e5f955052a898..0cf443fbd5019e58d57c01dff4bd3b0d
      // Paper end
      @Override
      public final void setDisplayName(String name) {
-@@ -1042,10 +1042,10 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+@@ -1044,10 +1044,10 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
      }
  
      // Paper start
@@ -531,7 +531,7 @@ index e0414b0a48a95f1f5e718070dd0e5f955052a898..0cf443fbd5019e58d57c01dff4bd3b0d
      // Paper end
      @Override
      public boolean hasDisplayName() {
-@@ -1222,12 +1222,12 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+@@ -1224,12 +1224,12 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
      }
  
      // Paper start
@@ -546,7 +546,7 @@ index e0414b0a48a95f1f5e718070dd0e5f955052a898..0cf443fbd5019e58d57c01dff4bd3b0d
      // Paper end
      @Override
      public void setLore(List<String> lore) {
-@@ -1245,7 +1245,7 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+@@ -1247,7 +1247,7 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
      }
  
      // Paper start
@@ -555,7 +555,7 @@ index e0414b0a48a95f1f5e718070dd0e5f955052a898..0cf443fbd5019e58d57c01dff4bd3b0d
      public void setLoreComponents(List<net.md_5.bungee.api.chat.BaseComponent[]> lore) {
          Preconditions.checkArgument(lore == null || lore.size() <= ItemLore.MAX_LINES, "lore cannot have more than %s lines", ItemLore.MAX_LINES); // Paper - limit lore lines
          if (lore == null) {
-@@ -1258,7 +1258,7 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+@@ -1260,7 +1260,7 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
                  safelyAdd(lore, this.lore, false);
              }
          }
@@ -564,7 +564,7 @@ index e0414b0a48a95f1f5e718070dd0e5f955052a898..0cf443fbd5019e58d57c01dff4bd3b0d
      // Paper end
      @Override
      public boolean hasCustomModelData() {
-@@ -2030,9 +2030,9 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+@@ -2032,9 +2032,9 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
  
          for (Object object : addFrom) {
              // Paper start - support components

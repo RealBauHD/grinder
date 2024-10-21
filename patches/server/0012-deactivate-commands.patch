@@ -5,7 +5,7 @@ Subject: [PATCH] deactivate commands
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 0994bb2beb95c9a6cfab5131d884eb0586267ded..3fe792214392a025d774e0b3988aba044e8410a0 100644
+index 65c0af9784a174b8432a61f8bf5a0a9adb69ff48..3aaca25772b894078194290d888b1e3dd5abd342 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -169,7 +169,7 @@ public class Commands {
@@ -36,10 +36,10 @@ index 0994bb2beb95c9a6cfab5131d884eb0586267ded..3fe792214392a025d774e0b3988aba04
          ScoreboardCommand.register(this.dispatcher, commandRegistryAccess);
          SeedCommand.register(this.dispatcher, environment != Commands.CommandSelection.INTEGRATED);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8b82f3214087ae8d2b924561a45c8a9ff8da576d..36b796893e96e6bb4a8c916ccdae7a87795cffe2 100644
+index 663ae307bc84583ab271646e9b7fdb2eeeecc09c..79a1f71c125ad326d73f4bab71f82b91355bf12c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -592,11 +592,11 @@ public final class CraftServer implements Server {
+@@ -593,11 +593,11 @@ public final class CraftServer implements Server {
  
          if (type == PluginLoadOrder.POSTWORLD) {
              // Spigot start - Allow vanilla commands to be forced to be the main command
