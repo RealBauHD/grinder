@@ -1,6 +1,6 @@
 --- a/src/main/resources/configurations/bukkit.yml
 +++ b/src/main/resources/configurations/bukkit.yml
-@@ -12,7 +_,6 @@
+@@ -12,23 +_,13 @@
  settings:
      allow-end: true
      warn-on-overload: true
@@ -8,8 +8,9 @@
      update-folder: update
      plugin-profiling: false
      connection-throttle: 4000
-@@ -21,14 +_,6 @@
-     shutdown-message: Server closed
+     query-plugins: true
+     deprecated-verbose: default
+-    shutdown-message: Server closed
      minimum-api: none
      use-map-color-cache: true
 -spawn-limits:

@@ -50,6 +50,17 @@
  
      @Override
      public String toString() {
+@@ -1694,8 +_,8 @@
+ 
+     @Override
+     public net.kyori.adventure.text.Component shutdownMessage() {
+-        String msg = getShutdownMessage();
+-        return msg != null ? net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(msg) : null;
++        /*String msg = getShutdownMessage();
++        return msg != null ? net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(msg) : null*/ return net.kyori.adventure.text.Component.translatable("multiplayer.disconnect.server_shutdown"); // Grinder - use mojang's messages
+     }
+ 
+     @Override
 @@ -2845,7 +_,7 @@
      @Override
      public void reloadPermissions() {

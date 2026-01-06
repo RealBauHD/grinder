@@ -1,0 +1,14 @@
+--- a/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
++++ b/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+@@ -105,9 +_,9 @@
+         if (packet.protocolVersion() != SharedConstants.getCurrentVersion().protocolVersion()) {
+             net.kyori.adventure.text.Component adventureComponent; // Paper - Fix hex colors not working in some kick messages
+             if (packet.protocolVersion() < SharedConstants.getCurrentVersion().protocolVersion()) { // Spigot - SPIGOT-7546: Handle version check correctly for outdated client message
+-                adventureComponent = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(java.text.MessageFormat.format(org.spigotmc.SpigotConfig.outdatedClientMessage.replaceAll("'", "''"), SharedConstants.getCurrentVersion().name())); // Spigot // Paper - Fix hex colors not working in some kick messages
++                adventureComponent = net.kyori.adventure.text.Component.translatable("multiplayer.disconnect.outdated_client", SharedConstants.getCurrentVersion().name());/*net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(java.text.MessageFormat.format(org.spigotmc.SpigotConfig.outdatedClientMessage.replaceAll("'", "''"), SharedConstants.getCurrentVersion().name()))*/; // Spigot // Paper - Fix hex colors not working in some kick messages // Grinder - use mojang's messages
+             } else {
+-                adventureComponent = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(java.text.MessageFormat.format(org.spigotmc.SpigotConfig.outdatedServerMessage.replaceAll("'", "''"), SharedConstants.getCurrentVersion().name())); // Spigot // Paper - Fix hex colors not working in some kick messages
++                adventureComponent = net.kyori.adventure.text.Component.translatable("multiplayer.disconnect.outdated_server", SharedConstants.getCurrentVersion().name())/*net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(java.text.MessageFormat.format(org.spigotmc.SpigotConfig.outdatedServerMessage.replaceAll("'", "''"), SharedConstants.getCurrentVersion().name()))*/; // Spigot // Paper - Fix hex colors not working in some kick messages // Grinder - mojang's messages
+             }
+             Component component = io.papermc.paper.adventure.PaperAdventure.asVanilla(adventureComponent); // Paper - Fix hex colors not working in some kick messages
+ 
