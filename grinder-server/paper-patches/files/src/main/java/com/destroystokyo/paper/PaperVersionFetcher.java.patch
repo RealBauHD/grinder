@@ -1,0 +1,19 @@
+--- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
++++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
+@@ -245,7 +_,7 @@
+     }
+ 
+     private @Nullable Component getHistory() {
+-        final VersionHistoryManager.@Nullable VersionData data = VersionHistoryManager.INSTANCE.getVersionData();
++        /*final VersionHistoryManager.@Nullable VersionData data = VersionHistoryManager.INSTANCE.getVersionData();
+         if (data == null) {
+             return null;
+         }
+@@ -255,6 +_,6 @@
+             return null;
+         }
+ 
+-        return text("Previous version: " + oldVersion, NamedTextColor.GRAY, TextDecoration.ITALIC);
++        return text("Previous version: " + oldVersion, NamedTextColor.GRAY, TextDecoration.ITALIC);*/ return null; // Grinder - remove version history
+     }
+ }
