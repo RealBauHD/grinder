@@ -1,5 +1,19 @@
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -500,11 +_,11 @@
+     }
+ 
+     private void overrideSpawnLimits() {
+-        for (SpawnCategory spawnCategory : SpawnCategory.values()) {
++        /*for (SpawnCategory spawnCategory : SpawnCategory.values()) {
+             if (CraftSpawnCategory.isValidForLimits(spawnCategory)) {
+                 this.spawnCategoryLimit.put(spawnCategory, this.configuration.getInt(CraftSpawnCategory.getConfigNameSpawnLimit(spawnCategory)));
+             }
+-        }
++        }*/ // Grinder - just use paper mob caps
+     }
+ 
+     private void saveConfig() {
 @@ -586,7 +_,7 @@
          if (type == PluginLoadOrder.STARTUP) {
              this.helpMap.clear();
