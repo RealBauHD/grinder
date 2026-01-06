@@ -1,0 +1,16 @@
+--- a/net/minecraft/server/Main.java
++++ b/net/minecraft/server/Main.java
+@@ -127,11 +_,11 @@
+                 configuration.setDefaults(org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(new java.io.InputStreamReader(Main.class.getClassLoader().getResourceAsStream("configurations/bukkit.yml"), java.nio.charset.StandardCharsets.UTF_8)));
+                 configuration.save(configFile);
+ 
+-                File commandFile = (File) optionSet.valueOf("commands-settings");
++                /*File commandFile = (File) optionSet.valueOf("commands-settings");
+                 org.bukkit.configuration.file.YamlConfiguration commandsConfiguration = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(commandFile);
+                 commandsConfiguration.options().copyDefaults(true);
+                 commandsConfiguration.setDefaults(org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(new java.io.InputStreamReader(Main.class.getClassLoader().getResourceAsStream("configurations/commands.yml"), java.nio.charset.StandardCharsets.UTF_8)));
+-                commandsConfiguration.save(commandFile);
++                commandsConfiguration.save(commandFile);*/ // Grinder
+                 // CraftBukkit end
+                 LOGGER.info("Initialized '{}' and '{}'", path1.toAbsolutePath(), path2.toAbsolutePath());
+                 return;
