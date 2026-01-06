@@ -8,6 +8,18 @@
  import net.minecraft.util.profiling.ProfileResults;
  import net.minecraft.util.profiling.Profiler;
  import net.minecraft.util.profiling.ProfilerFiller;
+@@ -1291,9 +_,9 @@
+             }
+             // Paper end - Add onboarding message for initial server start
+             // Paper start - Improve outdated version checking
+-            if (System.getProperty("paper.disableStartupVersionCheck") == null && io.papermc.paper.configuration.GlobalConfiguration.get().updateChecker.enabled) {
++            /*if (System.getProperty("paper.disableStartupVersionCheck") == null && io.papermc.paper.configuration.GlobalConfiguration.get().updateChecker.enabled) {
+                 CompletableFuture.runAsync(com.destroystokyo.paper.PaperVersionFetcher::getUpdateStatusStartupMessage, io.papermc.paper.util.MCUtil.ASYNC_EXECUTOR);
+-            }
++            }*/ // Grinder - no startup update message
+             // Paper end - Improve outdated version checking
+ 
+             while (this.running) {
 @@ -2712,6 +_,7 @@
      // CraftBukkit end
  
