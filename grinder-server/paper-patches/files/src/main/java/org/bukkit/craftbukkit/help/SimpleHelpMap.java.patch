@@ -1,0 +1,70 @@
+--- a/src/main/java/org/bukkit/craftbukkit/help/SimpleHelpMap.java
++++ b/src/main/java/org/bukkit/craftbukkit/help/SimpleHelpMap.java
+@@ -42,12 +_,12 @@
+         this.helpTopics = new TreeMap<>(HelpTopicComparator.topicNameComparatorInstance()); // Using a TreeMap for its explicit sorting on key
+         this.topicFactoryMap = new HashMap<>();
+         this.server = server;
+-        this.yaml = new HelpYamlReader(server);
++        //this.yaml = new HelpYamlReader(server); // Grinder - remove use of HelpYamlReader
+ 
+         Predicate<? super HelpTopic> indexFilter = Predicates.not(Predicates.instanceOf(CommandAliasHelpTopic.class));
+-        if (!this.yaml.commandTopicsInMasterIndex()) {
++        /*if (!this.yaml.commandTopicsInMasterIndex()) {
+             indexFilter = Predicates.and(indexFilter, Predicates.not(new IsCommandTopicPredicate()));
+-        }
++        }*/ // Grinder - remove use of HelpYamlReader
+ 
+         this.defaultTopic = new IndexHelpTopic("Index", null, null, Collections2.filter(this.helpTopics.values(), indexFilter), "Use /help [n] to get page n of help.");
+ 
+@@ -87,14 +_,14 @@
+ 
+     @Override
+     public List<String> getIgnoredPlugins() {
+-        return this.yaml.getIgnoredPlugins();
++        return /*this.yaml.getIgnoredPlugins()*/ List.of(); // Grinder - remove use of HelpYamlReader
+     }
+ 
+     /**
+      * Reads the general topics from help.yml and adds them to the help index.
+      */
+     public synchronized void initializeGeneralTopics() {
+-        this.yaml = new HelpYamlReader(this.server);
++        /*this.yaml = new HelpYamlReader(this.server);
+ 
+         // Initialize general help topics from the help.yml file
+         for (HelpTopic topic : this.yaml.getGeneralTopics()) {
+@@ -108,7 +_,7 @@
+             } else {
+                 this.addTopic(topic);
+             }
+-        }
++        }*/ // Grinder - remove use of HelpYamlReader
+     }
+ 
+     /**
+@@ -116,7 +_,7 @@
+      */
+     public synchronized void initializeCommands() {
+         // ** Load topics from highest to lowest priority order **
+-        Set<String> ignoredPlugins = new HashSet<String>(this.yaml.getIgnoredPlugins());
++        Set<String> ignoredPlugins = /*new HashSet<String>(this.yaml.getIgnoredPlugins())*/ Set.of(); // Grinder - remove use of HelpYamlReader
+ 
+         // Don't load any automatic help topics if All is ignored
+         if (ignoredPlugins.contains("All")) {
+@@ -173,14 +_,14 @@
+         }
+ 
+         // Amend help topics from the help.yml file
+-        for (HelpTopicAmendment amendment : this.yaml.getTopicAmendments()) {
++        /*for (HelpTopicAmendment amendment : this.yaml.getTopicAmendments()) {
+             if (this.helpTopics.containsKey(amendment.getTopicName())) {
+                 this.helpTopics.get(amendment.getTopicName()).amendTopic(amendment.getShortText(), amendment.getFullText());
+                 if (amendment.getPermission() != null) {
+                     this.helpTopics.get(amendment.getTopicName()).amendCanSee(amendment.getPermission());
+                 }
+             }
+-        }
++        }*/ // Grinder - remove use of HelpYamlReader
+     }
+ 
+     private void fillPluginIndexes(Map<String, Set<HelpTopic>> pluginIndexes, Collection<? extends Command> commands) {
