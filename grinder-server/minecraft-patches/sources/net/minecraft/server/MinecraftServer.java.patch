@@ -1,0 +1,18 @@
+--- a/net/minecraft/server/MinecraftServer.java
++++ b/net/minecraft/server/MinecraftServer.java
+@@ -121,6 +_,7 @@
+ import net.minecraft.util.debugchart.SampleLogger;
+ import net.minecraft.util.debugchart.TpsDebugDimensions;
+ import net.minecraft.util.profiling.EmptyProfileResults;
++import net.minecraft.util.profiling.InactiveProfiler;
+ import net.minecraft.util.profiling.ProfileResults;
+ import net.minecraft.util.profiling.Profiler;
+ import net.minecraft.util.profiling.ProfilerFiller;
+@@ -2712,6 +_,7 @@
+     // CraftBukkit end
+ 
+     private ProfilerFiller createProfiler() {
++        if (true) return InactiveProfiler.INSTANCE;
+         if (this.willStartRecordingMetrics) {
+             this.metricsRecorder = ActiveMetricsRecorder.createStarted(
+                 new ServerMetricsSamplersProvider(Util.timeSource, this.isDedicatedServer()),
