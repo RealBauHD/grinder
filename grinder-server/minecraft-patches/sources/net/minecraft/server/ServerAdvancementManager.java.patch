@@ -1,0 +1,21 @@
+--- a/net/minecraft/server/ServerAdvancementManager.java
++++ b/net/minecraft/server/ServerAdvancementManager.java
+@@ -34,15 +_,16 @@
+     @Override
+     protected void apply(Map<Identifier, Advancement> object, ResourceManager resourceManager, ProfilerFiller profiler) {
+         Builder<Identifier, AdvancementHolder> builder = ImmutableMap.builder();
++        if (org.spigotmc.SpigotConfig.disabledAdvancements != null && !org.spigotmc.SpigotConfig.disabledAdvancements.contains("*")) { // Grinder - move on top, to only check once
+         object.forEach((identifier, advancement) -> {
+             // Spigot start
+-            if (org.spigotmc.SpigotConfig.disabledAdvancements != null && (org.spigotmc.SpigotConfig.disabledAdvancements.contains("*") || org.spigotmc.SpigotConfig.disabledAdvancements.contains(identifier.toString()) || org.spigotmc.SpigotConfig.disabledAdvancements.contains(identifier.getNamespace()))) {
++            if (org.spigotmc.SpigotConfig.disabledAdvancements.contains(identifier.toString()) || org.spigotmc.SpigotConfig.disabledAdvancements.contains(identifier.getNamespace())) { // Grinder
+                 return;
+             }
+             // Spigot end
+             this.validate(identifier, advancement);
+             builder.put(identifier, new AdvancementHolder(identifier, advancement));
+-        });
++        });} // Grinder
+         this.advancements = new java.util.HashMap<>(builder.buildOrThrow()); // CraftBukkit - SPIGOT-7734: mutable
+         AdvancementTree advancementTree = new AdvancementTree();
+         advancementTree.addAll(this.advancements.values());
