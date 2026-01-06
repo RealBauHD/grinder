@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -303,7 +_,7 @@
+         }
+         // Paper end - Unix domain socket support
+ 
+-        this.initializeKeyPair();
++        if (this.usesAuthentication()) this.initializeKeyPair(); // Grinder
+         LOGGER.info("Starting Minecraft server on {}:{}", this.getLocalIp().isEmpty() ? "*" : this.getLocalIp(), this.getPort());
+ 
+         try {
