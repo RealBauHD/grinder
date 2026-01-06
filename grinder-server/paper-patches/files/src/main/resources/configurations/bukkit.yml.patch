@@ -24,3 +24,8 @@
  chunk-gc:
      period-in-ticks: 600
  ticks-per:
+@@ -40,4 +_,3 @@
+     axolotl-spawns: 1
+     ambient-spawns: 1
+     autosave: 6000
+-aliases: now-in-commands.yml
