@@ -1,0 +1,11 @@
+--- a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
++++ b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
+@@ -21,7 +_,7 @@
+     protected LineReader buildReader(LineReaderBuilder builder) {
+         builder
+                 .appName("Paper")
+-                .variable(LineReader.HISTORY_FILE, java.nio.file.Paths.get(".console_history"))
++                //.variable(LineReader.HISTORY_FILE, java.nio.file.Paths.get(".console_history")) // Grinder - deactivate console history
+                 .completer(new ConsoleCommandCompleter(this.server))
+                 .option(LineReader.Option.COMPLETE_IN_WORD, true);
+         if (io.papermc.paper.configuration.GlobalConfiguration.get().console.enableBrigadierHighlighting) {
