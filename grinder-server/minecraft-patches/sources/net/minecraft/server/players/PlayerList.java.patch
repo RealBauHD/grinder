@@ -1,0 +1,23 @@
+--- a/net/minecraft/server/players/PlayerList.java
++++ b/net/minecraft/server/players/PlayerList.java
+@@ -538,7 +_,7 @@
+     }
+     // Paper end - PlayerLoginEvent
+     public LoginResult canPlayerLogin(SocketAddress socketAddress, NameAndId nameAndId) { // Paper - PlayerLoginEvent
+-        LoginResult whitelistEventResult; // Paper
++        /*LoginResult whitelistEventResult; // Paper // Grinder
+         // Paper start - Fix MC-158900
+         UserBanListEntry userBanListEntry;
+         if (this.bans.isBanned(nameAndId) && (userBanListEntry = this.bans.get(nameAndId)) != null) {
+@@ -565,9 +_,9 @@
+             }
+ 
+             return new LoginResult(mutableComponent, org.bukkit.event.player.PlayerLoginEvent.Result.KICK_BANNED); // Paper - PlayerLoginEvent
+-        } else {
++        } else {*/ // Grinder
+             return this.canBypassFullServerLogin(nameAndId, new LoginResult(Component.translatable("multiplayer.disconnect.server_full"), org.bukkit.event.player.PlayerLoginEvent.Result.KICK_FULL)); // Paper - PlayerServerFullCheckEvent
+-        }
++        //} // Grinder
+     }
+ 
+     public boolean disconnectAllPlayersWithProfile(GameProfile profile) { // Paper - validate usernames

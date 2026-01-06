@@ -1,0 +1,125 @@
+--- a/net/minecraft/server/players/StoredUserList.java
++++ b/net/minecraft/server/players/StoredUserList.java
+@@ -28,7 +_,7 @@
+     private static final Logger LOGGER = LogUtils.getLogger();
+     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+     private final File file;
+-    private final Map<String, V> map = Maps.newConcurrentMap(); // Paper - Use ConcurrentHashMap in StoredUserList
++    //private final Map<String, V> map = Maps.newConcurrentMap(); // Paper - Use ConcurrentHashMap in StoredUserList // Grinder
+     protected final NotificationService notificationService;
+ 
+     public StoredUserList(File file, NotificationService notificationService) {
+@@ -41,7 +_,7 @@
+     }
+ 
+     public boolean add(V entry) {
+-        String keyForUser = this.getKeyForUser(entry.getUser());
++        /*String keyForUser = this.getKeyForUser(entry.getUser());
+         V storedUserEntry = this.map.get(keyForUser);
+         if (entry.equals(storedUserEntry)) {
+             return false;
+@@ -55,19 +_,19 @@
+             }
+ 
+             return true;
+-        }
++        }*/ return false; // Grinder
+     }
+ 
+     public @Nullable V get(K user) {
+         // Paper start - Use ConcurrentHashMap in StoredUserList
+-        return this.map.computeIfPresent(this.getKeyForUser(user), (key, value) -> {
++        /*return this.map.computeIfPresent(this.getKeyForUser(user), (key, value) -> {
+             return value.hasExpired() ? null : value;
+-        });
++        });*/ return null; // Grinder
+         // Paper end - Use ConcurrentHashMap in StoredUserList
+     }
+ 
+     public boolean remove(K user) {
+-        V storedUserEntry = this.map.remove(this.getKeyForUser(user));
++        /*V storedUserEntry = this.map.remove(this.getKeyForUser(user));
+         if (storedUserEntry == null) {
+             return false;
+         } else {
+@@ -78,7 +_,7 @@
+             }
+ 
+             return true;
+-        }
++        }*/ return false; // Grinder
+     }
+ 
+     public boolean remove(StoredUserEntry<K> entry) {
+@@ -86,21 +_,21 @@
+     }
+ 
+     public void clear() {
+-        this.map.clear();
++        /*this.map.clear();
+ 
+         try {
+             this.save();
+         } catch (IOException var2) {
+             LOGGER.warn("Could not save the list after removing a user.", (Throwable)var2);
+-        }
++        }*/ // Grinder
+     }
+ 
+     public String[] getUserList() {
+-        return this.map.keySet().toArray(new String[0]);
++        /*return this.map.keySet().toArray(new String[0]);*/ return new String[0]; // Grinder
+     }
+ 
+     public boolean isEmpty() {
+-        return this.map.isEmpty();
++        /*return this.map.isEmpty();*/ return true; // Grinder
+     }
+ 
+     protected String getKeyForUser(K user) {
+@@ -109,31 +_,31 @@
+ 
+     protected boolean contains(K entry) {
+         this.removeExpired(); // CraftBukkit - SPIGOT-7589: Consistently remove expired entries to mirror .get(...)
+-        return this.map.containsKey(this.getKeyForUser(entry));
++        /*return this.map.containsKey(this.getKeyForUser(entry));*/ return false; // Grinder
+     }
+ 
+     private void removeExpired() {
+-        this.map.values().removeIf(StoredUserEntry::hasExpired); // Paper - Use ConcurrentHashMap in StoredUserList
++        //this.map.values().removeIf(StoredUserEntry::hasExpired); // Paper - Use ConcurrentHashMap in StoredUserList // Grinder
+     }
+ 
+     protected abstract StoredUserEntry<K> createEntry(JsonObject entryData);
+ 
+     public Collection<V> getEntries() {
+-        return this.map.values();
++        return /*this.map.values();*/ List.of(); // Grinder
+     }
+ 
+     public void save() throws IOException {
+-        this.removeExpired(); // Paper - remove expired values before saving
++        /*this.removeExpired(); // Paper - remove expired values before saving
+         JsonArray jsonArray = new JsonArray();
+         this.map.values().stream().map(storedEntry -> Util.make(new JsonObject(), storedEntry::serialize)).forEach(jsonArray::add);
+ 
+         try (BufferedWriter writer = Files.newWriter(this.file, StandardCharsets.UTF_8)) {
+             GSON.toJson(jsonArray, GSON.newJsonWriter(writer));
+-        }
++        }*/ // Grinder
+     }
+ 
+     public void load() throws IOException {
+-        if (this.file.exists()) {
++        /*if (this.file.exists()) {
+             try (BufferedReader reader = Files.newReader(this.file, StandardCharsets.UTF_8)) {
+                 this.map.clear();
+                 JsonArray jsonArray = GSON.fromJson(reader, JsonArray.class);
+@@ -156,6 +_,6 @@
+                 this.file.delete();
+             }
+             // Spigot end
+-        }
++        }*/ // Grinder
+     }
+ }
