@@ -1,0 +1,10 @@
+--- a/src/main/resources/configurations/bukkit.yml
++++ b/src/main/resources/configurations/bukkit.yml
+@@ -12,7 +_,6 @@
+ settings:
+     allow-end: true
+     warn-on-overload: true
+-    permissions-file: permissions.yml
+     update-folder: update
+     plugin-profiling: false
+     connection-throttle: 4000
