@@ -1,0 +1,41 @@
+--- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
++++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
+@@ -34,7 +_,7 @@
+         final ReloadCommand reload = new ReloadCommand("reload");
+         this.knownCommands.put("bukkit:reload", reload);
+         this.knownCommands.put("bukkit:rl", reload);
+-        register("bukkit", new co.aikar.timings.TimingsCommand("timings"));
++        //register("bukkit", new co.aikar.timings.TimingsCommand("timings")); // Grinder - remove timings
+     }
+ 
+     public void setFallbackCommands() {
+@@ -66,7 +_,7 @@
+      */
+     @Override
+     public boolean register(@NotNull String label, @NotNull String fallbackPrefix, @NotNull Command command) {
+-        command.timings = co.aikar.timings.TimingsManager.getCommandTiming(fallbackPrefix, command); // Paper
++        //command.timings = co.aikar.timings.TimingsManager.getCommandTiming(fallbackPrefix, command); // Paper // Grinder - remove timings
+         label = label.toLowerCase(Locale.ROOT).trim();
+         fallbackPrefix = fallbackPrefix.toLowerCase(Locale.ROOT).trim();
+         boolean registered = register(label, command, false, fallbackPrefix);
+@@ -149,16 +_,16 @@
+         }
+ 
+         // Paper start - Plugins do weird things to workaround normal registration
+-        if (target.timings == null) {
++        /*if (target.timings == null) {
+             target.timings = co.aikar.timings.TimingsManager.getCommandTiming(null, target);
+-        }
++        }*/ // Grinder - remove timings
+         // Paper end
+ 
+         try {
+-            try (co.aikar.timings.Timing ignored = target.timings.startTiming()) { // Paper - use try with resources
++            //try (co.aikar.timings.Timing ignored = target.timings.startTiming()) { // Paper - use try with resources // Grinder - remove timings
+             // Note: we don't return the result of target.execute as thats success / failure, we return handled (true) or not handled (false)
+             target.execute(sender, sentCommandLabel, Arrays.copyOfRange(args, 1, args.length));
+-            } // target.timings.stopTiming(); // Spigot // Paper
++            //} // target.timings.stopTiming(); // Spigot // Paper // Grinder - remove timings
+         } catch (CommandException ex) {
+             server.getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerCommandException(ex, target, sender, args))); // Paper
+             //target.timings.stopTiming(); // Spigot // Paper

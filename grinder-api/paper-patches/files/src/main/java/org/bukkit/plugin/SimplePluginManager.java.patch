@@ -1,0 +1,31 @@
+--- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
++++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
+@@ -720,7 +_,7 @@
+             throw new IllegalPluginAccessException("Plugin attempted to register " + event + " while not enabled");
+         }
+ 
+-        executor = new co.aikar.timings.TimedEventExecutor(executor, plugin, null, event); // Paper
++        //executor = new co.aikar.timings.TimedEventExecutor(executor, plugin, null, event); // Paper // Grinder - remove timings
+         if (false) { // Spigot - RL handles useTimings check now // Paper
+             getEventListeners(event).register(new TimedRegisteredListener(listener, executor, priority, plugin, ignoreCancelled));
+         } else {
+@@ -955,8 +_,8 @@
+ 
+     @Override
+     public boolean useTimings() {
+-        if (true) {return this.paperPluginManager.useTimings();} // Paper
+-        return co.aikar.timings.Timings.isTimingsEnabled(); // Spigot
++        /*if (true) {return this.paperPluginManager.useTimings();} // Paper
++        return co.aikar.timings.Timings.isTimingsEnabled(); // Spigot*/ return false; // Grinder - remove timings
+     }
+ 
+     /**
+@@ -966,7 +_,7 @@
+      */
+     @Deprecated(forRemoval = true)
+     public void useTimings(boolean use) {
+-        co.aikar.timings.Timings.setTimingsEnabled(use); // Paper
++        //co.aikar.timings.Timings.setTimingsEnabled(use); // Paper // Grinder - remove timings
+     }
+ 
+     // Paper start

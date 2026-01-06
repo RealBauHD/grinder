@@ -1,0 +1,20 @@
+--- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
++++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
+@@ -290,7 +_,7 @@
+                 }
+             }
+ 
+-            EventExecutor executor = new co.aikar.timings.TimedEventExecutor(new EventExecutor() { // Paper
++            EventExecutor executor = /*new co.aikar.timings.TimedEventExecutor(*/new EventExecutor() { // Paper // Grinder - remove timings
+                 @Override
+                 public void execute(@NotNull Listener listener, @NotNull Event event) throws EventException { // Paper
+                     try {
+@@ -304,7 +_,7 @@
+                         throw new EventException(t);
+                     }
+                 }
+-            }, plugin, method, eventClass); // Paper
++            }/*, plugin, method, eventClass)*/; // Paper // Grinder - remove timings
+             eventSet.add(new RegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));
+         }
+         return ret;

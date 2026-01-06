@@ -1,0 +1,11 @@
+--- a/src/main/java/org/bukkit/command/FormattedCommandAlias.java
++++ b/src/main/java/org/bukkit/command/FormattedCommandAlias.java
+@@ -14,7 +_,7 @@
+ 
+     public FormattedCommandAlias(@NotNull String alias, @NotNull String[] formatStrings) {
+         super(alias);
+-        timings = co.aikar.timings.TimingsManager.getCommandTiming("minecraft", this); // Spigot
++        //timings = co.aikar.timings.TimingsManager.getCommandTiming("minecraft", this); // Spigot // Grinder - remove timings
+         this.formatStrings = formatStrings;
+     }
+ 
