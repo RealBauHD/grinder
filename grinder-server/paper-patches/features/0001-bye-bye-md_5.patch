@@ -1,0 +1,1070 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Wed, 7 Jan 2026 21:03:06 +0100
+Subject: [PATCH] bye bye md_5
+
+
+diff --git a/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java b/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java
+index 367ef7e0769537e8c13c7fd818a1249e15a28a65..a7b1cdc395800f3de1b5c235c57051ad755bd30a 100644
+--- a/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java
++++ b/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java
+@@ -3,7 +3,6 @@ package io.papermc.paper.brigadier;
+ import java.util.Set;
+ import java.util.UUID;
+ import net.kyori.adventure.text.Component;
+-import net.md_5.bungee.api.chat.BaseComponent;
+ import org.bukkit.Bukkit;
+ import org.bukkit.Server;
+ import org.bukkit.command.CommandSender;
+@@ -56,31 +55,6 @@ public final class NullCommandSender implements CommandSender {
+         return "";
+     }
+ 
+-    private final Spigot spigot = new Spigot();
+-    @Override
+-    public Spigot spigot() {
+-        return this.spigot;
+-    }
+-
+-    public final class Spigot extends CommandSender.Spigot {
+-
+-        @Override
+-        public void sendMessage(@NotNull final BaseComponent component) {
+-        }
+-
+-        @Override
+-        public void sendMessage(@NonNull final @NotNull BaseComponent... components) {
+-        }
+-
+-        @Override
+-        public void sendMessage(@Nullable final UUID sender, @NotNull final BaseComponent component) {
+-        }
+-
+-        @Override
+-        public void sendMessage(@Nullable final UUID sender, @NonNull final @NotNull BaseComponent... components) {
+-        }
+-    }
+-
+     @Override
+     public Component name() {
+         return Component.empty();
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index ccd8ecd66b4772a32d62e0ea0fc2d3e9e092028f..5eff8f35f60304b837f3709817c2021f3b069d1c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -260,8 +260,6 @@ import org.yaml.snakeyaml.Yaml;
+ import org.yaml.snakeyaml.constructor.SafeConstructor;
+ import org.yaml.snakeyaml.error.MarkedYAMLException;
+ 
+-import net.md_5.bungee.api.chat.BaseComponent; // Spigot
+-
+ public final class CraftServer implements Server {
+     private final String serverName = io.papermc.paper.ServerBuildInfo.buildInfo().brandName();
+     private final String serverVersion;
+@@ -2706,53 +2704,6 @@ public final class CraftServer implements Server {
+         return reportData == null ? 0.0 : reportData.avg();
+     }
+ 
+-    private final org.bukkit.Server.Spigot spigot = new org.bukkit.Server.Spigot() {
+-
+-        @Deprecated
+-        @Override
+-        public YamlConfiguration getConfig() {
+-            return org.spigotmc.SpigotConfig.config;
+-        }
+-
+-        @Override
+-        public YamlConfiguration getBukkitConfig() {
+-            return configuration;
+-        }
+-
+-        @Override
+-        public YamlConfiguration getSpigotConfig() {
+-            return org.spigotmc.SpigotConfig.config;
+-        }
+-
+-        @Override
+-        public YamlConfiguration getPaperConfig() {
+-            return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
+-        }
+-
+-        @Override
+-        public void restart() {
+-            CraftServer.this.restart();
+-        }
+-
+-        @Override
+-        public void broadcast(BaseComponent component) {
+-            for (Player player : CraftServer.this.getOnlinePlayers()) {
+-                player.spigot().sendMessage(component);
+-            }
+-        }
+-
+-        @Override
+-        public void broadcast(BaseComponent... components) {
+-            for (Player player : CraftServer.this.getOnlinePlayers()) {
+-                player.spigot().sendMessage(components);
+-            }
+-        }
+-    };
+-
+-    public org.bukkit.Server.Spigot spigot() {
+-        return this.spigot;
+-    }
+-
+     @Override
+     public void restart() {
+         org.spigotmc.RestartCommand.restart();
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 4ff1b4f472cce49d05a22cdfb67f9e8bf980a81c..76cddc682678a81c22a21ee456e9eb16f5cbf62f 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -1980,24 +1980,6 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+         }
+     }
+ 
+-    // Spigot start
+-    private final org.bukkit.World.Spigot spigot = new org.bukkit.World.Spigot() {
+-
+-        @Override
+-        public LightningStrike strikeLightning(Location loc, boolean isSilent) {
+-            return CraftWorld.this.strikeLightning(loc);
+-        }
+-
+-        @Override
+-        public LightningStrike strikeLightningEffect(Location loc, boolean isSilent) {
+-            return CraftWorld.this.strikeLightningEffect(loc);
+-        }
+-    };
+-
+-    public org.bukkit.World.Spigot spigot() {
+-        return this.spigot;
+-    }
+-    // Spigot end
+     // Paper start
+     @Override
+     public void getChunkAtAsync(int x, int z, boolean gen, boolean urgent, @NotNull Consumer<? super Chunk> cb) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java b/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java
+index 9f551c309e9b20b4d0366d2f0d4bc799a1867468..0b878e46a0a9cf0edbe5f34f942ffe7c9fcfdc07 100644
+--- a/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java
++++ b/src/main/java/org/bukkit/craftbukkit/command/ProxiedNativeCommandSender.java
+@@ -136,9 +136,4 @@ public class ProxiedNativeCommandSender implements ProxiedCommandSender {
+     public void setOp(boolean value) {
+         this.getCaller().setOp(value);
+     }
+-
+-    @Override
+-    public org.bukkit.command.CommandSender.Spigot spigot() {
+-        return this.getCaller().spigot();
+-    }
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java b/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java
+index b540472c0d57cec96bf7690c9de3f9e7c448c0f7..091c7cf56e987558a194080690854dc312a543e7 100644
+--- a/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java
++++ b/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java
+@@ -102,33 +102,6 @@ public abstract class ServerCommandSender implements CommandSender {
+         this.sendMessage(messages); // ServerCommandSenders have no use for senders
+     }
+ 
+-    private final org.bukkit.command.CommandSender.Spigot spigot = new org.bukkit.command.CommandSender.Spigot() {
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.chat.BaseComponent component) {
+-            ServerCommandSender.this.sendMessage(net.md_5.bungee.api.chat.TextComponent.toLegacyText(component));
+-        }
+-
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components) {
+-            ServerCommandSender.this.sendMessage(net.md_5.bungee.api.chat.TextComponent.toLegacyText(components));
+-        }
+-
+-        @Override
+-        public void sendMessage(UUID sender, net.md_5.bungee.api.chat.BaseComponent... components) {
+-            this.sendMessage(components);
+-        }
+-
+-        @Override
+-        public void sendMessage(UUID sender, net.md_5.bungee.api.chat.BaseComponent component) {
+-            this.sendMessage(component);
+-        }
+-    };
+-
+-    @Override
+-    public org.bukkit.command.CommandSender.Spigot spigot() {
+-        return this.spigot;
+-    }
+-
+     @Override
+     public net.kyori.adventure.pointer.Pointers pointers() {
+         return POINTERS_SUPPLIER.view(this);
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+index 2a572ef0ba7405ecafaf6def2a2134bd71b60453..c7d7e03745b1b71205738b53153799895831dcae 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+@@ -16,7 +16,6 @@ import java.util.UUID;
+ import java.util.concurrent.CompletableFuture;
+ import net.kyori.adventure.pointer.PointersSupplier;
+ import net.kyori.adventure.util.TriState;
+-import net.md_5.bungee.api.chat.BaseComponent;
+ import net.minecraft.nbt.CompoundTag;
+ import net.minecraft.network.chat.Component;
+ import net.minecraft.server.MinecraftServer;
+@@ -1142,29 +1141,6 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     }
+     // Paper end - more teleport API / async chunk API
+ 
+-    private final org.bukkit.entity.Entity.Spigot spigot = new org.bukkit.entity.Entity.Spigot() {
+-
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.chat.BaseComponent component) {
+-        }
+-
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components) {
+-        }
+-
+-        @Override
+-        public void sendMessage(UUID sender, BaseComponent... components) {
+-        }
+-
+-        @Override
+-        public void sendMessage(UUID sender, BaseComponent component) {
+-        }
+-    };
+-
+-    public org.bukkit.entity.Entity.Spigot spigot() {
+-        return this.spigot;
+-    }
+-
+     @Override
+     public Location getOrigin() {
+         if (this.getHandle().origin == null) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLightningStrike.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLightningStrike.java
+index 32e426513f3e710abeda3363a4e2a08fe902c703..eab434f6a0f45d155ba7d2e4866398f5ca86d9bd 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLightningStrike.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLightningStrike.java
+@@ -47,21 +47,6 @@ public class CraftLightningStrike extends CraftEntity implements LightningStrike
+         this.getHandle().setCause((player != null) ? ((CraftPlayer) player).getHandle() : null);
+     }
+ 
+-    // Spigot start
+-    private final LightningStrike.Spigot spigot = new LightningStrike.Spigot() {
+-
+-        @Override
+-        public boolean isSilent() {
+-            return false;
+-        }
+-    };
+-
+-    @Override
+-    public LightningStrike.Spigot spigot() {
+-        return this.spigot;
+-    }
+-    // Spigot end
+-
+     @Override
+     public int getFlashCount() {
+         return getHandle().flashes;
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index e3c9327de894fdfb252781772817f4c8bc079cce..25eafc1668a5b15c105e0b7081074cb8bee550da 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -53,7 +53,6 @@ import net.kyori.adventure.identity.Identity;
+ import net.kyori.adventure.inventory.Book;
+ import net.kyori.adventure.pointer.PointersSupplier;
+ import net.kyori.adventure.util.TriState;
+-import net.md_5.bungee.api.chat.BaseComponent;
+ import net.minecraft.advancements.AdvancementProgress;
+ import net.minecraft.commands.Commands;
+ import net.minecraft.core.BlockPos;
+@@ -427,14 +426,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+     }
+ 
+     // Paper start
+-    @Override
+-    @Deprecated
+-    public void sendActionBar(BaseComponent[] message) {
+-        if (getHandle().connection == null || message == null) return;
+-        net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket packet = new net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket(org.bukkit.craftbukkit.util.CraftChatMessage.bungeeToVanilla(message));
+-        getHandle().connection.send(packet);
+-    }
+-
+     @Override
+     @Deprecated
+     public void sendActionBar(String message) {
+@@ -448,95 +439,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+         if (message == null || message.isEmpty()) return;
+         sendActionBar(org.bukkit.ChatColor.translateAlternateColorCodes(alternateChar, message));
+     }
+-
+-    @Override
+-    public void setPlayerListHeaderFooter(BaseComponent @Nullable [] header, BaseComponent @Nullable [] footer) {
+-        if (header != null) {
+-            String headerJson = CraftChatMessage.bungeeToJson(header);
+-            playerListHeader = net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson().deserialize(headerJson);
+-        } else {
+-            playerListHeader = null;
+-        }
+-
+-        if (footer != null) {
+-            String footerJson = CraftChatMessage.bungeeToJson(footer);
+-            playerListFooter = net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson().deserialize(footerJson);
+-        } else {
+-            playerListFooter = null;
+-        }
+-
+-        updatePlayerListHeaderFooter();
+-    }
+-
+-    @Override
+-    public void setPlayerListHeaderFooter(@Nullable BaseComponent header, @Nullable BaseComponent footer) {
+-        this.setPlayerListHeaderFooter(header == null ? null : new BaseComponent[]{header},
+-                footer == null ? null : new BaseComponent[]{footer});
+-    }
+-
+-    @Override
+-    public void setTitleTimes(int fadeInTicks, int stayTicks, int fadeOutTicks) {
+-        getHandle().connection.send(new ClientboundSetTitlesAnimationPacket(fadeInTicks, stayTicks, fadeOutTicks));
+-    }
+-
+-    @Override
+-    public void setSubtitle(BaseComponent[] subtitle) {
+-        final ClientboundSetSubtitleTextPacket packet = new ClientboundSetSubtitleTextPacket(org.bukkit.craftbukkit.util.CraftChatMessage.bungeeToVanilla(subtitle));
+-        getHandle().connection.send(packet);
+-    }
+-
+-    @Override
+-    public void setSubtitle(BaseComponent subtitle) {
+-        setSubtitle(new BaseComponent[]{subtitle});
+-    }
+-
+-    @Override
+-    public void showTitle(BaseComponent[] title) {
+-        final ClientboundSetTitleTextPacket packet = new ClientboundSetTitleTextPacket(org.bukkit.craftbukkit.util.CraftChatMessage.bungeeToVanilla(title));
+-        getHandle().connection.send(packet);
+-    }
+-
+-    @Override
+-    public void showTitle(BaseComponent title) {
+-        showTitle(new BaseComponent[]{title});
+-    }
+-
+-    @Override
+-    public void showTitle(BaseComponent[] title, BaseComponent[] subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks) {
+-        setTitleTimes(fadeInTicks, stayTicks, fadeOutTicks);
+-        setSubtitle(subtitle);
+-        showTitle(title);
+-    }
+-
+-    @Override
+-    public void showTitle(BaseComponent title, BaseComponent subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks) {
+-        setTitleTimes(fadeInTicks, stayTicks, fadeOutTicks);
+-        setSubtitle(subtitle);
+-        showTitle(title);
+-    }
+-
+-    @Override
+-    public void sendTitle(com.destroystokyo.paper.Title title) {
+-        Preconditions.checkNotNull(title, "Title is null");
+-        setTitleTimes(title.getFadeIn(), title.getStay(), title.getFadeOut());
+-        setSubtitle(title.getSubtitle() == null ? new BaseComponent[0] : title.getSubtitle());
+-        showTitle(title.getTitle());
+-    }
+-
+-    @Override
+-    public void updateTitle(com.destroystokyo.paper.Title title) {
+-        Preconditions.checkNotNull(title, "Title is null");
+-        setTitleTimes(title.getFadeIn(), title.getStay(), title.getFadeOut());
+-        if (title.getSubtitle() != null) {
+-            setSubtitle(title.getSubtitle());
+-        }
+-        showTitle(title.getTitle());
+-    }
+-
+-    @Override
+-    public void hideTitle() {
+-        getHandle().connection.send(new ClientboundClearTitlesPacket(false));
+-    }
+     // Paper end
+ 
+     @Override
+@@ -3024,83 +2926,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+         getHandle().resetAttackStrengthTicker();
+     }
+     // Paper end
+-    // Spigot start
+-    private final Player.Spigot spigot = new Player.Spigot() {
+-
+-        @Override
+-        public InetSocketAddress getRawAddress() {
+-            return (InetSocketAddress) CraftPlayer.this.getHandle().connection.getRawAddress();
+-        }
+-
+-        @Override
+-        public void respawn() {
+-            if (CraftPlayer.this.getHealth() <= 0 && CraftPlayer.this.isOnline()) {
+-                CraftPlayer.this.server.getServer().getPlayerList().respawn(CraftPlayer.this.getHandle(), false, Entity.RemovalReason.KILLED, org.bukkit.event.player.PlayerRespawnEvent.RespawnReason.PLUGIN);
+-                CraftPlayer.this.getHandle().connection.restartClientLoadTimerAfterRespawn();
+-            }
+-        }
+-
+-        @Override
+-        public Set<Player> getHiddenPlayers() {
+-            Set<Player> ret = new HashSet<>();
+-            for (Player player : CraftPlayer.this.getServer().getOnlinePlayers()) {
+-                if (!CraftPlayer.this.canSee(player)) {
+-                    ret.add(player);
+-                }
+-            }
+-
+-            return java.util.Collections.unmodifiableSet(ret);
+-        }
+-
+-        @Override
+-        public void sendMessage(BaseComponent component) {
+-            this.sendMessage(new BaseComponent[]{component});
+-        }
+-
+-        @Override
+-        public void sendMessage(BaseComponent... components) {
+-            this.sendMessage(net.md_5.bungee.api.ChatMessageType.SYSTEM, components);
+-        }
+-
+-        @Override
+-        public void sendMessage(UUID sender, BaseComponent component) {
+-            this.sendMessage(net.md_5.bungee.api.ChatMessageType.CHAT, sender, component);
+-        }
+-
+-        @Override
+-        public void sendMessage(UUID sender, BaseComponent... components) {
+-            this.sendMessage(net.md_5.bungee.api.ChatMessageType.CHAT, sender, components);
+-        }
+-
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.ChatMessageType position, BaseComponent component) {
+-            this.sendMessage(position, new BaseComponent[]{component});
+-        }
+-
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.ChatMessageType position, BaseComponent... components) {
+-            this.sendMessage(position, null, components);
+-        }
+-
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.ChatMessageType position, UUID sender, BaseComponent component) {
+-            this.sendMessage(position, sender, new BaseComponent[]{component});
+-        }
+-
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.ChatMessageType position, UUID sender, BaseComponent... components) {
+-            if (CraftPlayer.this.getHandle().connection == null) return;
+-
+-            CraftPlayer.this.getHandle().connection.send(new net.minecraft.network.protocol.game.ClientboundSystemChatPacket(components, position == net.md_5.bungee.api.ChatMessageType.ACTION_BAR));
+-        }
+-
+-        // Paper start
+-        @Override
+-        public int getPing() {
+-            return CraftPlayer.this.getPing();
+-        }
+-        // Paper end
+-    };
+ 
+     // Paper start - brand support
+     @Override
+@@ -3183,11 +3008,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+     }
+     // Paper end
+ 
+-    public Player.Spigot spigot() {
+-        return this.spigot;
+-    }
+-    // Spigot end
+-
+     @Override
+     public int getViewDistance() {
+         return ca.spottedleaf.moonrise.common.PlatformHooks.get().getViewDistance(this.getHandle());
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
+index 4abee7b6d922be34d216769af2ff55b58dda78b9..7dc58f8ea5a5672edb47e6900d3422e042e317fc 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
+@@ -254,46 +254,6 @@ public final class CraftItemFactory implements ItemFactory {
+     }
+     // Paper end - add getI18NDisplayName
+ 
+-    // Paper start - bungee hover events
+-    @Override
+-    public net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(ItemStack itemStack) {
+-        throw new UnsupportedOperationException("BungeeCord Chat API does not support data components");
+-        /*
+-        net.md_5.bungee.api.chat.ItemTag itemTag = net.md_5.bungee.api.chat.ItemTag.ofNbt(CraftItemStack.asNMSCopy(itemStack).getOrCreateTag().toString());
+-        return new net.md_5.bungee.api.chat.hover.content.Item(
+-            itemStack.getType().getKey().toString(),
+-            itemStack.getAmount(),
+-            itemTag);
+-         */
+-    }
+-
+-    @Override
+-    public net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity entity) {
+-        return hoverContentOf(entity, org.apache.commons.lang3.StringUtils.isBlank(entity.getCustomName()) ? null : new net.md_5.bungee.api.chat.TextComponent(entity.getCustomName()));
+-    }
+-
+-    @Override
+-    public net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity entity, String customName) {
+-        return hoverContentOf(entity, org.apache.commons.lang3.StringUtils.isBlank(customName) ? null : new net.md_5.bungee.api.chat.TextComponent(customName));
+-    }
+-
+-    @Override
+-    public net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity entity, net.md_5.bungee.api.chat.BaseComponent customName) {
+-        return new net.md_5.bungee.api.chat.hover.content.Entity(
+-            entity.getType().getKey().toString(),
+-            entity.getUniqueId().toString(),
+-            customName);
+-    }
+-
+-    @Override
+-    public net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(org.bukkit.entity.Entity entity, net.md_5.bungee.api.chat.BaseComponent[] customName) {
+-        return new net.md_5.bungee.api.chat.hover.content.Entity(
+-            entity.getType().getKey().toString(),
+-            entity.getUniqueId().toString(),
+-            new net.md_5.bungee.api.chat.TextComponent(customName));
+-    }
+-    // Paper end - bungee hover events
+-
+     // Paper start - old getSpawnEgg API
+     // @Override // used to override, upstream added conflicting method, is called via Commodore now
+     @Deprecated
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
+index 6b248639801aaaa87725ff4aaf36917bb1f55eaf..235f1aa8f2e108b6a803cbbdd9df6972935cd14c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
+@@ -21,11 +21,6 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
+ import org.bukkit.inventory.meta.BookMeta;
+ import org.bukkit.inventory.meta.WritableBookMeta;
+ 
+-// Spigot start
+-import java.util.AbstractList;
+-import net.md_5.bungee.api.chat.BaseComponent;
+-// Spigot end
+-
+ @DelegateDeserialization(SerializableMeta.class)
+ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBookMeta {
+     @ItemMetaKey.Specific(ItemMetaKey.Specific.To.NBT)
+@@ -372,7 +367,6 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
+         if (this.pages != null) {
+             meta.pages = new ArrayList<>(this.pages);
+         }
+-        meta.spigot = meta.new SpigotMeta(); // Spigot
+         return meta;
+     }
+ 
+@@ -412,93 +406,4 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta, WritableBo
+ 
+         return builder;
+     }
+-
+-    // Spigot start
+-    private BookMeta.Spigot spigot = new SpigotMeta();
+-    private class SpigotMeta extends BookMeta.Spigot {
+-
+-        private String pageToJSON(String page) {
+-            // Convert from plain String to JSON (similar to conversion between writable books and written books):
+-            Component component = CraftChatMessage.fromString(page, true, true)[0];
+-            return CraftChatMessage.toJSON(component);
+-        }
+-
+-        private String componentsToPage(BaseComponent[] components) {
+-            // Convert component to plain String:
+-            Component component = CraftChatMessage.bungeeToVanilla(components);
+-            return CraftChatMessage.fromComponent(component);
+-        }
+-
+-        @Override
+-        public BaseComponent[] getPage(final int page) {
+-            Preconditions.checkArgument(CraftMetaBook.this.isValidPage(page), "Invalid page number");
+-            return CraftChatMessage.jsonToBungee(this.pageToJSON(CraftMetaBook.this.pages.get(page - 1)));
+-        }
+-
+-        @Override
+-        public void setPage(final int page, final BaseComponent... text) {
+-            if (!CraftMetaBook.this.isValidPage(page)) {
+-                throw new IllegalArgumentException("Invalid page number " + page + "/" + CraftMetaBook.this.getPageCount());
+-            }
+-
+-            BaseComponent[] newText = text == null ? new BaseComponent[0] : text;
+-            CraftMetaBook.this.pages.set(page - 1, this.componentsToPage(newText));
+-        }
+-
+-        @Override
+-        public void setPages(final BaseComponent[]... pages) {
+-            this.setPages(Arrays.asList(pages));
+-        }
+-
+-        @Override
+-        public void addPage(final BaseComponent[]... pages) {
+-            for (BaseComponent[] page : pages) {
+-                if (page == null) {
+-                    page = new BaseComponent[0];
+-                }
+-
+-                CraftMetaBook.this.internalAddPage(this.componentsToPage(page));
+-            }
+-        }
+-
+-        @Override
+-        public List<BaseComponent[]> getPages() {
+-            if (CraftMetaBook.this.pages == null) return ImmutableList.of();
+-            final List<String> copy = ImmutableList.copyOf(CraftMetaBook.this.pages);
+-            return new AbstractList<>() {
+-
+-                @Override
+-                public BaseComponent[] get(int index) {
+-                    return CraftChatMessage.jsonToBungee(SpigotMeta.this.pageToJSON(copy.get(index)));
+-                }
+-
+-                @Override
+-                public int size() {
+-                    return copy.size();
+-                }
+-            };
+-        }
+-
+-        @Override
+-        public void setPages(List<BaseComponent[]> pages) {
+-            if (pages.isEmpty()) {
+-                CraftMetaBook.this.pages = null;
+-                return;
+-            }
+-
+-            if (CraftMetaBook.this.pages != null) {
+-                CraftMetaBook.this.pages.clear();
+-            }
+-
+-            for (BaseComponent[] page : pages) {
+-                this.addPage(page);
+-            }
+-        }
+-    }
+-
+-    @Override
+-    public BookMeta.Spigot spigot() {
+-        return this.spigot;
+-    }
+-    // Spigot end
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
+index eb21c7bf833bbcbc93f30f85af1cdb74f31c63da..0cae624295c508fd93ca7d98116e659371ffef98 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
+@@ -20,11 +20,6 @@ import org.bukkit.configuration.serialization.DelegateDeserialization;
+ import org.bukkit.craftbukkit.util.CraftChatMessage;
+ import org.bukkit.inventory.meta.BookMeta;
+ 
+-// Spigot start
+-import java.util.AbstractList;
+-import net.md_5.bungee.api.chat.BaseComponent;
+-// Spigot end
+-
+ @DelegateDeserialization(SerializableMeta.class)
+ public class CraftMetaBookSigned extends CraftMetaItem implements BookMeta {
+     @ItemMetaKey.Specific(ItemMetaKey.Specific.To.NBT)
+@@ -288,7 +283,6 @@ public class CraftMetaBookSigned extends CraftMetaItem implements BookMeta {
+         if (this.pages != null) {
+             meta.pages = new ArrayList<>(this.pages);
+         }
+-        meta.spigot = meta.new SpigotMeta(); // Spigot
+         return meta;
+     }
+ 
+@@ -361,94 +355,6 @@ public class CraftMetaBookSigned extends CraftMetaItem implements BookMeta {
+         return builder;
+     }
+ 
+-    // Spigot start
+-    private BookMeta.Spigot spigot = new SpigotMeta();
+-    private class SpigotMeta extends BookMeta.Spigot {
+-
+-        private String pageToJSON(Component page) {
+-            // Page data is already in JSON format:
+-            return CraftChatMessage.toJSON(page);
+-        }
+-
+-        private Component componentsToPage(BaseComponent[] components) {
+-            // asserted: components != null
+-            // Pages are in JSON format:
+-            return CraftChatMessage.bungeeToVanilla(components);
+-        }
+-
+-        @Override
+-        public BaseComponent[] getPage(final int page) {
+-            Preconditions.checkArgument(CraftMetaBookSigned.this.isValidPage(page), "Invalid page number");
+-            return CraftChatMessage.jsonToBungee(this.pageToJSON(CraftMetaBookSigned.this.pages.get(page - 1)));
+-        }
+-
+-        @Override
+-        public void setPage(final int page, final BaseComponent... text) {
+-            if (!CraftMetaBookSigned.this.isValidPage(page)) {
+-                throw new IllegalArgumentException("Invalid page number " + page + "/" + CraftMetaBookSigned.this.getPageCount());
+-            }
+-
+-            BaseComponent[] newText = text == null ? new BaseComponent[0] : text;
+-            CraftMetaBookSigned.this.pages.set(page - 1, this.componentsToPage(newText));
+-        }
+-
+-        @Override
+-        public void setPages(final BaseComponent[]... pages) {
+-            this.setPages(Arrays.asList(pages));
+-        }
+-
+-        @Override
+-        public void addPage(final BaseComponent[]... pages) {
+-            for (BaseComponent[] page : pages) {
+-                if (page == null) {
+-                    page = new BaseComponent[0];
+-                }
+-
+-                CraftMetaBookSigned.this.internalAddPage(this.componentsToPage(page));
+-            }
+-        }
+-
+-        @Override
+-        public List<BaseComponent[]> getPages() {
+-            if (CraftMetaBookSigned.this.pages == null) return ImmutableList.of();
+-            final List<Component> copy = ImmutableList.copyOf(CraftMetaBookSigned.this.pages);
+-            return new AbstractList<>() {
+-
+-                @Override
+-                public BaseComponent[] get(int index) {
+-                    return CraftChatMessage.jsonToBungee(SpigotMeta.this.pageToJSON(copy.get(index)));
+-                }
+-
+-                @Override
+-                public int size() {
+-                    return copy.size();
+-                }
+-            };
+-        }
+-
+-        @Override
+-        public void setPages(List<BaseComponent[]> pages) {
+-            if (pages.isEmpty()) {
+-                CraftMetaBookSigned.this.pages = null;
+-                return;
+-            }
+-
+-            if (CraftMetaBookSigned.this.pages != null) {
+-                CraftMetaBookSigned.this.pages.clear();
+-            }
+-
+-            for (BaseComponent[] page : pages) {
+-                this.addPage(page);
+-            }
+-        }
+-    };
+-
+-    @Override
+-    public BookMeta.Spigot spigot() {
+-        return this.spigot;
+-    }
+-    // Spigot end
+-
+     public static final net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer LEGACY_DOWNSAMPLING_COMPONENT_SERIALIZER = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.builder()
+         .character(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.SECTION_CHAR)
+         .build();
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
+index 3825cd713a42397204b13212a47d63626985b71b..5eeecba1ac323eaf06dbbffc36b4f78b66b8a81d 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
+@@ -1132,26 +1132,6 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+         this.displayName = customName == null ? null : io.papermc.paper.adventure.PaperAdventure.asVanilla(customName);
+     }
+ 
+-    @Override
+-    public String getDisplayName() {
+-        return CraftChatMessage.fromComponent(this.displayName);
+-    }
+-
+-    @Override
+-    public net.md_5.bungee.api.chat.BaseComponent[] getDisplayNameComponent() {
+-        return displayName == null ? new net.md_5.bungee.api.chat.BaseComponent[0] : CraftChatMessage.vanillaToBungee(displayName);
+-    }
+-
+-    @Override
+-    public final void setDisplayName(String name) {
+-        this.displayName = CraftChatMessage.fromStringOrNull(name);
+-    }
+-
+-    @Override
+-    public void setDisplayNameComponent(net.md_5.bungee.api.chat.BaseComponent[] component) {
+-        this.displayName = CraftChatMessage.bungeeToVanilla(component);
+-    }
+-
+     @Override
+     public boolean hasCustomName() {
+         return this.displayName != null;
+@@ -1182,15 +1162,6 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+         this.itemName = io.papermc.paper.adventure.PaperAdventure.asVanilla(name);
+     }
+ 
+-    @Override
+-    public String getLocalizedName() {
+-        return this.getDisplayName();
+-    }
+-
+-    @Override
+-    public void setLocalizedName(String name) {
+-    }
+-
+     @Override
+     public boolean hasLocalizedName() {
+         return false;
+@@ -1346,11 +1317,6 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+         return this.lore == null ? null : new ArrayList<>(Lists.transform(this.lore, CraftChatMessage::fromComponent));
+     }
+ 
+-    @Override
+-    public List<net.md_5.bungee.api.chat.BaseComponent[]> getLoreComponents() {
+-        return this.lore == null ? null : new ArrayList<>(Lists.transform(this.lore, CraftChatMessage::vanillaToBungee));
+-    }
+-
+     @Override
+     public void setLore(List<String> lore) {
+         Preconditions.checkArgument(lore == null || lore.size() <= ItemLore.MAX_LINES, "lore cannot have more than %s lines", ItemLore.MAX_LINES); // Paper - limit lore lines
+@@ -1366,21 +1332,6 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+         }
+     }
+ 
+-    @Override
+-    public void setLoreComponents(List<net.md_5.bungee.api.chat.BaseComponent[]> lore) {
+-        Preconditions.checkArgument(lore == null || lore.size() <= ItemLore.MAX_LINES, "lore cannot have more than %s lines", ItemLore.MAX_LINES); // Paper - limit lore lines
+-        if (lore == null) {
+-            this.lore = null;
+-        } else {
+-            if (this.lore == null) {
+-                safelyAdd(lore, this.lore = new ArrayList<>(lore.size()), false);
+-            } else {
+-                this.lore.clear();
+-                safelyAdd(lore, this.lore, false);
+-            }
+-        }
+-    }
+-
+     @Override
+     public boolean hasCustomModelData() {
+         if (customModelData != null) {
+@@ -2344,9 +2295,7 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+         }
+ 
+         for (Object object : addFrom) {
+-            if (object instanceof net.md_5.bungee.api.chat.BaseComponent[] baseComponentArr) {
+-                addTo.add(CraftChatMessage.bungeeToVanilla(baseComponentArr));
+-            } else if (!(object instanceof String)) {
++            if (!(object instanceof String)) {
+                 if (object != null) {
+                     // SPIGOT-7399: Null check via if is important,
+                     // otherwise object.getClass().getName() could throw an error for a valid argument -> when it is null which is valid,
+@@ -2497,28 +2446,6 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+         }
+     }
+ 
+-    @Override
+-    public Set<Material> getCanDestroy() {
+-        return !this.hasDestroyableKeys() ? Collections.emptySet() : convertToLegacyMaterial(this.canBreakPredicates);
+-    }
+-
+-    @Override
+-    public void setCanDestroy(final Set<Material> canDestroy) {
+-        Preconditions.checkArgument(canDestroy != null, "Cannot replace with null set!");
+-        this.canBreakPredicates = convertFromLegacyMaterial(canDestroy);
+-    }
+-
+-    @Override
+-    public Set<Material> getCanPlaceOn() {
+-        return !this.hasPlaceableKeys() ? Collections.emptySet() : convertToLegacyMaterial(this.canPlaceOnPredicates);
+-    }
+-
+-    @Override
+-    public void setCanPlaceOn(final Set<Material> canPlaceOn) {
+-        Preconditions.checkArgument(canPlaceOn != null, "Cannot replace with null set!");
+-        this.canPlaceOnPredicates = convertFromLegacyMaterial(canPlaceOn);
+-    }
+-
+     private static List<net.minecraft.advancements.criterion.BlockPredicate> convertFromLegacyMaterial(final Collection<Material> materials) {
+         final net.minecraft.core.Registry<net.minecraft.world.level.block.Block> blockRegistry = CraftRegistry.getMinecraftRegistry().lookupOrThrow(net.minecraft.core.registries.Registries.BLOCK);
+         return materials.stream().map(m -> {
+@@ -2532,82 +2459,4 @@ class CraftMetaItem implements ItemMeta, Damageable, Repairable, BlockDataMeta {
+             .map(holder -> CraftBlockType.minecraftToBukkit(holder.value()))
+             .collect(java.util.stream.Collectors.toSet());
+     }
+-
+-    @Override
+-    public Set<com.destroystokyo.paper.Namespaced> getDestroyableKeys() {
+-        return !this.hasDestroyableKeys() ? Collections.emptySet() : convertToLegacyNamespaced(this.canBreakPredicates);
+-    }
+-
+-    @Override
+-    public void setDestroyableKeys(final Collection<com.destroystokyo.paper.Namespaced> canDestroy) {
+-        Preconditions.checkArgument(canDestroy != null, "Cannot replace with null collection!");
+-        Preconditions.checkArgument(ofAcceptableType(canDestroy), "Can only use NamespacedKey or NamespacedTag objects!");
+-        this.canBreakPredicates = convertFromLegacyNamespaced(canDestroy);
+-    }
+-
+-    @Override
+-    public Set<com.destroystokyo.paper.Namespaced> getPlaceableKeys() {
+-        return !this.hasPlaceableKeys() ? Collections.emptySet() : convertToLegacyNamespaced(this.canPlaceOnPredicates);
+-    }
+-
+-    @Override
+-    public void setPlaceableKeys(final Collection<com.destroystokyo.paper.Namespaced> canPlaceOn) {
+-        Preconditions.checkArgument(canPlaceOn != null, "Cannot replace with null collection!");
+-        Preconditions.checkArgument(ofAcceptableType(canPlaceOn), "Can only use NamespacedKey or NamespacedTag objects!");
+-        this.canPlaceOnPredicates = convertFromLegacyNamespaced(canPlaceOn);
+-    }
+-
+-    private static List<net.minecraft.advancements.criterion.BlockPredicate> convertFromLegacyNamespaced(final Collection<com.destroystokyo.paper.Namespaced> namespaceds) {
+-        final List<net.minecraft.advancements.criterion.BlockPredicate> predicates = new ArrayList<>();
+-        final net.minecraft.core.Registry<net.minecraft.world.level.block.Block> blockRegistry = CraftRegistry.getMinecraftRegistry().lookupOrThrow(net.minecraft.core.registries.Registries.BLOCK);
+-        for (final com.destroystokyo.paper.Namespaced namespaced : namespaceds) {
+-            if (namespaced instanceof final org.bukkit.NamespacedKey key) {
+-                predicates.add(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blockRegistry, CraftBlockType.bukkitToMinecraft(Objects.requireNonNull(org.bukkit.Registry.MATERIAL.get(key)))).build());
+-            } else if (namespaced instanceof final com.destroystokyo.paper.NamespacedTag tag) {
+-                predicates.add(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blockRegistry, net.minecraft.tags.TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(tag.getNamespace(), tag.getKey()))).build());
+-            }
+-        }
+-        return predicates;
+-    }
+-
+-    private static Set<com.destroystokyo.paper.Namespaced> convertToLegacyNamespaced(final Collection<net.minecraft.advancements.criterion.BlockPredicate> predicates) {
+-        final Set<com.destroystokyo.paper.Namespaced> namespaceds = Sets.newHashSet();
+-        for (final net.minecraft.advancements.criterion.BlockPredicate predicate : predicates) {
+-            if (predicate.blocks().isEmpty()) {
+-                continue;
+-            }
+-            final net.minecraft.core.HolderSet<net.minecraft.world.level.block.Block> holders = predicate.blocks().get();
+-            if (holders instanceof final net.minecraft.core.HolderSet.Named<net.minecraft.world.level.block.Block> named) {
+-                namespaceds.add(new com.destroystokyo.paper.NamespacedTag(named.key().location().getNamespace(), named.key().location().getPath()));
+-            } else {
+-                holders.forEach(h -> {
+-                    h.unwrapKey().ifPresent(key -> {
+-                        namespaceds.add(new org.bukkit.NamespacedKey(key.identifier().getNamespace(), key.identifier().getPath()));
+-                    });
+-                });
+-            }
+-        }
+-        return namespaceds;
+-    }
+-
+-    @Override
+-    public boolean hasPlaceableKeys() {
+-        return this.canPlaceOnPredicates != null;
+-    }
+-
+-    @Override
+-    public boolean hasDestroyableKeys() {
+-        return this.canBreakPredicates != null;
+-    }
+-
+-    // not a fan of this
+-    private static boolean ofAcceptableType(final Collection<com.destroystokyo.paper.Namespaced> namespacedResources) {
+-        for (com.destroystokyo.paper.Namespaced resource : namespacedResources) {
+-            if (!(resource instanceof org.bukkit.NamespacedKey || resource instanceof com.destroystokyo.paper.NamespacedTag)) {
+-                return false;
+-            }
+-        }
+-
+-        return true;
+-    }
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
+index ff8b61762916aca1db4d35d2a74833d2f5acf847..df9671a6f6e08b450d5eb5b18cdf2c724743e102 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
+@@ -79,7 +79,7 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
+ 
+         String locName = SerializableMeta.getString(map, CraftMetaMap.MAP_LOC_NAME.BUKKIT, true);
+         if (locName != null) {
+-            this.setLocationName(locName);
++            //this.setLocationName(locName);
+         }
+ 
+         Color color = SerializableMeta.getObject(Color.class, map, CraftMetaMap.MAP_COLOR.BUKKIT, true);
+@@ -165,16 +165,6 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
+         return this.hasLocalizedName(); // SPIGOT-6308
+     }
+ 
+-    @Override
+-    public String getLocationName() {
+-        return this.getLocalizedName(); // SPIGOT-6308
+-    }
+-
+-    @Override
+-    public void setLocationName(String name) {
+-        this.setLocalizedName(name); // SPIGOT-6308
+-    }
+-
+     @Override
+     public boolean hasColor() {
+         return this.color != null;
+diff --git a/src/main/java/org/bukkit/craftbukkit/legacy/MaterialRerouting.java b/src/main/java/org/bukkit/craftbukkit/legacy/MaterialRerouting.java
+index 9bc8055c36322c79077af57ab72d5493f5e65b7d..1b0101399248b65b9c7d9e9da21dbf94d93b32dd 100644
+--- a/src/main/java/org/bukkit/craftbukkit/legacy/MaterialRerouting.java
++++ b/src/main/java/org/bukkit/craftbukkit/legacy/MaterialRerouting.java
+@@ -685,22 +685,4 @@ public class MaterialRerouting {
+         return ItemStack.of(material, amount);
+     }
+     // Paper end
+-
+-    // Paper start - methods added post 1.13, no-op (https://github.com/PaperMC/Paper/pull/1015)
+-    public static Set<Material> getCanDestroy(final ItemMeta meta) {
+-        return meta.getCanDestroy();
+-    }
+-
+-    public static void setCanDestroy(final ItemMeta meta, final Set<Material> materials) {
+-        meta.setCanDestroy(materials);
+-    }
+-
+-    public static Set<Material> getCanPlaceOn(final ItemMeta meta) {
+-        return meta.getCanPlaceOn();
+-    }
+-
+-    public static void setCanPlaceOn(final ItemMeta meta, final Set<Material> materials) {
+-        meta.setCanPlaceOn(materials);
+-    }
+-    // Paper end
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftChatMessage.java b/src/main/java/org/bukkit/craftbukkit/util/CraftChatMessage.java
+index 3f115c561f34a8b11e4baa47a76e6fb03cc6637b..499ba763f121380c0c2b11833aed777ed21493a1 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/CraftChatMessage.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/CraftChatMessage.java
+@@ -15,9 +15,6 @@ import java.util.Optional;
+ import java.util.regex.Matcher;
+ import java.util.regex.Pattern;
+ import com.mojang.serialization.JsonOps;
+-import net.md_5.bungee.api.chat.BaseComponent;
+-import net.md_5.bungee.chat.ChatVersion;
+-import net.md_5.bungee.chat.VersionedComponentSerializer;
+ import com.mojang.serialization.JavaOps;
+ import net.minecraft.ChatFormatting;
+ import net.minecraft.network.chat.ClickEvent;
+@@ -352,21 +349,6 @@ public final class CraftChatMessage {
+         return out.toString();
+     }
+ 
+-    private static VersionedComponentSerializer bungeeSerializer = VersionedComponentSerializer.forVersion(ChatVersion.V1_21_5);
+-    public static String bungeeToJson(BaseComponent... components) {
+-        return bungeeSerializer.toString(components);
+-    }
+-
+-    public static BaseComponent[] jsonToBungee(String json) {
+-        return bungeeSerializer.parse(json);
+-    }
+-    public static Component bungeeToVanilla(BaseComponent... components) {
+-        return fromJSON(bungeeToJson(components));
+-    }
+-    public static BaseComponent[] vanillaToBungee(Component component) {
+-        return jsonToBungee(toJSON(component));
+-    }
+-
+     private CraftChatMessage() {
+     }
+ }

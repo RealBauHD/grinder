@@ -1,0 +1,1435 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Wed, 7 Jan 2026 21:03:06 +0100
+Subject: [PATCH] bye bye md_5
+
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 14d81c7b138ebf999d5812d26fbf869209c100f3..fb31a331820a0d44d0c416c19da5a31f0cff8e67 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -464,30 +464,6 @@ public final class Bukkit {
+         return server.broadcastMessage(message);
+     }
+ 
+-    // Paper start
+-    /**
+-     * Sends the component to all online players.
+-     *
+-     * @param component the component to send
+-     * @deprecated use {@code sendMessage} methods on {@link #getServer()} that accept {@link Component}
+-     */
+-    @Deprecated
+-    public static void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+-        server.broadcast(component);
+-    }
+-
+-    /**
+-     * Sends an array of components as a single message to all online players.
+-     *
+-     * @param components the components to send
+-     * @deprecated use {@code sendMessage} methods on {@link #getServer()} that accept {@link Component}
+-     */
+-    @Deprecated
+-    public static void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+-        server.broadcast(components);
+-    }
+-    // Paper end
+-
+     /**
+      * Gets the name of the update folder. The update folder is used to safely
+      * update plugins at the right moment on a plugin load.
+@@ -2988,15 +2964,6 @@ public final class Bukkit {
+     }
+     // Paper end - Folia region threading API
+ 
+-    /**
+-     * @deprecated All methods on this class have been deprecated, see the individual methods for replacements.
+-     */
+-    @Deprecated(since = "1.21.4", forRemoval = true)
+-    @NotNull
+-    public static Server.Spigot spigot() {
+-        return server.spigot();
+-    }
+-
+     /**
+      * Restarts the server. If the server administrator has not configured restarting, the server will stop.
+      */
+diff --git a/src/main/java/org/bukkit/ChatColor.java b/src/main/java/org/bukkit/ChatColor.java
+index 918a045165cdcde264bc24082b7afebb407271de..fd0dea989af3860e23fc587079ed1aeb17c8c245 100644
+--- a/src/main/java/org/bukkit/ChatColor.java
++++ b/src/main/java/org/bukkit/ChatColor.java
+@@ -18,221 +18,111 @@ public enum ChatColor {
+      * Represents black
+      */
+     BLACK('0', 0x00) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.BLACK;
+-        }
+     },
+     /**
+      * Represents dark blue
+      */
+     DARK_BLUE('1', 0x1) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.DARK_BLUE;
+-        }
+     },
+     /**
+      * Represents dark green
+      */
+     DARK_GREEN('2', 0x2) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.DARK_GREEN;
+-        }
+     },
+     /**
+      * Represents dark blue (aqua)
+      */
+     DARK_AQUA('3', 0x3) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.DARK_AQUA;
+-        }
+     },
+     /**
+      * Represents dark red
+      */
+     DARK_RED('4', 0x4) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.DARK_RED;
+-        }
+     },
+     /**
+      * Represents dark purple
+      */
+     DARK_PURPLE('5', 0x5) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.DARK_PURPLE;
+-        }
+     },
+     /**
+      * Represents gold
+      */
+     GOLD('6', 0x6) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.GOLD;
+-        }
+     },
+     /**
+      * Represents gray
+      */
+     GRAY('7', 0x7) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.GRAY;
+-        }
+     },
+     /**
+      * Represents dark gray
+      */
+     DARK_GRAY('8', 0x8) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.DARK_GRAY;
+-        }
+     },
+     /**
+      * Represents blue
+      */
+     BLUE('9', 0x9) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.BLUE;
+-        }
+     },
+     /**
+      * Represents green
+      */
+     GREEN('a', 0xA) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.GREEN;
+-        }
+     },
+     /**
+      * Represents aqua
+      */
+     AQUA('b', 0xB) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.AQUA;
+-        }
+     },
+     /**
+      * Represents red
+      */
+     RED('c', 0xC) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.RED;
+-        }
+     },
+     /**
+      * Represents light purple
+      */
+     LIGHT_PURPLE('d', 0xD) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.LIGHT_PURPLE;
+-        }
+     },
+     /**
+      * Represents yellow
+      */
+     YELLOW('e', 0xE) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.YELLOW;
+-        }
+     },
+     /**
+      * Represents white
+      */
+     WHITE('f', 0xF) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.WHITE;
+-        }
+     },
+     /**
+      * Represents magical characters that change around randomly
+      */
+     MAGIC('k', 0x10, true) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.MAGIC;
+-        }
+     },
+     /**
+      * Makes the text bold.
+      */
+     BOLD('l', 0x11, true) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.BOLD;
+-        }
+     },
+     /**
+      * Makes a line appear through the text.
+      */
+     STRIKETHROUGH('m', 0x12, true) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.STRIKETHROUGH;
+-        }
+     },
+     /**
+      * Makes the text appear underlined.
+      */
+     UNDERLINE('n', 0x13, true) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.UNDERLINE;
+-        }
+     },
+     /**
+      * Makes the text italic.
+      */
+     ITALIC('o', 0x14, true) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.ITALIC;
+-        }
+     },
+     /**
+      * Resets all previous chat colors or formats.
+      */
+     RESET('r', 0x15) {
+-        @NotNull
+-        @Override
+-        public net.md_5.bungee.api.ChatColor asBungee() {
+-            return net.md_5.bungee.api.ChatColor.RESET;
+-        }
+     };
+ 
+     /**
+@@ -260,11 +150,6 @@ public enum ChatColor {
+         this.toString = new String(new char[] {COLOR_CHAR, code});
+     }
+ 
+-    @NotNull
+-    public net.md_5.bungee.api.ChatColor asBungee() {
+-        return net.md_5.bungee.api.ChatColor.RESET;
+-    };
+-
+     /**
+      * Gets the char value associated with this color
+      *
+diff --git a/src/main/java/org/bukkit/NamespacedKey.java b/src/main/java/org/bukkit/NamespacedKey.java
+index 57d95e22db8c6b925fc96cf1a45a5a04366bb517..41ea008f874bf63adaf61b0ec318f527fd5e01a5 100644
+--- a/src/main/java/org/bukkit/NamespacedKey.java
++++ b/src/main/java/org/bukkit/NamespacedKey.java
+@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
+  * underscores, hyphens, and forward slashes.
+  *
+  */
+-public final class NamespacedKey implements Key, com.destroystokyo.paper.Namespaced {
++public final class NamespacedKey implements Key {
+ 
+     /**
+      * The namespace representing all inbuilt keys.
+@@ -93,13 +93,11 @@ public final class NamespacedKey implements Key, com.destroystokyo.paper.Namespa
+     }
+ 
+     @NotNull
+-    @Override
+     public String getNamespace() {
+         return this.namespace;
+     }
+ 
+     @NotNull
+-    @Override
+     public String getKey() {
+         return this.key;
+     }
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 0ec885b97d655c03371840d739b47063494ed36f..2a4b637e5f277b0d084397eae194adb99f250a19 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -383,30 +383,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+         return this.broadcast(message, BROADCAST_CHANNEL_USERS);
+     }
+ 
+-    // Paper start
+-    /**
+-     * Sends the component to all online players.
+-     *
+-     * @param component the component to send
+-     * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-     */
+-    @Deprecated
+-    public default void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+-        spigot().broadcast(component);
+-    }
+-
+-    /**
+-     * Sends an array of components as a single message to all online players.
+-     *
+-     * @param components the components to send
+-     * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-     */
+-    @Deprecated
+-    public default void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+-        spigot().broadcast(components);
+-    }
+-    // Paper end
+-
+     /**
+      * Sends a message with the MiniMessage format to the server.
+      * <p>
+@@ -2365,107 +2341,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     @NotNull
+     UnsafeValues getUnsafe();
+ 
+-    // Spigot start
+-    public class Spigot {
+-
+-        /**
+-         * @deprecated Server config options may be renamed or removed without notice. Prefer using existing API
+-         *  wherever possible, rather than directly reading from a server config.
+-         *
+-         * @see #getServerConfig()
+-         * @return The server's spigot config.
+-         */
+-        @Deprecated(since = "1.21.4", forRemoval = true)
+-        @NotNull
+-        public org.bukkit.configuration.file.YamlConfiguration getConfig() {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * @deprecated Server config options may be renamed or removed without notice. Prefer using existing API
+-         *  wherever possible, rather than directly reading from a server config.
+-         *
+-         * @see #getServerConfig()
+-         * @return The server's bukkit config.
+-         */
+-        // Paper start
+-        @Deprecated(since = "1.21.4", forRemoval = true)
+-        @NotNull
+-        public org.bukkit.configuration.file.YamlConfiguration getBukkitConfig()
+-        {
+-            throw new UnsupportedOperationException( "Not supported yet." );
+-        }
+-
+-        /**
+-         * @deprecated Server config options may be renamed or removed without notice. Prefer using existing API
+-         *  wherever possible, rather than directly reading from a server config.
+-         *
+-         * @see #getServerConfig()
+-         * @return The server's spigot config.
+-         */
+-        @Deprecated(since = "1.21.4", forRemoval = true)
+-        @NotNull
+-        public org.bukkit.configuration.file.YamlConfiguration getSpigotConfig()
+-        {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * @deprecated Server config options may be renamed or removed without notice. Prefer using existing API
+-         *  wherever possible, rather than directly reading from a server config.
+-         *
+-         * @see #getServerConfig()
+-         * @return The server's paper config.
+-         */
+-        @Deprecated(since = "1.21.4", forRemoval = true)
+-        @NotNull
+-        public org.bukkit.configuration.file.YamlConfiguration getPaperConfig()
+-        {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-        // Paper end
+-
+-        /**
+-         * Sends the component to the player
+-         *
+-         * @param component the components to send
+-         * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
+-         */
+-        @Deprecated // Paper
+-        public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sends an array of components as a single message to the player
+-         *
+-         * @param components the components to send
+-         * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
+-         */
+-        @Deprecated // Paper
+-        public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Restart the server. If the server administrator has not configured restarting, the server will stop.
+-         *
+-         * @deprecated Use {@link Server#restart()} instead.
+-         */
+-        @Deprecated(since = "1.21.4", forRemoval = true)
+-        public void restart() {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-    }
+-
+-    /**
+-     * @deprecated All methods on this class have been deprecated, see the individual methods for replacements.
+-     */
+-    @Deprecated(since = "1.21.4", forRemoval = true)
+-    @NotNull
+-    Spigot spigot();
+-    // Spigot end
+-
+     /**
+      * Restarts the server. If the server administrator has not configured restarting, the server will stop.
+      */
+diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
+index b202bdb84bae23f7b2b5af591879a032f6378a25..56fbd1f793294fcbb900ab5de5b21343e5ef6c93 100644
+--- a/src/main/java/org/bukkit/World.java
++++ b/src/main/java/org/bukkit/World.java
+@@ -4323,49 +4323,6 @@ public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient
+     void sendGameEvent(@Nullable Entity sourceEntity, @NotNull GameEvent gameEvent, @NotNull Vector position);
+     // Paper end
+ 
+-    // Spigot start
+-    @Deprecated(forRemoval = true) // Paper
+-    public class Spigot {
+-
+-        /**
+-         * Strikes lightning at the given {@link Location} and possibly without sound
+-         *
+-         * @param loc The location to strike lightning
+-         * @param isSilent Whether this strike makes no sound
+-         * @return The lightning entity.
+-         * @deprecated sound is now client side and cannot be removed
+-         * @see World#strikeLightning(org.bukkit.Location)
+-         */
+-        @NotNull
+-        @Deprecated(since = "1.20.4")
+-        public LightningStrike strikeLightning(@NotNull Location loc, boolean isSilent) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Strikes lightning at the given {@link Location} without doing damage and possibly without sound
+-         *
+-         * @param loc The location to strike lightning
+-         * @param isSilent Whether this strike makes no sound
+-         * @return The lightning entity.
+-         * @deprecated sound is now client side and cannot be removed
+-         * @see World#strikeLightningEffect(org.bukkit.Location)
+-         */
+-        @NotNull
+-        @Deprecated(since = "1.20.4")
+-        public LightningStrike strikeLightningEffect(@NotNull Location loc, boolean isSilent) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-    }
+-
+-    /**
+-     * @deprecated Unsupported api
+-     */
+-    @NotNull
+-    @Deprecated // Paper
+-    Spigot spigot();
+-    // Spigot end
+-
+     /**
+      * Find the closest nearby location with a biome matching the provided
+      * {@link Biome}(s). Finding biomes can, and will, block if the world is looking
+diff --git a/src/main/java/org/bukkit/command/CommandSender.java b/src/main/java/org/bukkit/command/CommandSender.java
+index 1fd0f5f4dc26ce990a5010cb84c0fd79044905cb..3d3ac896cea6872d7697921b4447093307e01ca2 100644
+--- a/src/main/java/org/bukkit/command/CommandSender.java
++++ b/src/main/java/org/bukkit/command/CommandSender.java
+@@ -71,60 +71,6 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+     @NotNull
+     public String getName();
+ 
+-    // Spigot start
+-    public class Spigot {
+-
+-        /**
+-         * Sends this sender a chat component.
+-         *
+-         * @param component the components to send
+-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-         */
+-        @Deprecated // Paper
+-        public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sends an array of components as a single message to the sender.
+-         *
+-         * @param components the components to send
+-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-         */
+-        @Deprecated // Paper
+-        public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sends this sender a chat component.
+-         *
+-         * @param component the components to send
+-         * @param sender the sender of the message
+-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-         */
+-        @Deprecated // Paper
+-        public void sendMessage(@Nullable UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sends an array of components as a single message to the sender.
+-         *
+-         * @param components the components to send
+-         * @param sender the sender of the message
+-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-         */
+-        @Deprecated // Paper
+-        public void sendMessage(@Nullable UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-    }
+-
+-    @NotNull
+-    Spigot spigot();
+-    // Spigot end
+-
+     // Paper start
+     /**
+      * Gets the name of this command sender
+@@ -171,33 +117,5 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
+     default void sendPlainMessage(final @NotNull String message) {
+         this.sendMessage(net.kyori.adventure.text.Component.text(message));
+     }
+-
+-    /**
+-     * Sends the component to the sender
+-     *
+-     * <p>If this sender does not support sending full components then
+-     * the component will be sent as legacy text.</p>
+-     *
+-     * @param component the component to send
+-     * @deprecated use {@link #sendMessage(Identity, Component, MessageType)} instead
+-     */
+-    @Deprecated
+-    default void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+-        this.sendMessage(component.toLegacyText());
+-    }
+-
+-    /**
+-     * Sends an array of components as a single message to the sender
+-     *
+-     * <p>If this sender does not support sending full components then
+-     * the components will be sent as legacy text.</p>
+-     *
+-     * @param components the components to send
+-     * @deprecated use {@link #sendMessage(Identity, Component, MessageType)} instead
+-     */
+-    @Deprecated
+-    default void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+-        this.sendMessage(new net.md_5.bungee.api.chat.TextComponent(components).toLegacyText());
+-    }
+     // Paper end
+ }
+diff --git a/src/main/java/org/bukkit/command/MessageCommandSender.java b/src/main/java/org/bukkit/command/MessageCommandSender.java
+index d9137e2d318b6616b1827239706f0832aba2b1f0..8dcaff89d1ec5f7ec64208d6efebd00e712e30e2 100644
+--- a/src/main/java/org/bukkit/command/MessageCommandSender.java
++++ b/src/main/java/org/bukkit/command/MessageCommandSender.java
+@@ -129,10 +129,5 @@ public interface MessageCommandSender extends CommandSender {
+         throw new UnsupportedOperationException();
+     }
+ 
+-    @NotNull
+-    @Override
+-    default Spigot spigot() {
+-        throw new UnsupportedOperationException();
+-    }
+ 
+ }
+diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
+index 2c68aae864a74adf70683eb3b17109aa96572413..e57a56b78a62470b6ce2ddfec88b42cc4932f1dc 100644
+--- a/src/main/java/org/bukkit/entity/Entity.java
++++ b/src/main/java/org/bukkit/entity/Entity.java
+@@ -1064,16 +1064,6 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+     @ApiStatus.Experimental
+     Entity copy(@NotNull Location to);
+ 
+-    // Spigot start
+-    public class Spigot extends CommandSender.Spigot {
+-
+-    }
+-
+-    @NotNull
+-    @Override
+-    Spigot spigot();
+-    // Spigot end
+-
+     // Paper start
+     /**
+      * Gets the entity's display name formatted with their team prefix/suffix and
+diff --git a/src/main/java/org/bukkit/entity/LightningStrike.java b/src/main/java/org/bukkit/entity/LightningStrike.java
+index 41a07b4aa3a0f8d71dc07e1d0d34b2e30d878303..7ba9a6a2e78ec3bd4890e4c86607fcfdff1431e5 100644
+--- a/src/main/java/org/bukkit/entity/LightningStrike.java
++++ b/src/main/java/org/bukkit/entity/LightningStrike.java
+@@ -87,34 +87,6 @@ public interface LightningStrike extends Entity {
+      */
+     public void setCausingPlayer(@Nullable Player player);
+ 
+-    // Spigot start
+-    /**
+-     * @deprecated Unsupported api
+-     */
+-    @Deprecated(forRemoval = true)
+-    public class Spigot extends Entity.Spigot {
+-
+-        /**
+-         * Returns whether the strike is silent.
+-         *
+-         * @return whether the strike is silent.
+-         * @deprecated sound is now client side and cannot be removed
+-         */
+-        @Deprecated(since = "1.20.4", forRemoval = true)
+-        public boolean isSilent() {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-    }
+-
+-    /**
+-     * @deprecated Unsupported api
+-     */
+-    @NotNull
+-    @Override
+-    @Deprecated(forRemoval = true)
+-    Spigot spigot();
+-    // Spigot end
+-
+     // Paper start
+     /**
+      * Returns the amount of flash iterations that will be done before the lightning dies.
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index 3eef8d533c2aa65d66fbd58f2260b4764a964ebe..ca787000454000289da2cecab1cfc2e200c4db9b 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -1546,176 +1546,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
+     @Deprecated
+     public void sendActionBar(char alternateChar, String message);
+-
+-    /**
+-     * Sends an Action Bar message to the client.
+-     *
+-     * @param message The components to send
+-     * @deprecated use {@link #sendActionBar(net.kyori.adventure.text.Component)}
+-     */
+-    @Deprecated
+-    public void sendActionBar(net.md_5.bungee.api.chat.BaseComponent... message);
+-
+-    /**
+-     * Sends the component to the player
+-     *
+-     * @param component the components to send
+-     * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-     */
+-    @Override
+-    @Deprecated
+-    public default void sendMessage(net.md_5.bungee.api.chat.BaseComponent component) {
+-        this.spigot().sendMessage(component);
+-    }
+-
+-    /**
+-     * Sends an array of components as a single message to the player
+-     *
+-     * @param components the components to send
+-     * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-     */
+-    @Override
+-    @Deprecated
+-    public default void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components) {
+-        this.spigot().sendMessage(components);
+-    }
+-
+-    /**
+-     * Sends an array of components as a single message to the specified screen position of this player
+-     *
+-     * @deprecated This is unlikely the API you want to use. See {@link #sendActionBar(String)} for a more proper Action Bar API. This deprecated API may send unsafe items to the client.
+-     * @param position the screen position
+-     * @param components the components to send
+-     */
+-    @Deprecated
+-    public default void sendMessage(net.md_5.bungee.api.ChatMessageType position, net.md_5.bungee.api.chat.BaseComponent... components) {
+-        this.spigot().sendMessage(position, components);
+-    }
+-
+-    /**
+-     * Set the text displayed in the player list header and footer for this player
+-     *
+-     * @param header content for the top of the player list
+-     * @param footer content for the bottom of the player list
+-     * @deprecated in favour of {@link #sendPlayerListHeaderAndFooter(net.kyori.adventure.text.Component, net.kyori.adventure.text.Component)}
+-     */
+-    @Deprecated
+-    public void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent @Nullable [] header, net.md_5.bungee.api.chat.BaseComponent @Nullable [] footer);
+-
+-    /**
+-     * Set the text displayed in the player list header and footer for this player
+-     *
+-     * @param header content for the top of the player list
+-     * @param footer content for the bottom of the player list
+-     * @deprecated in favour of {@link #sendPlayerListHeaderAndFooter(net.kyori.adventure.text.Component, net.kyori.adventure.text.Component)}
+-     */
+-    @Deprecated
+-    public void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.@Nullable BaseComponent header, net.md_5.bungee.api.chat.@Nullable BaseComponent footer);
+-
+-    /**
+-     * Update the times for titles displayed to the player
+-     *
+-     * @param fadeInTicks  ticks to fade-in
+-     * @param stayTicks    ticks to stay visible
+-     * @param fadeOutTicks ticks to fade-out
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    public void setTitleTimes(int fadeInTicks, int stayTicks, int fadeOutTicks);
+-
+-    /**
+-     * Update the subtitle of titles displayed to the player
+-     *
+-     * @param subtitle Subtitle to set
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent[] subtitle);
+-
+-    /**
+-     * Update the subtitle of titles displayed to the player
+-     *
+-     * @param subtitle Subtitle to set
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent subtitle);
+-
+-    /**
+-     * Show the given title to the player, along with the last subtitle set, using the last set times
+-     *
+-     * @param title Title to set
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    public void showTitle(net.md_5.bungee.api.chat.@Nullable BaseComponent[] title);
+-
+-    /**
+-     * Show the given title to the player, along with the last subtitle set, using the last set times
+-     *
+-     * @param title Title to set
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    public void showTitle(net.md_5.bungee.api.chat.@Nullable BaseComponent title);
+-
+-    /**
+-     * Show the given title and subtitle to the player using the given times
+-     *
+-     * @param title        big text
+-     * @param subtitle     little text under it
+-     * @param fadeInTicks  ticks to fade-in
+-     * @param stayTicks    ticks to stay visible
+-     * @param fadeOutTicks ticks to fade-out
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    public void showTitle(net.md_5.bungee.api.chat.@Nullable BaseComponent[] title, net.md_5.bungee.api.chat.@Nullable BaseComponent[] subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
+-
+-    /**
+-     * Show the given title and subtitle to the player using the given times
+-     *
+-     * @param title        big text
+-     * @param subtitle     little text under it
+-     * @param fadeInTicks  ticks to fade-in
+-     * @param stayTicks    ticks to stay visible
+-     * @param fadeOutTicks ticks to fade-out
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    public void showTitle(net.md_5.bungee.api.chat.@Nullable BaseComponent title, net.md_5.bungee.api.chat.@Nullable BaseComponent subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
+-
+-    /**
+-     * Show the title to the player, overriding any previously displayed title.
+-     *
+-     * <p>This method overrides any previous title, use {@link #updateTitle(com.destroystokyo.paper.Title)} to change the existing one.</p>
+-     *
+-     * @param title the title to send
+-     * @throws NullPointerException if the title is null
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    void sendTitle(com.destroystokyo.paper.Title title);
+-
+-    /**
+-     * Show the title to the player, overriding any previously displayed title.
+-     *
+-     * <p>This method doesn't override previous titles, but changes their values.</p>
+-     *
+-     * @param title the title to send
+-     * @throws NullPointerException if title is null
+-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
+-     */
+-    @Deprecated
+-    void updateTitle(com.destroystokyo.paper.Title title);
+-
+-    /**
+-     * Hide any title that is currently visible to the player
+-     *
+-     * @deprecated use {@link #clearTitle()}
+-     */
+-    @Deprecated
+-    public void hideTitle();
+     // Paper end
+ 
+     /**
+@@ -3663,110 +3493,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     void removeAdditionalChatCompletions(java.util.Collection<String> completions);
+     // Paper end - custom chat completions API
+ 
+-    // Spigot start
+-    public class Spigot extends Entity.Spigot {
+-
+-        /**
+-         * Gets the connection address of this player, regardless of whether it
+-         * has been spoofed or not.
+-         *
+-         * @return the player's connection address
+-         */
+-        public InetSocketAddress getRawAddress() {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Respawns the player if dead.
+-         */
+-        public void respawn() {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Gets all players hidden with {@link #hidePlayer(org.bukkit.entity.Player)}.
+-         *
+-         * @return a Set with all hidden players
+-         */
+-        public java.util.Set<Player> getHiddenPlayers() {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        @Deprecated // Paper
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.chat.BaseComponent component) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        @Deprecated // Paper
+-        @Override
+-        public void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sends the component to the specified screen position of this player
+-         *
+-         * @param position the screen position
+-         * @param component the components to send
+-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-         */
+-        @Deprecated // Paper
+-        public void sendMessage(net.md_5.bungee.api.ChatMessageType position, net.md_5.bungee.api.chat.BaseComponent component) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sends an array of components as a single message to the specified screen position of this player
+-         *
+-         * @param position the screen position
+-         * @param components the components to send
+-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-         */
+-        @Deprecated // Paper
+-        public void sendMessage(net.md_5.bungee.api.ChatMessageType position, net.md_5.bungee.api.chat.BaseComponent... components) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sends the component to the specified screen position of this player
+-         *
+-         * @param position the screen position
+-         * @param sender the sender of the message
+-         * @param component the components to send
+-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-         */
+-        @Deprecated // Paper
+-        public void sendMessage(net.md_5.bungee.api.ChatMessageType position, java.util.@Nullable UUID sender, net.md_5.bungee.api.chat.BaseComponent component) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sends an array of components as a single message to the specified screen position of this player
+-         *
+-         * @param position the screen position
+-         * @param sender the sender of the message
+-         * @param components the components to send
+-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
+-         */
+-        @Deprecated // Paper
+-        public void sendMessage(net.md_5.bungee.api.ChatMessageType position, java.util.@Nullable UUID sender, net.md_5.bungee.api.chat.BaseComponent... components) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-
+-        }
+-
+-        // Paper start
+-        /**
+-         * @return the player's ping
+-         * @deprecated use {@link Player#getPing()}
+-         */
+-        @Deprecated
+-        public int getPing() {
+-            throw new UnsupportedOperationException( "Not supported yet." );
+-        }
+-        // Paper end
+-    }
+-
+     // Paper start - brand support
+     /**
+      * Returns player's client brand name. If the client didn't send this information, the brand name will be null.<br>
+@@ -3931,10 +3657,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     boolean isChunkSent(long chunkKey);
+     // Paper end
+ 
+-    @Override
+-    Spigot spigot();
+-    // Spigot end
+-
+     // Paper start - entity effect API
+     /**
+      * Plays an entity effect to this player for the target entity
+diff --git a/src/main/java/org/bukkit/inventory/ItemFactory.java b/src/main/java/org/bukkit/inventory/ItemFactory.java
+index a01924439ec2c21c3769a85a8cbad766e2f7954b..c22103d7c031c95ca5ac082d0a052d6c14679162 100644
+--- a/src/main/java/org/bukkit/inventory/ItemFactory.java
++++ b/src/main/java/org/bukkit/inventory/ItemFactory.java
+@@ -261,67 +261,6 @@ public interface ItemFactory {
+     ItemStack ensureServerConversions(@NotNull ItemStack item);
+     // Paper end - ensure server conversions API
+ 
+-    // Paper start - bungee hover events
+-    /**
+-     * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that ItemStack for displaying.
+-     *
+-     * @param itemStack the itemstack
+-     * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that ItemStack
+-     * @deprecated use {@link ItemStack#asHoverEvent()}
+-     */
+-    @NotNull
+-    @Deprecated // Paper
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull ItemStack itemStack);
+-
+-    /**
+-     * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity} for displaying.
+-     * Uses the display name of the entity, if present.
+-     *
+-     * @param entity Entity to create the HoverEvent for
+-     * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity}
+-     * @deprecated use {@link org.bukkit.entity.Entity#asHoverEvent()}
+-     */
+-    @NotNull
+-    @Deprecated
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity);
+-
+-    /**
+-     * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity} for displaying.
+-     *
+-     * @param entity Entity to create the HoverEvent for
+-     * @param customName a custom name that should be displayed, if not passed entity name will be displayed
+-     * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity}
+-     * @deprecated use {@link org.bukkit.entity.Entity#asHoverEvent(java.util.function.UnaryOperator)}
+-     */
+-    @NotNull
+-    @Deprecated
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @Nullable String customName);
+-
+-    /**
+-     * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity} for displaying.
+-     *
+-     * @param entity Entity to create the HoverEvent for
+-     * @param customName a custom name that should be displayed, if not passed entity name will be displayed
+-     * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity}
+-     * @deprecated use {@link org.bukkit.entity.Entity#asHoverEvent(java.util.function.UnaryOperator)}
+-     */
+-    @NotNull
+-    @Deprecated
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @Nullable net.md_5.bungee.api.chat.BaseComponent customName);
+-
+-    /**
+-     * Creates a {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity} for displaying.
+-     *
+-     * @param entity Entity to create the HoverEvent for
+-     * @param customName a custom name that should be displayed, if not passed entity name will be displayed
+-     * @return the {@link net.md_5.bungee.api.chat.hover.content.Content} of that {@link org.bukkit.entity.Entity}
+-     * @deprecated use {@link org.bukkit.entity.Entity#asHoverEvent(java.util.function.UnaryOperator)}
+-     */
+-    @NotNull
+-    @Deprecated
+-    net.md_5.bungee.api.chat.hover.content.Content hoverContentOf(@NotNull org.bukkit.entity.Entity entity, @NotNull net.md_5.bungee.api.chat.BaseComponent[] customName);
+-    // Paper end - bungee hover events
+-
+     // Paper start - enchantWithLevels API
+     /**
+      * Randomly enchants a copy of the provided {@link ItemStack} using the given experience levels.
+diff --git a/src/main/java/org/bukkit/inventory/meta/BookMeta.java b/src/main/java/org/bukkit/inventory/meta/BookMeta.java
+index f0c6943da3f783101ca647b75b3230fae3a310da..29fe5d9c70581b6df79d0169fad5988e4040b03f 100644
+--- a/src/main/java/org/bukkit/inventory/meta/BookMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/BookMeta.java
+@@ -1,7 +1,6 @@
+ package org.bukkit.inventory.meta;
+ 
+ import java.util.List;
+-import net.md_5.bungee.api.chat.BaseComponent;
+ import org.bukkit.Material;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+@@ -267,89 +266,4 @@ public interface BookMeta extends WritableBookMeta, net.kyori.adventure.inventor
+     @Override
+     @NotNull BookMetaBuilder toBuilder();
+     // Paper end
+-
+-    // Spigot start
+-    public class Spigot {
+-
+-        /**
+-         * Gets the specified page in the book. The given page must exist.
+-         *
+-         * @param page the page number to get
+-         * @return the page from the book
+-         * @deprecated in favour of {@link #page(int)}
+-         */
+-        @NotNull
+-        @Deprecated // Paper
+-        public BaseComponent[] getPage(int page) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Sets the specified page in the book. Pages of the book must be
+-         * contiguous.
+-         * <p>
+-         * The data can be up to 256 characters in length, additional characters
+-         * are truncated.
+-         *
+-         * @param page the page number to set
+-         * @param data the data to set for that page
+-         * @deprecated in favour of {@link #page(int, net.kyori.adventure.text.Component)}
+-         */
+-        @Deprecated // Paper
+-        public void setPage(int page, @Nullable BaseComponent... data) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Gets all the pages in the book.
+-         *
+-         * @return list of all the pages in the book
+-         * @deprecated in favour of {@link #pages()}
+-         */
+-        @NotNull
+-        @Deprecated // Paper
+-        public List<BaseComponent[]> getPages() {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Clears the existing book pages, and sets the book to use the provided
+-         * pages. Maximum 50 pages with 256 characters per page.
+-         *
+-         * @param pages A list of pages to set the book to use
+-         * @deprecated in favour of {@link #pages(java.util.List)}
+-         */
+-        @Deprecated // Paper
+-        public void setPages(@NotNull List<BaseComponent[]> pages) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Clears the existing book pages, and sets the book to use the provided
+-         * pages. Maximum 50 pages with 256 characters per page.
+-         *
+-         * @param pages A list of component arrays, each being a page
+-         * @deprecated in favour of {@link #pages(net.kyori.adventure.text.Component...)}
+-         */
+-        @Deprecated // Paper
+-        public void setPages(@NotNull BaseComponent[]... pages) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-
+-        /**
+-         * Adds new pages to the end of the book. Up to a maximum of 50 pages
+-         * with 256 characters per page.
+-         *
+-         * @param pages A list of component arrays, each being a page
+-         * @deprecated in favour of {@link #addPages(net.kyori.adventure.text.Component...)}
+-         */
+-        @Deprecated // Paper
+-        public void addPage(@NotNull BaseComponent[]... pages) {
+-            throw new UnsupportedOperationException("Not supported yet.");
+-        }
+-    }
+-
+-    @NotNull
+-    Spigot spigot();
+-    // Spigot end
+ }
+diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
+index 08fd7877df04833c0330b64ecd518b2ee3057804..bb43d58cafba7e2c3a4eb79358a168151d3fe10f 100644
+--- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
+@@ -102,52 +102,6 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+     }
+     // Paper end
+ 
+-    /**
+-     * Gets the display name that is set.
+-     * <p>
+-     * Plugins should check that hasDisplayName() returns <code>true</code>
+-     * before calling this method.
+-     *
+-     * @return the display name that is set
+-     * @deprecated in favour of {@link #displayName()}
+-     */
+-    @Deprecated // Paper
+-    @NotNull
+-    String getDisplayName();
+-
+-    // Paper start
+-    /**
+-     * Gets the display name that is set.
+-     * <p>
+-     * Plugins should check that hasDisplayName() returns <code>true</code>
+-     * before calling this method.
+-     *
+-     * @return the display name that is set
+-     * @deprecated use {@link #displayName()}
+-     */
+-    @NotNull
+-    @Deprecated
+-    net.md_5.bungee.api.chat.BaseComponent[] getDisplayNameComponent();
+-    // Paper end
+-    /**
+-     * Sets the display name.
+-     *
+-     * @param name the name to set
+-     * @deprecated in favour of {@link #displayName(net.kyori.adventure.text.Component)}
+-     */
+-    @Deprecated // Paper
+-    void setDisplayName(@Nullable String name);
+-
+-    // Paper start
+-    /**
+-     * Sets the display name.
+-     *
+-     * @param component the name component to set
+-     * @deprecated use {@link #displayName(Component)}
+-     */
+-    @Deprecated
+-    void setDisplayNameComponent(@Nullable net.md_5.bungee.api.chat.BaseComponent[] component);
+-    // Paper end
+     /**
+      * Checks for existence of an item name.
+      * <br>
+@@ -221,28 +175,6 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+     @Deprecated(since = "1.20.5", forRemoval = true)
+     boolean hasLocalizedName();
+ 
+-    /**
+-     * Gets the localized display name that is set.
+-     * <p>
+-     * Plugins should check that hasLocalizedName() returns <code>true</code>
+-     * before calling this method.
+-     *
+-     * @deprecated Use {@link ItemMeta#displayName()} and cast it to a {@link net.kyori.adventure.text.TranslatableComponent}. No longer used by the client.
+-     * @return the localized name that is set
+-     */
+-    @NotNull
+-    @Deprecated(since = "1.20.5", forRemoval = true)
+-    String getLocalizedName();
+-
+-    /**
+-     * Sets the localized name.
+-     *
+-     * @deprecated Use {@link ItemMeta#displayName(Component)} with a {@link net.kyori.adventure.text.TranslatableComponent}. No longer used by the client.
+-     * @param name the name to set
+-     */
+-    @Deprecated(since = "1.20.5", forRemoval = true)
+-    void setLocalizedName(@Nullable String name);
+-
+     /**
+      * Checks for existence of lore.
+      *
+@@ -281,19 +213,6 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+     @Nullable
+     List<String> getLore();
+ 
+-    /**
+-     * Gets the lore that is set.
+-     * <p>
+-     * Plugins should check if hasLore() returns <code>true</code> before
+-     * calling this method.
+-     *
+-     * @return a list of lore that is set
+-     * @deprecated use {@link #lore()}
+-     */
+-    @Nullable
+-    @Deprecated
+-    List<net.md_5.bungee.api.chat.BaseComponent[]> getLoreComponents();
+-
+     /**
+      * Sets the lore for this item.
+      * Removes lore when given null.
+@@ -304,16 +223,6 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+     @Deprecated // Paper
+     void setLore(@Nullable List<String> lore);
+ 
+-    /**
+-     * Sets the lore for this item.
+-     * Removes lore when given null.
+-     *
+-     * @param lore the lore that will be set
+-     * @deprecated use {@link #lore(List)}
+-     */
+-    @Deprecated
+-    void setLoreComponents(@Nullable List<net.md_5.bungee.api.chat.BaseComponent[]> lore);
+-
+     /**
+      * Checks for existence of custom model data.
+      * <p>
+@@ -1084,106 +993,4 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+ 
+     @NotNull
+     ItemMeta clone();
+-
+-    /**
+-     * Gets set of materials what given item can destroy in {@link org.bukkit.GameMode#ADVENTURE}
+-     *
+-     * @return Set of materials
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#getData(DataComponentType.Valued)} with {@link DataComponentTypes#CAN_BREAK} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.14")
+-    Set<org.bukkit.Material> getCanDestroy();
+-
+-    /**
+-     * Sets set of materials what given item can destroy in {@link org.bukkit.GameMode#ADVENTURE}
+-     *
+-     * @param canDestroy Set of materials
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#setData(DataComponentType.Valued, Object)} with {@link DataComponentTypes#CAN_BREAK} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.14")
+-    void setCanDestroy(Set<org.bukkit.Material> canDestroy);
+-
+-    /**
+-     * Gets set of materials where given item can be placed on in {@link org.bukkit.GameMode#ADVENTURE}
+-     *
+-     * @return Set of materials
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#getData(DataComponentType.Valued)} with {@link DataComponentTypes#CAN_PLACE_ON} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.14")
+-    Set<org.bukkit.Material> getCanPlaceOn();
+-
+-    /**
+-     * Sets set of materials where given item can be placed on in {@link org.bukkit.GameMode#ADVENTURE}
+-     *
+-     * @param canPlaceOn Set of materials
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#setData(DataComponentType.Valued, Object)} with {@link DataComponentTypes#CAN_PLACE_ON} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.14")
+-    void setCanPlaceOn(Set<org.bukkit.Material> canPlaceOn);
+-
+-    /**
+-     * Gets the collection of namespaced keys that the item can destroy in {@link org.bukkit.GameMode#ADVENTURE}
+-     *
+-     * @return Set of {@link com.destroystokyo.paper.Namespaced}
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#getData(DataComponentType.Valued)} with {@link DataComponentTypes#CAN_BREAK} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.20.6")
+-    @NotNull
+-    Set<com.destroystokyo.paper.Namespaced> getDestroyableKeys();
+-
+-    /**
+-     * Sets the collection of namespaced keys that the item can destroy in {@link org.bukkit.GameMode#ADVENTURE}
+-     *
+-     * @param canDestroy Collection of {@link com.destroystokyo.paper.Namespaced}
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#setData(DataComponentType.Valued, Object)} with {@link DataComponentTypes#CAN_BREAK} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.20.6")
+-    void setDestroyableKeys(@NotNull Collection<com.destroystokyo.paper.Namespaced> canDestroy);
+-
+-    /**
+-     * Gets the collection of namespaced keys that the item can be placed on in {@link org.bukkit.GameMode#ADVENTURE}
+-     *
+-     * @return Set of {@link com.destroystokyo.paper.Namespaced}
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#getData(DataComponentType.Valued)} with {@link DataComponentTypes#CAN_PLACE_ON} instead of this.
+-     */
+-    @NotNull
+-    @Deprecated(forRemoval = true, since = "1.20.6")
+-    Set<com.destroystokyo.paper.Namespaced> getPlaceableKeys();
+-
+-    /**
+-     * Sets the set of namespaced keys that the item can be placed on in {@link org.bukkit.GameMode#ADVENTURE}
+-     *
+-     * @param canPlaceOn Collection of {@link com.destroystokyo.paper.Namespaced}
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#setData(DataComponentType.Valued, Object)} with {@link DataComponentTypes#CAN_PLACE_ON} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.20.6")
+-    void setPlaceableKeys(@NotNull Collection<com.destroystokyo.paper.Namespaced> canPlaceOn);
+-
+-    /**
+-     * Checks for the existence of any keys that the item can be placed on
+-     *
+-     * @return true if this item has placeable keys
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#hasData(DataComponentType)} with {@link DataComponentTypes#CAN_PLACE_ON} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.20.6")
+-    boolean hasPlaceableKeys();
+-
+-    /**
+-     * Checks for the existence of any keys that the item can destroy
+-     *
+-     * @return true if this item has destroyable keys
+-     * @deprecated this API part has been replaced by the {@link ItemAdventurePredicate} API.
+-     * Please use {@link ItemStack#hasData(DataComponentType)} with {@link DataComponentTypes#CAN_BREAK} instead of this.
+-     */
+-    @Deprecated(forRemoval = true, since = "1.20.6")
+-    boolean hasDestroyableKeys();
+ }
+diff --git a/src/main/java/org/bukkit/inventory/meta/MapMeta.java b/src/main/java/org/bukkit/inventory/meta/MapMeta.java
+index 29d53747ef29b5b1249c2db420907f340523c654..21389c4613614f6c34060cb304861ff3ec539c55 100644
+--- a/src/main/java/org/bukkit/inventory/meta/MapMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/MapMeta.java
+@@ -101,30 +101,6 @@ public interface MapMeta extends ItemMeta {
+     @Deprecated(since = "1.19.4")
+     boolean hasLocationName();
+ 
+-    /**
+-     * Gets the location name that is set.
+-     * <p>
+-     * Plugins should check that hasLocationName() returns <code>true</code>
+-     * before calling this method.
+-     *
+-     * @return the location name that is set
+-     * @deprecated This method does not have the expected effect and is
+-     * actually an alias for {@link ItemMeta#getLocalizedName()}.
+-     */
+-    @Deprecated(since = "1.19.4")
+-    @Nullable
+-    String getLocationName();
+-
+-    /**
+-     * Sets the location name.
+-     *
+-     * @param name the name to set
+-     * @deprecated This method does not have the expected effect and is
+-     * actually an alias for {@link ItemMeta#setLocalizedName(String)}.
+-     */
+-    @Deprecated(since = "1.19.4")
+-    void setLocationName(@Nullable String name);
+-
+     /**
+      * Checks for existence of a map color.
+      *
