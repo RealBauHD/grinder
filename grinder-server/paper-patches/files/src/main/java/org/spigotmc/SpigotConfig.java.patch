@@ -8,6 +8,33 @@
  import net.minecraft.core.registries.BuiltInRegistries;
  import net.minecraft.resources.Identifier;
  import net.minecraft.server.MinecraftServer;
+@@ -48,7 +_,6 @@
+     /*========================================================================*/
+     public static YamlConfiguration config;
+     static int version;
+-    static Map<String, Command> commands;
+     /*========================================================================*/
+ 
+     public static void init(File configFile) {
+@@ -65,18 +_,12 @@
+         SpigotConfig.config.options().header(SpigotConfig.HEADER);
+         SpigotConfig.config.options().copyDefaults(true);
+ 
+-        SpigotConfig.commands = new HashMap<>();
+-        SpigotConfig.commands.put("spigot", new SpigotCommand("spigot"));
+-
+         SpigotConfig.version = SpigotConfig.getInt("config-version", 12);
+         SpigotConfig.set("config-version", 12);
+         SpigotConfig.readConfig(SpigotConfig.class, null);
+     }
+ 
+     public static void registerCommands() {
+-        for (Map.Entry<String, Command> entry : SpigotConfig.commands.entrySet()) {
+-            MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "Spigot", entry.getValue());
+-        }
+     }
+ 
+     public static void readConfig(Class<?> clazz, Object instance) {
 @@ -151,9 +_,9 @@
          SpigotConfig.sendNamespaced = SpigotConfig.getBoolean("commands.send-namespaced", true);
      }
@@ -41,3 +68,32 @@
      }
  
      public static boolean bungee;
+@@ -228,10 +_,6 @@
+         }
+     }
+ 
+-    private static void tpsCommand() {
+-        SpigotConfig.commands.put("tps", new TicksPerSecondCommand("tps"));
+-    }
+-
+     public static int playerSample;
+     private static void playerSample() {
+         SpigotConfig.playerSample = Math.max(SpigotConfig.getInt("settings.sample-count", 12), 0); // Paper - Avoid negative counts
+@@ -301,7 +_,7 @@
+     public static double maxHealth = 1024;
+     public static double movementSpeed = 1024;
+     public static double attackDamage = 2048;
+-    private static void attributeMaxes() {
++    /*private static void attributeMaxes() {
+         SpigotConfig.maxAbsorption = SpigotConfig.getDouble("settings.attribute.maxAbsorption.max", SpigotConfig.maxAbsorption);
+         ((RangedAttribute) Attributes.MAX_ABSORPTION.value()).maxValue = SpigotConfig.maxAbsorption;
+         SpigotConfig.maxHealth = SpigotConfig.getDouble("settings.attribute.maxHealth.max", SpigotConfig.maxHealth);
+@@ -310,7 +_,7 @@
+         ((RangedAttribute) Attributes.MOVEMENT_SPEED.value()).maxValue = SpigotConfig.movementSpeed;
+         SpigotConfig.attackDamage = SpigotConfig.getDouble("settings.attribute.attackDamage.max", SpigotConfig.attackDamage);
+         ((RangedAttribute) Attributes.ATTACK_DAMAGE.value()).maxValue = SpigotConfig.attackDamage;
+-    }
++    }*/ // Grinder
+ 
+     public static boolean debug;
+     private static void debug() {

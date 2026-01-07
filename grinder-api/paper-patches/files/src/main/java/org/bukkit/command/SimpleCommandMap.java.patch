@@ -1,14 +1,24 @@
 --- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
 +++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
-@@ -34,7 +_,7 @@
-         final ReloadCommand reload = new ReloadCommand("reload");
+@@ -31,14 +_,14 @@
+     }
+ 
+     private void setDefaultCommands() {
+-        final ReloadCommand reload = new ReloadCommand("reload");
++        /*final ReloadCommand reload = new ReloadCommand("reload");
          this.knownCommands.put("bukkit:reload", reload);
-         this.knownCommands.put("bukkit:rl", reload);
+-        this.knownCommands.put("bukkit:rl", reload);
 -        register("bukkit", new co.aikar.timings.TimingsCommand("timings"));
++        this.knownCommands.put("bukkit:rl", reload);*/ // Grinder
 +        //register("bukkit", new co.aikar.timings.TimingsCommand("timings")); // Grinder - remove timings
      }
  
      public void setFallbackCommands() {
+-        register("bukkit", new HelpCommand());
++        //register("bukkit", new HelpCommand()); // Grinder
+     }
+ 
+     /**
 @@ -66,7 +_,7 @@
       */
      @Override
