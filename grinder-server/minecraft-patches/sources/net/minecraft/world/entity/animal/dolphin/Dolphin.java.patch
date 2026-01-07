@@ -1,0 +1,11 @@
+--- a/net/minecraft/world/entity/animal/dolphin/Dolphin.java
++++ b/net/minecraft/world/entity/animal/dolphin/Dolphin.java
+@@ -155,7 +_,7 @@
+     protected void registerGoals() {
+         this.goalSelector.addGoal(0, new BreathAirGoal(this));
+         this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
+-        this.goalSelector.addGoal(1, new Dolphin.DolphinSwimToTreasureGoal(this));
++        if (this.level().paperConfig().environment.treasureMaps.enabled) this.goalSelector.addGoal(1, new Dolphin.DolphinSwimToTreasureGoal(this)); // Grinder - don't search for treasure if disabled
+         this.goalSelector.addGoal(2, new Dolphin.DolphinSwimWithPlayerGoal(this, 4.0));
+         this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0, 10));
+         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
