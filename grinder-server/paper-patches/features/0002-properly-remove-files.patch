@@ -1,6 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aaron <bauhd@gmx.net>
+Date: Wed, 7 Jan 2026 21:06:02 +0100
+Subject: [PATCH] properly remove files
+
+
+diff --git a/src/main/resources/configurations/commands.yml b/src/main/resources/configurations/commands.yml
+deleted file mode 100644
+index ddf2cd4b802cf7d22342eed7f09c989761aed7a9..0000000000000000000000000000000000000000
+--- a/src/main/resources/configurations/commands.yml
++++ /dev/null
+@@ -1,15 +0,0 @@
+-# This is the Bukkit commands configuration file for Paper.
+-#
+-# If you need help with the configuration or have any questions related to Paper,
+-# join us in our Discord or check the docs page.
+-#
+-# File Reference: https://docs.papermc.io/paper/reference/bukkit-commands-configuration/
+-# Docs: https://docs.papermc.io/
+-# Discord: https://discord.gg/papermc
+-# Website: https://papermc.io/
+-
+-command-block-overrides: []
+-ignore-vanilla-permissions: false
+-aliases:
+-    icanhasbukkit:
+-      - "version $1-"
+diff --git a/src/main/resources/configurations/help.yml b/src/main/resources/configurations/help.yml
+deleted file mode 100644
+index e0958ee252cb38aeb21c2db24a9cbdb134171507..0000000000000000000000000000000000000000
 --- a/src/main/resources/configurations/help.yml
 +++ /dev/null
-@@ -1,63 +_,0 @@
+@@ -1,63 +0,0 @@
 -# This is the Bukkit help configuration file for Paper.
 -# 
 -# By default you do not need to modify this file. Help topics for all plugin commands are automatically provided by
