@@ -21,3 +21,19 @@
      }
  
      public boolean disconnectAllPlayersWithProfile(GameProfile profile) { // Paper - validate usernames
+@@ -733,13 +_,14 @@
+         this.sendPlayerPermissionLevel(player, profilePermissions, recalculatePermissions); // Paper - avoid recalculating permissions if possible
+     }
+ 
++    private static final EnumSet<ClientboundPlayerInfoUpdatePacket.Action> UPDATE_LATENCY = EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.UPDATE_LATENCY); // Grinder
+     public void tick() {
+         if (++this.sendAllPlayerInfoIn > 600) {
+             // CraftBukkit start
+             for (int i = 0; i < this.players.size(); ++i) {
+                 final ServerPlayer target = this.players.get(i);
+ 
+-                target.connection.send(new ClientboundPlayerInfoUpdatePacket(EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.UPDATE_LATENCY), com.google.common.collect.Collections2.filter(this.players, t -> target.getBukkitEntity().canSee(t.getBukkitEntity()))));
++                target.connection.send(new ClientboundPlayerInfoUpdatePacket(UPDATE_LATENCY, com.google.common.collect.Collections2.filter(this.players, t -> target.getBukkitEntity().canSee(t.getBukkitEntity()))));
+             }
+             // CraftBukkit end
+             this.sendAllPlayerInfoIn = 0;
