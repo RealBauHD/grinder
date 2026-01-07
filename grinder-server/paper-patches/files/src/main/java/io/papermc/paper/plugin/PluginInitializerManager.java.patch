@@ -1,0 +1,25 @@
+--- a/src/main/java/io/papermc/paper/plugin/PluginInitializerManager.java
++++ b/src/main/java/io/papermc/paper/plugin/PluginInitializerManager.java
+@@ -43,11 +_,11 @@
+ 
+     private static PluginInitializerManager parse(@NotNull final OptionSet minecraftOptionSet) throws Exception {
+         // We have to load the bukkit configuration inorder to get the update folder location.
+-        final File configFileLocationBukkit = (File) minecraftOptionSet.valueOf("bukkit-settings");
++        //final File configFileLocationBukkit = (File) minecraftOptionSet.valueOf("bukkit-settings"); // Grinder - remove plugin update system
+ 
+         final Path pluginDirectory = ((File) minecraftOptionSet.valueOf("plugins")).toPath();
+ 
+-        final YamlConfiguration configuration = PaperConfigurations.loadLegacyConfigFile(configFileLocationBukkit);
++        /*final YamlConfiguration configuration = PaperConfigurations.loadLegacyConfigFile(configFileLocationBukkit);
+ 
+         final String updateDirectoryName = configuration.getString("settings.update-folder", "update");
+         if (updateDirectoryName.isBlank()) {
+@@ -81,7 +_,7 @@
+             return new PluginInitializerManager(pluginDirectory, null);
+         }
+ 
+-        return new PluginInitializerManager(pluginDirectory, resolvedUpdateDirectory);
++        return new PluginInitializerManager(pluginDirectory, resolvedUpdateDirectory);*/ return new PluginInitializerManager(pluginDirectory, null); // Grinder - remove plugin update system
+     }
+ 
+     public static PluginInitializerManager init(final OptionSet optionSet) throws Exception {
