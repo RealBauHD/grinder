@@ -8,7 +8,7 @@
  import net.minecraft.util.profiling.ProfileResults;
  import net.minecraft.util.profiling.Profiler;
  import net.minecraft.util.profiling.ProfilerFiller;
-@@ -1291,9 +_,9 @@
+@@ -1289,9 +_,9 @@
              }
              // Paper end - Add onboarding message for initial server start
              // Paper start - Improve outdated version checking
@@ -20,7 +20,7 @@
              // Paper end - Improve outdated version checking
  
              while (this.running) {
-@@ -2712,6 +_,7 @@
+@@ -2710,6 +_,7 @@
      // CraftBukkit end
  
      private ProfilerFiller createProfiler() {

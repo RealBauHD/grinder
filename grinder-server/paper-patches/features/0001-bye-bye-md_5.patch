@@ -116,10 +116,10 @@ index ccd8ecd66b4772a32d62e0ea0fc2d3e9e092028f..5eff8f35f60304b837f3709817c2021f
      public void restart() {
          org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 4ff1b4f472cce49d05a22cdfb67f9e8bf980a81c..76cddc682678a81c22a21ee456e9eb16f5cbf62f 100644
+index ebc65e3338c646815416a47bf9af96fe45978caf..e10dbaf8dc93fa7593971918f347ca18fc4a07c4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -1980,24 +1980,6 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -1967,24 +1967,6 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          }
      }
  
@@ -265,7 +265,7 @@ index 32e426513f3e710abeda3363a4e2a08fe902c703..eab434f6a0f45d155ba7d2e4866398f5
      public int getFlashCount() {
          return getHandle().flashes;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index e3c9327de894fdfb252781772817f4c8bc079cce..25eafc1668a5b15c105e0b7081074cb8bee550da 100644
+index d86ebc4cd182076629eb8000267d7b1a38a06be1..055438b2d66548a8d01e19ee6e0650ecc420f5cf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -53,7 +53,6 @@ import net.kyori.adventure.identity.Identity;
@@ -274,9 +274,9 @@ index e3c9327de894fdfb252781772817f4c8bc079cce..25eafc1668a5b15c105e0b7081074cb8
  import net.kyori.adventure.util.TriState;
 -import net.md_5.bungee.api.chat.BaseComponent;
  import net.minecraft.advancements.AdvancementProgress;
- import net.minecraft.commands.Commands;
  import net.minecraft.core.BlockPos;
-@@ -427,14 +426,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+ import net.minecraft.core.Holder;
+@@ -425,14 +424,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
      }
  
      // Paper start
@@ -291,7 +291,7 @@ index e3c9327de894fdfb252781772817f4c8bc079cce..25eafc1668a5b15c105e0b7081074cb8
      @Override
      @Deprecated
      public void sendActionBar(String message) {
-@@ -448,95 +439,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+@@ -446,95 +437,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
          if (message == null || message.isEmpty()) return;
          sendActionBar(org.bukkit.ChatColor.translateAlternateColorCodes(alternateChar, message));
      }
@@ -387,7 +387,7 @@ index e3c9327de894fdfb252781772817f4c8bc079cce..25eafc1668a5b15c105e0b7081074cb8
      // Paper end
  
      @Override
-@@ -3024,83 +2926,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+@@ -3018,83 +2920,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
          getHandle().resetAttackStrengthTicker();
      }
      // Paper end
@@ -471,7 +471,7 @@ index e3c9327de894fdfb252781772817f4c8bc079cce..25eafc1668a5b15c105e0b7081074cb8
  
      // Paper start - brand support
      @Override
-@@ -3183,11 +3008,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
+@@ -3177,11 +3002,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player, PluginMessa
      }
      // Paper end
  
