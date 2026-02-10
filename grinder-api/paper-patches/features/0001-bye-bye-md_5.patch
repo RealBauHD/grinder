@@ -692,10 +692,10 @@ index 41a07b4aa3a0f8d71dc07e1d0d34b2e30d878303..7ba9a6a2e78ec3bd4890e4c86607fcfd
      /**
       * Returns the amount of flash iterations that will be done before the lightning dies.
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 3eef8d533c2aa65d66fbd58f2260b4764a964ebe..ca787000454000289da2cecab1cfc2e200c4db9b 100644
+index 26d9139886d851824829734228e0bcceabba92d5..19a2daccfd9b582287f84cbc7e7c8a88985a80ad 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1546,176 +1546,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1548,176 +1548,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       */
      @Deprecated
      public void sendActionBar(char alternateChar, String message);
@@ -872,7 +872,7 @@ index 3eef8d533c2aa65d66fbd58f2260b4764a964ebe..ca787000454000289da2cecab1cfc2e2
      // Paper end
  
      /**
-@@ -3663,110 +3493,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -3671,110 +3501,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      void removeAdditionalChatCompletions(java.util.Collection<String> completions);
      // Paper end - custom chat completions API
  
@@ -983,7 +983,7 @@ index 3eef8d533c2aa65d66fbd58f2260b4764a964ebe..ca787000454000289da2cecab1cfc2e2
      // Paper start - brand support
      /**
       * Returns player's client brand name. If the client didn't send this information, the brand name will be null.<br>
-@@ -3931,10 +3657,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -3939,10 +3665,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      boolean isChunkSent(long chunkKey);
      // Paper end
  
